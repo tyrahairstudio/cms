@@ -1,6 +1,7 @@
 const siteUrl = "/content/site.json";
 const postsUrl = "/content/posts.json";
 const tilePositions = ["69% 22%", "88% 24%", "79% 18%", "43% 78%", "56% 78%", "90% 78%"];
+const servicePositions = ["69% 22%", "88% 24%", "80% 34%", "43% 78%", "56% 78%", "90% 78%"];
 
 const escapeHtml = (value = "") =>
   String(value).replace(/[&<>"']/g, (char) => ({
@@ -19,6 +20,13 @@ const text = (selector, value) => {
   if (node && value) node.textContent = value;
 };
 
+const textAll = (selector, value) => {
+  if (!value) return;
+  document.querySelectorAll(selector).forEach((node) => {
+    node.textContent = value;
+  });
+};
+
 async function loadJson(url) {
   const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) throw new Error(`Could not load ${url}`);
@@ -27,57 +35,81 @@ async function loadJson(url) {
 
 function renderSite(site) {
   document.title = `${site.brand} | Cypress, TX`;
+  const address = site.addressLines.join(", ");
+  const directionsUrl = `https://maps.google.com/?q=${encodeURIComponent(address)}`;
+
   text("[data-intro]", site.intro);
   text("[data-headline]", site.headline);
+  text("[data-top-address]", address);
+  text("[data-footer-address]", address);
+  text("#visit-title", address);
+  textAll("[data-phone-text]", site.phone);
 
   document.querySelectorAll("[data-booking]").forEach((link) => {
     link.href = site.bookingUrl;
   });
 
+  document.querySelectorAll("[data-phone-link]").forEach((link) => {
+    link.href = `tel:${site.phone.replace(/[^\d+]/g, "")}`;
+  });
+
+  document.querySelectorAll("[data-directions]").forEach((link) => {
+    link.href = directionsUrl;
+  });
+
   const emailLink = document.querySelector("[data-email]");
   if (emailLink) emailLink.href = `mailto:${site.email}`;
 
-  text("[data-footer-address]", site.addressLines.join(", "));
-
   const serviceGrid = document.querySelector("[data-services]");
-  serviceGrid.innerHTML = site.services
-    .map(
-      (service) => `
-        <article class="service-card">
-          <h3>${escapeHtml(service.name)}</h3>
-          <p>${escapeHtml(service.description)}</p>
-          <strong>${escapeHtml(service.price)}</strong>
-        </article>
-      `
-    )
-    .join("");
+  if (serviceGrid) {
+    serviceGrid.innerHTML = site.services
+      .map(
+        (service, index) => `
+          <article class="service-card">
+            <div class="service-card-visual" style="--service-image: url('/assets/tyra-cover.png'); --service-position: ${servicePositions[index % servicePositions.length]}"></div>
+            <div class="service-card-content">
+              <h3>${escapeHtml(service.name)}</h3>
+              <p>${escapeHtml(service.description)}</p>
+              <strong>${escapeHtml(service.price)}</strong>
+            </div>
+          </article>
+        `
+      )
+      .join("");
+  }
 
   const lookTiles = document.querySelector("[data-looks]");
-  lookTiles.innerHTML = site.looks
-    .map(
-      (look, index) => `
-        <article class="look-tile" style="--tile-image: url('/assets/tyra-cover.png'); --tile-position: ${tilePositions[index % tilePositions.length]}">
-          <span>${escapeHtml(look)}</span>
-        </article>
-      `
-    )
-    .join("");
+  if (lookTiles) {
+    lookTiles.innerHTML = site.looks
+      .map(
+        (look, index) => `
+          <article class="look-tile" style="--tile-image: url('/assets/tyra-cover.png'); --tile-position: ${tilePositions[index % tilePositions.length]}">
+            <span>${escapeHtml(look)}</span>
+          </article>
+        `
+      )
+      .join("");
+  }
 
   const hours = document.querySelector("[data-hours]");
-  hours.innerHTML = site.hours
-    .map(
-      (item) => `
-        <div>
-          <dt>${escapeHtml(item.day)}</dt>
-          <dd>${escapeHtml(item.time)}</dd>
-        </div>
-      `
-    )
-    .join("");
+  if (hours) {
+    hours.innerHTML = site.hours
+      .map(
+        (item) => `
+          <div>
+            <dt>${escapeHtml(item.day)}</dt>
+            <dd>${escapeHtml(item.time)}</dd>
+          </div>
+        `
+      )
+      .join("");
+  }
 }
 
 function renderPosts(posts) {
   const grid = document.querySelector("[data-posts]");
+  if (!grid) return;
+
   grid.innerHTML = posts
     .map(
       (post, index) => `
@@ -124,5 +156,6 @@ Promise.all([loadJson(siteUrl), loadJson(postsUrl)])
     renderPosts(blog.posts);
   })
   .catch(() => {
-    document.querySelector("[data-posts]").innerHTML = '<p class="load-error">The journal is taking a moment to load.</p>';
+    const postGrid = document.querySelector("[data-posts]");
+    if (postGrid) postGrid.innerHTML = '<p class="load-error">The journal is taking a moment to load.</p>';
   });

@@ -4,9 +4,11 @@
 
 This workspace contains the Tyra Hair Studio static website.
 
-- Production site: https://tyrahairstudio.pages.dev
-- Admin CMS path: https://tyrahairstudio.pages.dev/tyraadmin/
-- Cloudflare Pages project name: `tyrahairstudio`
+- Current Git-deployed site: https://tyrahairstudio-git.pages.dev
+- Current Git-deployed admin CMS path: https://tyrahairstudio-git.pages.dev/tyraadmin/
+- Current Cloudflare Pages project name: `tyrahairstudio-git`
+- Legacy Direct Upload site: https://tyrahairstudio.pages.dev
+- Legacy Direct Upload Cloudflare Pages project name: `tyrahairstudio`
 - GitHub content/source repo configured for Decap CMS: `tyrahairstudio/cms`
 - Main static output folder: `public`
 - Cloudflare Pages Functions folder: `functions`
@@ -36,7 +38,7 @@ backend:
   name: github
   repo: tyrahairstudio/cms
   branch: main
-  base_url: https://tyrahairstudio.pages.dev/api
+  base_url: https://tyrahairstudio-git.pages.dev/api
   auth_endpoint: auth
 ```
 
@@ -65,13 +67,13 @@ Application name:
 Tyra Hair Studio CMS
 
 Homepage URL:
-https://tyrahairstudio.pages.dev
+https://tyrahairstudio-git.pages.dev
 
 Authorization callback URL:
-https://tyrahairstudio.pages.dev/api/callback
+https://tyrahairstudio-git.pages.dev/api/callback
 ```
 
-Then add these variables/secrets to the Cloudflare Pages project `tyrahairstudio`:
+Then add these variables/secrets to the Cloudflare Pages project `tyrahairstudio-git`:
 
 - `GITHUB_CLIENT_ID`
 - `GITHUB_CLIENT_SECRET`
@@ -84,19 +86,29 @@ The GitHub user logging into Decap must have push access to the private repo `ty
 
 Wrangler is available as `wrangler.cmd` on this Windows machine. The plain `wrangler` PowerShell command may fail because script execution is disabled.
 
-Deploy production:
+Production now deploys automatically from GitHub via Cloudflare Pages Git integration on project `tyrahairstudio-git`.
+
+Before making local edits, always pull the latest GitHub state first because Decap CMS publishes commits directly to `tyrahairstudio/cms`:
+
+```powershell
+git pull
+```
+
+Then edit, test, commit, and push. Cloudflare Pages will automatically deploy pushes to `main`.
+
+Legacy manual deploy command for the old Direct Upload project only:
 
 ```powershell
 wrangler.cmd pages deploy public --project-name tyrahairstudio --branch main --commit-dirty=true
 ```
 
-This also uploads the `functions` bundle when the `functions` folder exists at the project root.
+Manual deploy also uploads the `functions` bundle when the `functions` folder exists at the project root.
 
 Useful checks:
 
 ```powershell
-curl.exe -L https://tyrahairstudio.pages.dev/tyraadmin/config.yml
-curl.exe -i https://tyrahairstudio.pages.dev/api/auth?provider=github
+curl.exe -L https://tyrahairstudio-git.pages.dev/tyraadmin/config.yml
+curl.exe -i https://tyrahairstudio-git.pages.dev/api/auth?provider=github
 ```
 
 ## Local Preview
@@ -119,9 +131,10 @@ Note: this simple static preview does not run Cloudflare Pages Functions. Use `w
 
 ## Current Environment Notes
 
-- `git` and `gh` were not available in this shell when checked, so source was not pushed to GitHub from this machine.
-- The site was initially deployed using Cloudflare Pages Direct Upload via Wrangler.
-- If Decap CMS edits are expected to update the live site automatically, connect Cloudflare Pages to the GitHub repo or redeploy after CMS commits.
+- `git` is available in this shell; `gh` was not available when checked.
+- The original `tyrahairstudio` Pages project was deployed using Cloudflare Pages Direct Upload via Wrangler.
+- The newer `tyrahairstudio-git` Pages project is connected to GitHub repo `tyrahairstudio/cms` and auto-deploys from branch `main`.
+- Decap CMS edits commit to GitHub. Always `git pull` before local edits so CMS changes are not overwritten.
 - `public/_headers` sets `Cache-Control: no-store` for `/tyraadmin/config.yml` so CMS config changes are not cached.
 
 ## Safe Editing Guidance
