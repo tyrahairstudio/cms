@@ -1,0 +1,15 @@
+{
+  "name": "tyra-hair-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler pages dev public --port 8788",
+    "serve": "py -m http.server 8788 --directory public",
+    "deploy": "wrangler pages deploy public --project-name tyrahairstudio --branch main",
+    "deploy:npx": "npx wrangler pages deploy public --project-name tyrahairstudio --branch main"
+  },
+  "devDependencies": {
+    "wrangler": "latest"
+  }
+}

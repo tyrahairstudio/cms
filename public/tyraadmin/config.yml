@@ -1,0 +1,75 @@
+backend:
+  name: github
+  repo: tyrahairstudio/cms
+  branch: main
+  base_url: https://tyrahairstudio.pages.dev
+  auth_endpoint: api/auth
+
+local_backend: true
+publish_mode: editorial_workflow
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+site_url: "https://tyrahairstudio.pages.dev"
+display_url: "https://tyrahairstudio.pages.dev"
+logo_url: "/assets/tyra-cover.png"
+
+collections:
+  - name: "site"
+    label: "Site"
+    files:
+      - name: "settings"
+        label: "Studio details"
+        file: "public/content/site.json"
+        format: "json"
+        fields:
+          - { label: "Brand", name: "brand", widget: "string" }
+          - { label: "Headline", name: "headline", widget: "string" }
+          - { label: "Intro", name: "intro", widget: "text" }
+          - { label: "Phone", name: "phone", widget: "string", required: false }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Booking URL", name: "bookingUrl", widget: "string" }
+          - { label: "Instagram", name: "instagram", widget: "string", required: false }
+          - label: "Address lines"
+            name: "addressLines"
+            widget: "list"
+            field: { label: "Line", name: "line", widget: "string" }
+          - label: "Hours"
+            name: "hours"
+            widget: "list"
+            fields:
+              - { label: "Day", name: "day", widget: "string" }
+              - { label: "Time", name: "time", widget: "string" }
+          - label: "Services"
+            name: "services"
+            widget: "list"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Price", name: "price", widget: "string" }
+          - label: "Looks"
+            name: "looks"
+            widget: "list"
+            field: { label: "Look", name: "look", widget: "string" }
+  - name: "blog"
+    label: "Blog"
+    files:
+      - name: "posts"
+        label: "Posts"
+        file: "public/content/posts.json"
+        format: "json"
+        fields:
+          - label: "Posts"
+            name: "posts"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Slug", name: "slug", widget: "string" }
+              - { label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+              - { label: "Category", name: "category", widget: "string" }
+              - { label: "Excerpt", name: "excerpt", widget: "text" }
+              - label: "Body paragraphs"
+                name: "body"
+                widget: "list"
+                field: { label: "Paragraph", name: "paragraph", widget: "text" }

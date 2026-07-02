@@ -1,0 +1,51 @@
+{
+  "brand": "Tyra Hair Studio",
+  "headline": "Dimensional color, gloss, and cuts shaped around real movement.",
+  "intro": "A Cypress hair studio focused on soft blonding, lived-in brunettes, vivid transformations, and healthy shine from consultation to finish.",
+  "phone": "+1 (832) 555-0196",
+  "email": "hello@tyrahairstudio.com",
+  "bookingUrl": "https://maps.google.com/?q=9212+Fry+Rd+%23160+Cypress+TX+77433",
+  "instagram": "https://www.instagram.com/",
+  "addressLines": [
+    "9212 Fry Rd #160",
+    "Cypress, TX 77433",
+    "United States"
+  ],
+  "hours": [
+    { "day": "Tue", "time": "10:00 AM - 6:00 PM" },
+    { "day": "Wed", "time": "10:00 AM - 6:00 PM" },
+    { "day": "Thu", "time": "11:00 AM - 7:00 PM" },
+    { "day": "Fri", "time": "10:00 AM - 6:00 PM" },
+    { "day": "Sat", "time": "9:00 AM - 4:00 PM" }
+  ],
+  "services": [
+    {
+      "name": "Dimensional blonding",
+      "description": "Foilayage, balayage, and soft highlight placement for brightness that grows out gracefully.",
+      "price": "From $185"
+    },
+    {
+      "name": "Gloss and tone",
+      "description": "A shine reset that refines warmth, deepens richness, and makes color feel finished again.",
+      "price": "From $75"
+    },
+    {
+      "name": "Cut and shape",
+      "description": "Face-framing, long layers, blunt ends, and finishing built around your texture.",
+      "price": "From $65"
+    },
+    {
+      "name": "Color correction",
+      "description": "A consultation-led plan for banding, box dye, unwanted warmth, or major tone changes.",
+      "price": "Consultation"
+    }
+  ],
+  "looks": [
+    "Creamy blonde",
+    "Soft bronde",
+    "Glass hair",
+    "Chocolate waves",
+    "Copper glow",
+    "Purple melt"
+  ]
+}

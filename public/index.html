@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tyra Hair Studio | Cypress, TX</title>
+    <meta name="description" content="Tyra Hair Studio in Cypress, TX. Dimensional color, blonding, gloss, cuts, and hair transformations.">
+    <meta property="og:title" content="Tyra Hair Studio">
+    <meta property="og:description" content="Dimensional color, gloss, and cuts shaped around real movement.">
+    <meta property="og:image" content="/assets/tyra-cover.png">
+    <meta name="theme-color" content="#17120f">
+    <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
+    <link rel="preload" as="image" href="/assets/tyra-cover.png">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-header>
+      <a class="brand-mark" href="#top" aria-label="Tyra Hair Studio home">
+        <img class="brand-logo" src="/assets/tyra-logo.png" width="720" height="745" alt="">
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#services">Services</a>
+        <a href="#looks">Looks</a>
+        <a href="#journal">Journal</a>
+        <a href="#visit">Visit</a>
+      </nav>
+      <a class="header-cta" data-booking href="#visit">Book</a>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-media" aria-hidden="true">
+          <img src="/assets/tyra-cover.png" alt="">
+        </div>
+        <div class="hero-shade" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Cypress, Texas</p>
+          <h1 id="hero-title">Tyra Hair Studio</h1>
+          <p class="hero-copy" data-intro>Dimensional color, gloss, and cuts shaped around real movement.</p>
+          <div class="hero-actions">
+            <a class="button primary" data-booking href="#visit">Book an appointment</a>
+            <a class="button ghost" href="#journal">Read the journal</a>
+          </div>
+        </div>
+        <div class="hero-card" aria-label="Studio address">
+          <span>Visit</span>
+          <strong>9212 Fry Rd #160</strong>
+          <small>Cypress, TX 77433</small>
+        </div>
+      </section>
+
+      <section class="intro-band" aria-label="Studio highlights">
+        <p data-headline>Dimensional color, gloss, and cuts shaped around real movement.</p>
+        <div>
+          <span>Blonding</span>
+          <span>Gloss</span>
+          <span>Color correction</span>
+          <span>Long layers</span>
+        </div>
+      </section>
+
+      <section class="section services-section" id="services" aria-labelledby="services-title">
+        <div class="section-kicker">Services</div>
+        <div class="section-heading">
+          <h2 id="services-title">Color that leaves the salon already lived in.</h2>
+          <p>Every appointment starts with tone, hair health, and the shape you actually wear day to day.</p>
+        </div>
+        <div class="service-grid" data-services></div>
+      </section>
+
+      <section class="section looks-section" id="looks" aria-labelledby="looks-title">
+        <div class="section-kicker">Looks</div>
+        <div class="looks-layout">
+          <div>
+            <h2 id="looks-title">A studio wall of shine, contrast, and movement.</h2>
+            <p>The signature Tyra finish is polished but touchable: bright pieces where they matter, depth where the hair needs softness, and a cut that does not collapse after one wash.</p>
+          </div>
+          <div class="look-tiles" data-looks></div>
+        </div>
+      </section>
+
+      <section class="section process-section" aria-labelledby="process-title">
+        <div class="section-kicker">Experience</div>
+        <div class="process-grid">
+          <h2 id="process-title">The appointment has a rhythm.</h2>
+          <article>
+            <span>Consult</span>
+            <p>We map your goal, maintenance window, past color, and the fastest safe path to the result.</p>
+          </article>
+          <article>
+            <span>Build</span>
+            <p>Placement, tone, treatment, and cut are chosen together so the final look feels intentional.</p>
+          </article>
+          <article>
+            <span>Maintain</span>
+            <p>You leave with simple care notes and a realistic refresh timeline for shine and tone.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section journal-section" id="journal" aria-labelledby="journal-title">
+        <div class="section-kicker">Journal</div>
+        <div class="section-heading compact">
+          <h2 id="journal-title">Hair notes worth saving.</h2>
+          <p>Quick guides for color care, salon prep, and keeping your finish fresh at home.</p>
+        </div>
+        <div class="post-grid" data-posts></div>
+      </section>
+
+      <section class="visit-section" id="visit" aria-labelledby="visit-title">
+        <div class="visit-panel">
+          <div>
+            <p class="eyebrow">Visit the studio</p>
+            <h2 id="visit-title">9212 Fry Rd #160, Cypress, TX 77433</h2>
+            <p>Use the directions link to open the studio location, then send a note with your current hair, goal photos, and ideal appointment window.</p>
+            <div class="visit-actions">
+              <a class="button primary" data-booking href="https://maps.google.com/?q=9212+Fry+Rd+%23160+Cypress+TX+77433">Get directions</a>
+              <a class="button ghost light" data-email href="mailto:hello@tyrahairstudio.com">Email the studio</a>
+            </div>
+          </div>
+          <div class="hours-card">
+            <h3>Hours</h3>
+            <dl data-hours></dl>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="post-modal" data-modal hidden>
+      <div class="modal-backdrop" data-close></div>
+      <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal-close" type="button" data-close aria-label="Close article">Close</button>
+        <p class="eyebrow" data-modal-category></p>
+        <h2 id="modal-title" data-modal-title></h2>
+        <div class="modal-meta" data-modal-date></div>
+        <div class="modal-body" data-modal-body></div>
+      </article>
+    </div>
+
+    <footer class="site-footer">
+      <p><strong>Tyra Hair Studio</strong> <span data-footer-address>9212 Fry Rd #160, Cypress, TX 77433</span></p>
+      <a href="/tyraadmin/">Admin</a>
+    </footer>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

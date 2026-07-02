@@ -1,0 +1,40 @@
+{
+  "posts": [
+    {
+      "title": "How to keep blonde hair bright between appointments",
+      "slug": "keep-blonde-hair-bright",
+      "date": "2026-06-18",
+      "excerpt": "A simple care rhythm for brightness, hydration, and tone without overusing purple shampoo.",
+      "category": "Color care",
+      "body": [
+        "Healthy blonde hair is less about one miracle product and more about rhythm. Use a gentle shampoo, rotate in hydration, and save purple shampoo for when the tone actually looks warm.",
+        "Heat protection matters every time. Even a quick pass with a hot tool can make lightened hair feel dull if it is unprotected.",
+        "Book gloss appointments before the color feels tired. A toner refresh can bring back softness and shine without a full blonding session."
+      ]
+    },
+    {
+      "title": "What to expect at a color correction consultation",
+      "slug": "color-correction-consultation",
+      "date": "2026-05-29",
+      "excerpt": "A transparent look at strand tests, realistic timelines, and why correction work starts with a plan.",
+      "category": "Consultation",
+      "body": [
+        "A correction consultation begins with history: previous color, at-home products, heat habits, and the look you want next.",
+        "The safest plan is usually staged. That protects the hair and gives each appointment a clear target instead of chasing a result in one risky sitting.",
+        "Photos help, but daylight photos of your current hair help even more. They give your stylist a better read on tone, banding, and condition."
+      ]
+    },
+    {
+      "title": "The difference between gloss, toner, and glaze",
+      "slug": "gloss-toner-glaze",
+      "date": "2026-04-12",
+      "excerpt": "Three common salon words, explained in plain language so you can book the right refresh.",
+      "category": "Salon guide",
+      "body": [
+        "A toner adjusts color direction after lightening. It can soften warmth, make blonde creamier, or shift brunette into a cooler or richer family.",
+        "A gloss focuses on shine and tone. Many glosses add a sheer veil of color while making the hair feel polished.",
+        "A glaze is often used as a soft shine service. Product lines use the words differently, so the best choice depends on your current hair and your goal."
+      ]
+    }
+  ]
+}
