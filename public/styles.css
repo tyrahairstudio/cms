@@ -30,6 +30,7 @@ body {
   margin: 0;
   background: var(--porcelain);
   color: var(--ink);
+  overflow-x: hidden;
 }
 
 body.modal-open {
@@ -48,6 +49,10 @@ a {
 button,
 a {
   -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
 }
 
 :focus-visible {
@@ -1019,6 +1024,7 @@ h2 {
 
   .about-section,
   .section-heading,
+  .section-heading.compact,
   .looks-layout,
   .process-grid,
   .visit-info-grid,
@@ -1046,7 +1052,7 @@ h2 {
 
 @media (max-width: 680px) {
   html {
-    scroll-padding-top: 140px;
+    scroll-padding-top: 64px;
   }
 
   .site-header {
@@ -1058,22 +1064,23 @@ h2 {
     flex-direction: column;
     gap: 3px;
     justify-content: center;
-    min-height: 58px;
-    padding: 8px 16px;
+    min-height: 52px;
+    padding: 7px 16px;
   }
 
   .top-ribbon span,
   .top-ribbon a {
-    font-size: 13px;
+    font-size: 12px;
+    line-height: 1.35;
   }
 
-  .brand-mark {
-    width: 56px;
+  .main-nav-row {
+    display: none;
   }
 
   .hero {
     margin-top: 0;
-    min-height: 760px;
+    min-height: min(620px, calc(100svh - 52px));
   }
 
   .hero-shade {
@@ -1083,7 +1090,7 @@ h2 {
   }
 
   .hero-content {
-    padding: 82px 20px 126px;
+    padding: 56px 20px 72px;
   }
 
   .hero-slide {
@@ -1095,9 +1102,25 @@ h2 {
   }
 
   .hero h1 {
-    font-size: clamp(66px, 23vw, 108px);
+    font-size: clamp(54px, 18vw, 86px);
     line-height: 0.92;
     max-width: 7.6ch;
+  }
+
+  .hero-copy {
+    font-size: clamp(18px, 5vw, 22px);
+    line-height: 1.3;
+  }
+
+  .hero-actions,
+  .visit-actions {
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  h2 {
+    font-size: clamp(34px, 12vw, 50px);
+    line-height: 1;
   }
 
   .about-image {
@@ -1111,20 +1134,107 @@ h2 {
     grid-template-columns: 1fr;
   }
 
+  .looks-layout {
+    gap: 24px;
+  }
+
+  .look-tiles {
+    display: flex;
+    gap: 10px;
+    margin-left: -20px;
+    margin-right: -20px;
+    overflow-x: auto;
+    padding: 0 20px 4px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .look-tile {
     aspect-ratio: 1.12;
+    flex: 0 0 76%;
+    max-width: 286px;
+    scroll-snap-align: start;
   }
 
   .section {
-    padding-left: 18px;
-    padding-right: 18px;
-    scroll-margin-top: 140px;
+    padding: 58px 20px;
+    scroll-margin-top: 64px;
+  }
+
+  .about-section {
+    padding-bottom: 48px;
+    padding-top: 48px;
+  }
+
+  .section-kicker {
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  .section-heading,
+  .section-heading.compact {
+    gap: 14px;
+    grid-template-columns: 1fr;
+    margin-bottom: 24px;
+  }
+
+  .section-heading p,
+  .looks-layout p,
+  .process-grid p,
+  .visit-panel p,
+  .about-copy p,
+  .post-card p {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .process-grid {
+    gap: 0;
+  }
+
+  .process-grid h2 {
+    margin-bottom: 12px;
+    max-width: none;
+  }
+
+  .process-grid article {
+    padding: 18px 0 18px 18px;
+  }
+
+  .process-grid span {
+    margin-bottom: 8px;
+  }
+
+  .service-card {
+    min-height: 0;
+  }
+
+  .service-card-visual {
+    aspect-ratio: 1.16;
+  }
+
+  .service-card-content {
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .post-card {
+    appearance: none;
+    gap: 12px;
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .post-card h3 {
+    font-size: clamp(28px, 9vw, 34px);
+    line-height: 1.08;
   }
 
   .visit-section {
     padding-left: 18px;
     padding-right: 18px;
-    scroll-margin-top: 140px;
+    scroll-margin-top: 64px;
   }
 
   .social-panel h2,
@@ -1148,14 +1258,32 @@ h2 {
   }
 
   .floating-actions {
-    bottom: 14px;
+    align-items: stretch;
+    bottom: 12px;
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 46px;
+    left: 12px;
     right: 12px;
   }
 
   .float-pill {
-    display: none;
-    font-size: 13px;
-    min-width: 92px;
+    box-shadow: 0 12px 26px rgba(23, 18, 15, 0.2);
+    display: inline-flex;
+    font-size: 12px;
+    min-height: 46px;
+    min-width: 0;
+    padding: 0 10px;
+    white-space: nowrap;
+  }
+
+  .float-top {
+    box-shadow: 0 12px 26px rgba(23, 18, 15, 0.22);
+    min-height: 46px;
+    min-width: 46px;
+  }
+
+  .site-footer {
+    padding-bottom: 78px;
   }
 
   .modal-card {
