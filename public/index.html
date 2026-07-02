@@ -10,7 +10,7 @@
     <meta property="og:image" content="/assets/tyra-cover.png">
     <meta name="theme-color" content="#17120f">
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
-    <link rel="preload" as="image" href="/assets/tyra-cover.png">
+    <link rel="preload" as="image" href="/images/covers/tyra-cover-01-brunette-waves.jpg">
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
@@ -39,8 +39,8 @@
 
     <main id="main">
       <section class="hero" id="top" aria-labelledby="hero-title">
-        <div class="hero-media" aria-hidden="true">
-          <img src="/assets/tyra-cover.png" alt="">
+        <div class="hero-media" data-hero-slideshow aria-hidden="true">
+          <img class="hero-slide is-active" src="/images/covers/tyra-cover-01-brunette-waves.jpg" alt="">
         </div>
         <div class="hero-shade" aria-hidden="true"></div>
         <div class="hero-content">
@@ -52,11 +52,6 @@
             <a class="button ghost" href="/service/">View services</a>
           </div>
         </div>
-        <div class="hero-card" aria-label="Studio address">
-          <span>Visit</span>
-          <strong>9212 Fry Rd #160</strong>
-          <small>Cypress, TX 77433</small>
-        </div>
       </section>
 
       <section class="section about-section" id="about" aria-labelledby="about-title">
@@ -64,11 +59,12 @@
           <p class="script-line">Welcome to</p>
           <h2 id="about-title">Tyra Hair Studio</h2>
           <p data-headline>Dimensional color, gloss, and cuts shaped around real movement.</p>
-          <p>A Cypress studio for color that feels polished, healthy, and wearable after you leave the chair. Every visit starts with your hair history, your maintenance rhythm, and the shape you actually style at home.</p>
+          <p>Welcome to Tyra Hair Studio, a warm Cypress salon where healthy hair meets effortless elegance. Every appointment is guided by your hair history, your daily routine, and the look you want to feel confident wearing beyond the chair.</p>
+          <p>From soft blonding and lived-in brunettes to gloss, tone, and detailed cuts, we create polished color with natural movement, lasting shine, and a finish that still feels like you.</p>
           <a class="button primary" href="/service/">View more</a>
         </div>
         <figure class="about-image">
-          <img src="/assets/tyra-cover.png" width="1600" height="1067" alt="Tyra Hair Studio color work">
+          <img src="/images/studio/tyra-owner-portrait.png" width="1024" height="1792" alt="Owner of Tyra Hair Studio in a white dress">
         </figure>
       </section>
 
@@ -121,20 +117,69 @@
       </section>
 
       <section class="visit-section" id="contact" aria-labelledby="visit-title">
-        <div class="visit-panel">
-          <div>
-            <p class="eyebrow">Contact us</p>
-            <h2 id="visit-title">9212 Fry Rd #160, Cypress, TX 77433</h2>
-            <p>Use the directions link to open the studio location, then send a note with your current hair, goal photos, and ideal appointment window.</p>
-            <div class="visit-actions">
-              <a class="button primary" data-booking href="https://booking.gocheckin.net/v2/">Booking</a>
-              <a class="button ghost light" data-directions href="https://maps.google.com/?q=9212+Fry+Rd+%23160+Cypress+TX+77433">Get directions</a>
-              <a class="button ghost light" data-email href="mailto:hello@tyrahairstudio.com">Email the studio</a>
+        <div class="visit-inner">
+          <div class="visit-info-grid">
+            <div class="social-panel">
+              <h2 id="visit-title">Tyra Hair Studio</h2>
+              <p>Follow us to get more updates</p>
+              <div class="social-links" aria-label="Social links">
+                <a class="social-link facebook" data-facebook href="https://www.facebook.com/profile.php?id=61590465365520" aria-label="Tyra Hair Studio on Facebook">f</a>
+                <a class="social-link email" data-email href="mailto:tyrahairstudiocypress@gmail.com" aria-label="Email Tyra Hair Studio">@</a>
+              </div>
+              <div class="facebook-card">
+                <iframe
+                  title="Tyra Hair Studio Facebook page"
+                  src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61590465365520&tabs&width=340&height=154&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false"
+                  width="340"
+                  height="154"
+                  scrolling="no"
+                  frameborder="0"
+                  allowfullscreen
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+              </div>
+            </div>
+
+            <div class="footer-contact-panel">
+              <h2>Contact us</h2>
+              <div class="contact-method">
+                <span aria-hidden="true">&#8962;</span>
+                <div>
+                  <strong>Address:</strong>
+                  <p data-footer-address>9212 Fry Rd #160, Cypress, TX 77433, United States</p>
+                </div>
+              </div>
+              <div class="contact-method">
+                <span aria-hidden="true">&#9742;</span>
+                <div>
+                  <strong>Phone:</strong>
+                  <a data-phone-link href="tel:+13466667580"><span data-phone-text>+1 (346) 666-7580</span></a>
+                </div>
+              </div>
+              <div class="contact-method">
+                <span aria-hidden="true">&#9993;</span>
+                <div>
+                  <strong>Email:</strong>
+                  <a data-email href="mailto:tyrahairstudiocypress@gmail.com" data-email-text>tyrahairstudiocypress@gmail.com</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="footer-hours-panel">
+              <h2>Open Hours</h2>
+              <dl data-hours></dl>
             </div>
           </div>
-          <div class="hours-card">
-            <h3>Hours</h3>
-            <dl data-hours></dl>
+
+          <div class="location-block">
+            <h2>Location</h2>
+            <div class="map-panel" aria-label="Tyra Hair Studio map">
+              <iframe
+                title="Tyra Hair Studio location on Google Maps"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4138.116729362885!2d-95.73008642391918!3d29.916524624619374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8640d75f3af8e82f%3A0xef9957b82c6be909!2sTyra%20Hair%20Studio!5e1!3m2!1sen!2s!4v1783031896559!5m2!1sen!2s"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
           </div>
         </div>
       </section>

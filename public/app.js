@@ -1,7 +1,95 @@
 const siteUrl = "/content/site.json";
 const postsUrl = "/content/posts.json";
-const tilePositions = ["69% 22%", "88% 24%", "79% 18%", "43% 78%", "56% 78%", "90% 78%"];
-const servicePositions = ["69% 22%", "88% 24%", "80% 34%", "43% 78%", "56% 78%", "90% 78%"];
+const hairLooks = [
+  {
+    label: "Creamy blonde waves",
+    src: "/images/hair/01_blonde_waves_back.jpg",
+    coverSrc: "/images/covers/cover-01-blonde-waves-back.jpg",
+    position: "50% 44%"
+  },
+  {
+    label: "Blonde balayage",
+    src: "/images/hair/02_blonde_balayage_side.jpg",
+    coverSrc: "/images/covers/cover-02-blonde-balayage-side.jpg",
+    position: "50% 42%"
+  },
+  {
+    label: "Glass blonde",
+    src: "/images/hair/03_straight_blonde_back.jpg",
+    coverSrc: "/images/covers/cover-03-straight-blonde-back.jpg",
+    position: "50% 43%"
+  },
+  {
+    label: "Chocolate waves",
+    src: "/images/hair/04_dark_brown_waves_back.jpg",
+    coverSrc: "/images/covers/cover-04-dark-brown-waves-back.jpg",
+    position: "50% 42%"
+  },
+  {
+    label: "Copper glow",
+    src: "/images/hair/05_copper_straight_side.jpg",
+    coverSrc: "/images/covers/cover-05-copper-straight-side.jpg",
+    position: "50% 42%"
+  },
+  {
+    label: "Brunette balayage",
+    src: "/images/hair/06_brunette_balayage_waves.jpg",
+    coverSrc: "/images/covers/cover-06-brunette-balayage-waves.jpg",
+    position: "50% 43%"
+  },
+  {
+    label: "Light blonde movement",
+    src: "/images/hair/07_light_blonde_waves_back.jpg",
+    coverSrc: "/images/covers/cover-07-light-blonde-waves-back.jpg",
+    position: "50% 43%"
+  },
+  {
+    label: "Purple ombre",
+    src: "/images/hair/08_black_purple_ombre_side.jpg",
+    coverSrc: "/images/covers/cover-08-black-purple-ombre-side.jpg",
+    position: "50% 42%"
+  }
+];
+
+const serviceImages = [
+  hairLooks[1],
+  hairLooks[5],
+  hairLooks[2],
+  hairLooks[7]
+];
+
+const heroLooks = [
+  {
+    label: "Brunette studio waves",
+    coverSrc: "/images/covers/tyra-cover-01-brunette-waves.jpg",
+    position: "54% 14%",
+    mobilePosition: "67% 50%"
+  },
+  {
+    label: "Champagne blonde movement",
+    coverSrc: "/images/covers/tyra-cover-02-champagne-blonde.jpg",
+    position: "50% 10%",
+    mobilePosition: "66% 50%"
+  },
+  {
+    label: "Copper layered gloss",
+    coverSrc: "/images/covers/tyra-cover-03-copper-layers.jpg",
+    position: "52% 12%",
+    mobilePosition: "66% 50%"
+  },
+  {
+    label: "Glossy black waves",
+    coverSrc: "/images/covers/tyra-cover-04-glossy-black.jpg",
+    position: "54% 12%",
+    mobilePosition: "67% 50%"
+  },
+  {
+    label: "Ash blonde waves",
+    coverSrc: "/images/covers/tyra-cover-05-ash-blonde.jpg",
+    position: "50% 10%",
+    mobilePosition: "66% 50%"
+  }
+];
 
 const escapeHtml = (value = "") =>
   String(value).replace(/[&<>"']/g, (char) => ({
@@ -33,6 +121,108 @@ async function loadJson(url) {
   return response.json();
 }
 
+function renderHeroSlideshow() {
+  const heroMedia = document.querySelector("[data-hero-slideshow]");
+  if (!heroMedia) return;
+
+  heroMedia.innerHTML = heroLooks
+    .map(
+      (look, index) => `
+        <img
+          class="hero-slide${index === 0 ? " is-active" : ""}"
+          src="${look.coverSrc}"
+          alt=""
+          draggable="false"
+          loading="${index === 0 ? "eager" : "lazy"}"
+          style="--hero-position: ${look.position}; --hero-mobile-position: ${look.mobilePosition}"
+        >
+      `
+    )
+    .join("");
+
+  const slides = Array.from(heroMedia.querySelectorAll(".hero-slide"));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hero = heroMedia.closest(".hero");
+  if (slides.length < 2 || !hero) return;
+
+  let current = 0;
+  let rotationTimer;
+  let startX = 0;
+  let startY = 0;
+  let lastX = 0;
+  let lastY = 0;
+  let isDragging = false;
+
+  const showSlide = (nextIndex, direction = 1) => {
+    if (nextIndex === current) return;
+    const previous = slides[current];
+    const next = slides[(nextIndex + slides.length) % slides.length];
+    current = slides.indexOf(next);
+
+    slides.forEach((slide) => {
+      slide.classList.remove("is-next", "is-leaving");
+    });
+
+    next.style.setProperty("--slide-enter-x", `${direction * 8}%`);
+    previous.style.setProperty("--slide-exit-x", `${direction * -7}%`);
+    next.classList.add("is-next");
+
+    requestAnimationFrame(() => {
+      previous.classList.remove("is-active");
+      previous.classList.add("is-leaving");
+      next.classList.remove("is-next");
+      next.classList.add("is-active");
+    });
+  };
+
+  const startRotation = () => {
+    if (reduceMotion) return;
+    window.clearInterval(rotationTimer);
+    rotationTimer = window.setInterval(() => {
+      showSlide(current + 1, 1);
+    }, 5000);
+  };
+
+  const trackDrag = (event) => {
+    if (!isDragging) return;
+    lastX = event.clientX;
+    lastY = event.clientY;
+  };
+
+  const finishDrag = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    hero.classList.remove("is-dragging");
+    window.removeEventListener("pointermove", trackDrag);
+    window.removeEventListener("pointerup", finishDrag);
+    window.removeEventListener("pointercancel", finishDrag);
+
+    const deltaX = lastX - startX;
+    const deltaY = lastY - startY;
+    const threshold = Math.min(110, Math.max(48, hero.clientWidth * 0.08));
+
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
+      showSlide(current + (deltaX < 0 ? 1 : -1), deltaX < 0 ? 1 : -1);
+      startRotation();
+    }
+  };
+
+  hero.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    if (event.target.closest("a, button")) return;
+    isDragging = true;
+    startX = lastX = event.clientX;
+    startY = lastY = event.clientY;
+    hero.classList.add("is-dragging");
+    window.clearInterval(rotationTimer);
+    window.addEventListener("pointermove", trackDrag);
+    window.addEventListener("pointerup", finishDrag);
+    window.addEventListener("pointercancel", finishDrag);
+  });
+
+  startRotation();
+}
+
 function renderSite(site) {
   document.title = `${site.brand} | Cypress, TX`;
   const address = site.addressLines.join(", ");
@@ -41,8 +231,7 @@ function renderSite(site) {
   text("[data-intro]", site.intro);
   text("[data-headline]", site.headline);
   text("[data-top-address]", address);
-  text("[data-footer-address]", address);
-  text("#visit-title", address);
+  textAll("[data-footer-address]", address);
   textAll("[data-phone-text]", site.phone);
 
   document.querySelectorAll("[data-booking]").forEach((link) => {
@@ -57,42 +246,57 @@ function renderSite(site) {
     link.href = directionsUrl;
   });
 
-  const emailLink = document.querySelector("[data-email]");
-  if (emailLink) emailLink.href = `mailto:${site.email}`;
+  document.querySelectorAll("[data-email]").forEach((link) => {
+    link.href = `mailto:${site.email}`;
+  });
+
+  textAll("[data-email-text]", site.email);
+
+  document.querySelectorAll("[data-facebook]").forEach((link) => {
+    link.href = site.facebook || "https://www.facebook.com/profile.php?id=61590465365520";
+  });
 
   const serviceGrid = document.querySelector("[data-services]");
   if (serviceGrid) {
     serviceGrid.innerHTML = site.services
       .map(
-        (service, index) => `
+        (service, index) => {
+          const image = serviceImages[index % serviceImages.length];
+          return `
           <article class="service-card">
-            <div class="service-card-visual" style="--service-image: url('/assets/tyra-cover.png'); --service-position: ${servicePositions[index % servicePositions.length]}"></div>
+            <div class="service-card-visual" style="--service-image: url('${image.src}'); --service-position: ${image.position}"></div>
             <div class="service-card-content">
               <h3>${escapeHtml(service.name)}</h3>
               <p>${escapeHtml(service.description)}</p>
               <strong>${escapeHtml(service.price)}</strong>
             </div>
           </article>
-        `
+        `;
+        }
       )
       .join("");
   }
 
   const lookTiles = document.querySelector("[data-looks]");
   if (lookTiles) {
-    lookTiles.innerHTML = site.looks
+    const galleryLooks = hairLooks.map((image, index) => ({
+      ...image,
+      label: site.looks[index] || image.label
+    }));
+
+    lookTiles.innerHTML = galleryLooks
       .map(
         (look, index) => `
-          <article class="look-tile" style="--tile-image: url('/assets/tyra-cover.png'); --tile-position: ${tilePositions[index % tilePositions.length]}">
-            <span>${escapeHtml(look)}</span>
+          <article class="look-tile">
+            <img src="${look.src}" alt="${escapeHtml(look.label)}" loading="eager" style="object-position: ${look.position}">
+            <span>${escapeHtml(look.label)}</span>
           </article>
         `
       )
       .join("");
   }
 
-  const hours = document.querySelector("[data-hours]");
-  if (hours) {
+  document.querySelectorAll("[data-hours]").forEach((hours) => {
     hours.innerHTML = site.hours
       .map(
         (item) => `
@@ -103,7 +307,7 @@ function renderSite(site) {
         `
       )
       .join("");
-  }
+  });
 }
 
 function renderPosts(posts) {
@@ -149,6 +353,8 @@ document.querySelectorAll("[data-close]").forEach((node) => node.addEventListene
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !document.querySelector("[data-modal]").hidden) closePost();
 });
+
+renderHeroSlideshow();
 
 Promise.all([loadJson(siteUrl), loadJson(postsUrl)])
   .then(([site, blog]) => {

@@ -5,31 +5,40 @@
     "Cypress, TX 77433",
     "United States"
   ],
-  "intro": "A Cypress chair studio focused on soft blonding, lived-in brunettes, vivid transformations, and healthy shine from consultation to finish.",
+  "intro": "A Cypress hair studio focused on soft blonding, lived-in brunettes, vivid transformations, and healthy shine from consultation to finish.",
   "phone": "+1 (346) 666-7580",
   "hours": [
     {
-      "day": "Tue",
-      "time": "10:00 AM - 6:00 PM"
+      "day": "Monday:",
+      "time": "10:00 am - 7:00 pm"
     },
     {
-      "day": "Wed",
-      "time": "10:00 AM - 6:00 PM"
+      "day": "Tuesday:",
+      "time": "10:00 am - 7:00 pm"
     },
     {
-      "day": "Thu",
-      "time": "11:00 AM - 7:00 PM"
+      "day": "Wednesday:",
+      "time": "10:00 am - 7:00 pm"
     },
     {
-      "day": "Fri",
-      "time": "10:00 AM - 6:00 PM"
+      "day": "Thursday:",
+      "time": "10:00 am - 7:00 pm"
     },
     {
-      "day": "Sat",
-      "time": "9:00 AM - 4:00 PM"
+      "day": "Friday:",
+      "time": "10:00 am - 7:00 pm"
+    },
+    {
+      "day": "Saturday:",
+      "time": "9:00 am - 6:30 pm"
+    },
+    {
+      "day": "Sunday:",
+      "time": "11:00 am - 5:00 pm"
     }
   ],
   "instagram": "https://www.instagram.com/",
+  "facebook": "https://www.facebook.com/profile.php?id=61590465365520",
   "looks": [
     "Creamy blonde",
     "Soft bronde",
@@ -38,7 +47,7 @@
     "Copper glow",
     "Purple melt"
   ],
-  "headline": "Dimensional color, gloss, and cuts shaped around real movement.",
+  "headline": "Where healthy hair meets effortless elegance.",
   "bookingUrl": "https://maps.google.com/?q=9212+Fry+Rd+%23160+Cypress+TX+77433",
   "email": "tyrahairstudiocypress@gmail.com",
   "services": [

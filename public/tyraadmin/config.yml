@@ -30,6 +30,7 @@ collections:
           - { label: "Email", name: "email", widget: "string" }
           - { label: "Booking URL", name: "bookingUrl", widget: "string" }
           - { label: "Instagram", name: "instagram", widget: "string", required: false }
+          - { label: "Facebook", name: "facebook", widget: "string", required: false }
           - label: "Address lines"
             name: "addressLines"
             widget: "list"
