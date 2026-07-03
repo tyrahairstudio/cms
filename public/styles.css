@@ -906,6 +906,10 @@ h2 {
   width: 30px;
 }
 
+.contact-method > div {
+  min-width: 0;
+}
+
 .contact-method strong {
   color: var(--coffee);
   display: block;
@@ -920,6 +924,7 @@ h2 {
   font-size: 16px;
   line-height: 1.45;
   margin: 0;
+  overflow-wrap: anywhere;
   text-decoration: none;
 }
 
