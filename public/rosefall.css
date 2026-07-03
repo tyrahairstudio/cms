@@ -10,8 +10,8 @@
 .rose-bloom {
   --fall-size: 20px;
   --fall-spin: 1;
-  --rose-mid-opacity: 0.43;
-  --rose-peak-opacity: 0.5;
+  --rose-mid-opacity: 0.215;
+  --rose-peak-opacity: 0.25;
   animation: rose-fall var(--fall-duration) linear var(--fall-delay) infinite;
   filter: blur(0.3px) drop-shadow(0 8px 10px rgba(23, 18, 15, 0.12));
   height: calc(var(--fall-size) * 1.26);
@@ -75,8 +75,8 @@
 
 @media (max-width: 680px) {
   .rose-bloom {
-    --rose-mid-opacity: 0.34;
-    --rose-peak-opacity: 0.42;
+    --rose-mid-opacity: 0.17;
+    --rose-peak-opacity: 0.21;
     filter: blur(0.4px) drop-shadow(0 6px 8px rgba(23, 18, 15, 0.1));
   }
 }

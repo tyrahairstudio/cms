@@ -302,7 +302,7 @@ function initRosefall() {
   if (!document.querySelector("[data-rosefall-style]")) {
     const styleLink = document.createElement("link");
     styleLink.rel = "stylesheet";
-    styleLink.href = "/rosefall.css?v=soft-roses";
+    styleLink.href = "/rosefall.css?v=softer-roses";
     styleLink.setAttribute("data-rosefall-style", "");
     document.head.appendChild(styleLink);
   }
