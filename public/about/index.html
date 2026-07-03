@@ -22,7 +22,7 @@
     <meta name="theme-color" content="#17120f">
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
     <link rel="preload" as="image" type="image/webp" href="/assets/tyra-cover-1440.webp">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css?v=cta-floating-polish">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -75,8 +75,14 @@
       </section>
     </main>
     <div class="floating-actions" aria-label="Quick actions">
-      <a class="float-pill" data-phone-link href="tel:3466667580"><span data-phone-text>(346) 666-7580</span></a>
-      <a class="float-pill" data-booking href="https://book.gocheckin.net/v3/nails/tyra-hair-studio-20654/choose-service">Booking</a>
+      <a class="float-pill" data-phone-link href="tel:3466667580" aria-label="Call Tyra Hair Studio">
+        <span class="float-label">Call now</span>
+        <span data-phone-text>(346) 666-7580</span>
+      </a>
+      <a class="float-pill" data-booking href="https://book.gocheckin.net/v3/nails/tyra-hair-studio-20654/choose-service" aria-label="Book an appointment">
+        <span class="float-label">Reserve</span>
+        <span>Booking</span>
+      </a>
       <a class="float-top" href="#main" aria-label="Back to top">&uarr;</a>
     </div>
     <footer class="global-footer visit-section" id="contact" aria-labelledby="visit-title">
