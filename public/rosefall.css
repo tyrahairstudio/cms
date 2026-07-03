@@ -10,8 +10,10 @@
 .rose-bloom {
   --fall-size: 20px;
   --fall-spin: 1;
+  --rose-mid-opacity: 0.43;
+  --rose-peak-opacity: 0.5;
   animation: rose-fall var(--fall-duration) linear var(--fall-delay) infinite;
-  filter: drop-shadow(0 10px 12px rgba(23, 18, 15, 0.22));
+  filter: blur(0.3px) drop-shadow(0 8px 10px rgba(23, 18, 15, 0.12));
   height: calc(var(--fall-size) * 1.26);
   left: var(--fall-x);
   opacity: 0;
@@ -54,15 +56,27 @@
   }
 
   8% {
-    opacity: 0.82;
+    opacity: var(--rose-peak-opacity);
   }
 
   46% {
     transform: translate3d(calc(var(--fall-drift) * -0.45), 48vh, 0) rotate(calc(var(--fall-spin) * 190deg)) scale(1);
   }
 
+  54% {
+    opacity: var(--rose-mid-opacity);
+  }
+
   100% {
     opacity: 0;
     transform: translate3d(var(--fall-drift), 116vh, 0) rotate(calc(var(--fall-spin) * 420deg)) scale(0.92);
+  }
+}
+
+@media (max-width: 680px) {
+  .rose-bloom {
+    --rose-mid-opacity: 0.34;
+    --rose-peak-opacity: 0.42;
+    filter: blur(0.4px) drop-shadow(0 6px 8px rgba(23, 18, 15, 0.1));
   }
 }
