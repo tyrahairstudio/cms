@@ -302,11 +302,12 @@ function initRosefall() {
   if (!document.querySelector("[data-rosefall-style]")) {
     const styleLink = document.createElement("link");
     styleLink.rel = "stylesheet";
-    styleLink.href = "/rosefall.css?v=softer-roses";
+    styleLink.href = "/rosefall.css?v=opening-roses";
     styleLink.setAttribute("data-rosefall-style", "");
     document.head.appendChild(styleLink);
   }
 
+  const effectMs = 5000;
   const layer = document.createElement("div");
   layer.className = "rosefall";
   layer.setAttribute("aria-hidden", "true");
@@ -319,14 +320,15 @@ function initRosefall() {
     rose.className = "rose-bloom";
     rose.style.setProperty("--fall-x", `${(index * 29 + 7) % 100}vw`);
     rose.style.setProperty("--fall-drift", `${(index % 2 === 0 ? 1 : -1) * (32 + (index % 5) * 16)}px`);
-    rose.style.setProperty("--fall-duration", `${12 + (index % 6) * 1.6}s`);
-    rose.style.setProperty("--fall-delay", `${-((index * 1.45) % 13)}s`);
+    rose.style.setProperty("--fall-duration", "4.55s");
+    rose.style.setProperty("--fall-delay", `${(index % 4) * 0.15}s`);
     rose.style.setProperty("--fall-size", `${16 + (index % 5) * 4}px`);
     rose.style.setProperty("--fall-spin", `${index % 2 === 0 ? 1 : -1}`);
     layer.appendChild(rose);
   }
 
   document.body.appendChild(layer);
+  window.setTimeout(() => layer.remove(), effectMs);
 
   reduceMotionQuery.addEventListener("change", (event) => {
     if (event.matches) layer.remove();
