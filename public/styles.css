@@ -1020,23 +1020,27 @@ h2 {
   margin-top: 26px;
 }
 
-.site-footer {
+.footer-credit {
   align-items: center;
-  background: var(--porcelain);
-  border-top: 1px solid rgba(59, 43, 35, 0.12);
-  color: var(--ink);
+  border-top: 1px solid rgba(217, 191, 143, 0.32);
+  color: rgba(255, 255, 255, 0.72);
   display: flex;
   gap: 16px;
   justify-content: space-between;
-  padding: 24px clamp(20px, 5vw, 70px);
+  margin-top: 26px;
+  padding-top: 18px;
 }
 
-.site-footer p {
+.footer-credit p {
   margin: 0;
 }
 
-.site-footer a {
-  color: rgba(23, 18, 15, 0.64);
+.footer-credit strong {
+  color: #ffffff;
+}
+
+.footer-credit a {
+  color: rgba(255, 255, 255, 0.64);
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -1417,8 +1421,8 @@ h2 {
     min-width: 46px;
   }
 
-  .site-footer {
-    padding-bottom: 78px;
+  .global-footer {
+    padding-bottom: 118px;
   }
 
   .modal-card {
@@ -1432,7 +1436,7 @@ h2 {
     padding-top: 38px;
   }
 
-  .site-footer {
+  .footer-credit {
     align-items: flex-start;
     flex-direction: column;
   }
