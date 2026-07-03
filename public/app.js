@@ -223,6 +223,40 @@ function renderHeroSlideshow() {
   startRotation();
 }
 
+function initMobileMenu() {
+  const header = document.querySelector("[data-header]");
+  const toggle = document.querySelector("[data-menu-toggle]");
+  const nav = document.querySelector("[data-nav-links]");
+  if (!header || !toggle || !nav) return;
+
+  const mobileMenuQuery = window.matchMedia("(max-width: 980px)");
+  const setOpen = (isOpen) => {
+    header.classList.toggle("is-menu-open", isOpen);
+    toggle.setAttribute("aria-expanded", String(isOpen));
+    toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+  };
+
+  toggle.addEventListener("click", () => {
+    setOpen(!header.classList.contains("is-menu-open"));
+  });
+
+  nav.addEventListener("click", (event) => {
+    if (event.target.closest("a")) setOpen(false);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!header.contains(event.target)) setOpen(false);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+
+  mobileMenuQuery.addEventListener("change", () => {
+    if (!mobileMenuQuery.matches) setOpen(false);
+  });
+}
+
 function renderSite(site) {
   document.title = `${site.brand} | Cypress, TX`;
   const address = site.addressLines.join(", ");
@@ -345,15 +379,19 @@ function openPost(post) {
 }
 
 function closePost() {
-  document.querySelector("[data-modal]").hidden = true;
+  const modal = document.querySelector("[data-modal]");
+  if (!modal) return;
+  modal.hidden = true;
   document.body.classList.remove("modal-open");
 }
 
 document.querySelectorAll("[data-close]").forEach((node) => node.addEventListener("click", closePost));
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !document.querySelector("[data-modal]").hidden) closePost();
+  const modal = document.querySelector("[data-modal]");
+  if (event.key === "Escape" && modal && !modal.hidden) closePost();
 });
 
+initMobileMenu();
 renderHeroSlideshow();
 
 Promise.all([loadJson(siteUrl), loadJson(postsUrl)])
