@@ -1,3 +1,46 @@
+.booking-attractor-section {
+  align-items: center;
+  background: linear-gradient(180deg, #efe4d6 0%, #eadfce 100%);
+  display: flex;
+  justify-content: center;
+  min-height: clamp(168px, 18vw, 236px);
+  padding: clamp(34px, 6vw, 72px) 20px;
+  position: relative;
+  z-index: 4;
+}
+
+.booking-attractor-button {
+  align-items: center;
+  background: linear-gradient(135deg, #17120f 0%, #6f3327 100%);
+  border: 1px solid rgba(255, 250, 243, 0.62);
+  border-radius: 6px;
+  box-shadow:
+    0 18px 44px rgba(23, 18, 15, 0.2),
+    0 0 0 8px rgba(184, 105, 63, 0.1);
+  color: #fffaf3;
+  display: inline-flex;
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 900;
+  justify-content: center;
+  letter-spacing: 0.12em;
+  min-height: 58px;
+  min-width: min(360px, calc(100vw - 48px));
+  padding: 0 34px;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: box-shadow 180ms ease, transform 180ms ease;
+  z-index: 5;
+}
+
+.booking-attractor-button:hover,
+.booking-attractor-button:focus-visible {
+  box-shadow:
+    0 22px 54px rgba(23, 18, 15, 0.26),
+    0 0 0 10px rgba(184, 105, 63, 0.15);
+  transform: translateY(-2px);
+}
+
 .rosefall {
   contain: layout style paint;
   height: var(--rosefall-height, 100vh);
@@ -63,16 +106,18 @@
   }
 
   46% {
-    transform: translate3d(calc(var(--fall-drift) * -0.45), var(--fall-mid-distance), 0) rotate(calc(var(--fall-spin) * 190deg)) scale(1);
+    opacity: var(--rose-mid-opacity);
+    transform: translate3d(calc(var(--fall-drift) * -0.45), var(--fall-mid-y), 0) rotate(calc(var(--fall-spin) * 190deg)) scale(1);
   }
 
-  54% {
-    opacity: var(--rose-mid-opacity);
+  78% {
+    opacity: var(--rose-peak-opacity);
+    transform: translate3d(var(--fall-near-target-x), var(--fall-near-target-y), 0) rotate(calc(var(--fall-spin) * 340deg)) scale(0.92);
   }
 
   100% {
     opacity: 0;
-    transform: translate3d(var(--fall-drift), var(--fall-distance), 0) rotate(calc(var(--fall-spin) * 420deg)) scale(0.92);
+    transform: translate3d(var(--fall-target-x), var(--fall-target-y), 0) rotate(calc(var(--fall-spin) * 520deg)) scale(0.18);
   }
 }
 

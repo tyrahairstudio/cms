@@ -298,42 +298,51 @@ function initMobileMenu() {
 function initRosefall() {
   const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   if (reduceMotionQuery.matches) return;
+  const attractor = document.querySelector("[data-rose-attractor]");
+  if (!attractor) return;
 
   if (!document.querySelector("[data-rosefall-style]")) {
     const styleLink = document.createElement("link");
     styleLink.rel = "stylesheet";
-    styleLink.href = "/rosefall.css?v=full-page-roses";
+    styleLink.href = "/rosefall.css?v=booking-attractor";
     styleLink.setAttribute("data-rosefall-style", "");
     document.head.appendChild(styleLink);
   }
 
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
   const pageHeight = Math.max(
     document.body.scrollHeight,
     document.documentElement.scrollHeight,
     viewportHeight
   );
-  const fallDistance = pageHeight + viewportHeight * 0.28;
-  const fallMidDistance = fallDistance * 0.48;
+  const attractorRect = attractor.getBoundingClientRect();
+  const attractorX = attractorRect.left + window.scrollX + attractorRect.width / 2;
+  const attractorY = attractorRect.top + window.scrollY + attractorRect.height / 2;
   const layer = document.createElement("div");
   layer.className = "rosefall";
   layer.setAttribute("aria-hidden", "true");
   layer.style.setProperty("--rosefall-height", `${pageHeight}px`);
-  layer.style.setProperty("--fall-distance", `${fallDistance}px`);
-  layer.style.setProperty("--fall-mid-distance", `${fallMidDistance}px`);
 
   const isSmallScreen = window.matchMedia("(max-width: 680px)").matches;
   const roseCount = Math.min(
-    isSmallScreen ? 34 : 54,
-    Math.max(isSmallScreen ? 16 : 24, Math.ceil(pageHeight / (isSmallScreen ? 180 : 150)))
+    isSmallScreen ? 28 : 46,
+    Math.max(isSmallScreen ? 14 : 22, Math.ceil(attractorY / (isSmallScreen ? 150 : 128)))
   );
-  const baseDuration = Math.max(18, pageHeight / (isSmallScreen ? 145 : 160));
+  const baseDuration = Math.max(14, attractorY / (isSmallScreen ? 130 : 145));
 
   for (let index = 0; index < roseCount; index += 1) {
     const rose = document.createElement("span");
+    const startX = ((index * 29 + 7) % 100) / 100 * viewportWidth;
+    const midY = Math.max(viewportHeight * 0.45, attractorY * (0.5 + (index % 4) * 0.045));
     rose.className = "rose-bloom";
-    rose.style.setProperty("--fall-x", `${(index * 29 + 7) % 100}vw`);
+    rose.style.setProperty("--fall-x", `${startX}px`);
     rose.style.setProperty("--fall-drift", `${(index % 2 === 0 ? 1 : -1) * (32 + (index % 5) * 16)}px`);
+    rose.style.setProperty("--fall-mid-y", `${midY}px`);
+    rose.style.setProperty("--fall-target-x", `${attractorX - startX}px`);
+    rose.style.setProperty("--fall-target-y", `${attractorY}px`);
+    rose.style.setProperty("--fall-near-target-x", `${(attractorX - startX) * 0.82}px`);
+    rose.style.setProperty("--fall-near-target-y", `${attractorY * 0.86}px`);
     rose.style.setProperty("--fall-duration", `${baseDuration + (index % 6) * 1.35}s`);
     rose.style.setProperty("--fall-delay", `${-((index * 2.7) % baseDuration)}s`);
     rose.style.setProperty("--fall-size", `${16 + (index % 5) * 4}px`);
