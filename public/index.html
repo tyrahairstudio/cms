@@ -21,7 +21,7 @@
     <meta name="twitter:image" content="https://tyrahairstudio-git.pages.dev/assets/social-preview.jpg">
     <meta name="theme-color" content="#17120f">
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
-    <link rel="preload" as="image" href="/images/covers/tyra-cover-01-brunette-waves.jpg">
+    <link rel="preload" as="image" type="image/webp" href="/images/covers/tyra-cover-01-brunette-waves-1440.webp" imagesrcset="/images/covers/tyra-cover-01-brunette-waves-960.webp 960w, /images/covers/tyra-cover-01-brunette-waves-1440.webp 1440w, /images/covers/tyra-cover-01-brunette-waves-1920.webp 1920w" imagesizes="100vw">
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
@@ -34,7 +34,7 @@
       </div>
       <div class="main-nav-row">
         <a class="brand-mark" href="/" aria-label="Tyra Hair Studio home">
-          <img class="brand-logo" src="/assets/tyra-logo.png" width="720" height="745" alt="">
+          <img class="brand-logo" src="/assets/tyra-logo-192.webp" srcset="/assets/tyra-logo-96.webp 96w, /assets/tyra-logo-192.webp 192w" sizes="86px" width="192" height="199" alt="">
         </a>
         <nav class="nav-links" id="main-navigation" data-nav-links aria-label="Main navigation">
           <a href="/">Home</a>
@@ -56,7 +56,10 @@
     <main id="main">
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="hero-media" data-hero-slideshow aria-hidden="true">
-          <img class="hero-slide is-active" src="/images/covers/tyra-cover-01-brunette-waves.jpg" alt="">
+          <picture class="hero-slide is-active" style="--hero-position: 54% 14%; --hero-mobile-position: 67% 50%">
+            <source type="image/webp" srcset="/images/covers/tyra-cover-01-brunette-waves-960.webp 960w, /images/covers/tyra-cover-01-brunette-waves-1440.webp 1440w, /images/covers/tyra-cover-01-brunette-waves-1920.webp 1920w" sizes="100vw">
+            <img src="/images/covers/tyra-cover-01-brunette-waves.jpg" alt="" decoding="async">
+          </picture>
         </div>
         <div class="hero-shade" aria-hidden="true"></div>
         <div class="hero-content">
@@ -80,7 +83,10 @@
           <a class="button primary" href="/service/">View more</a>
         </div>
         <figure class="about-image">
-          <img src="/images/studio/tyra-owner-portrait.png" width="1024" height="1792" alt="Owner of Tyra Hair Studio in a white dress">
+          <picture>
+            <source type="image/webp" srcset="/images/studio/tyra-owner-portrait-512.webp 512w, /images/studio/tyra-owner-portrait-768.webp 768w, /images/studio/tyra-owner-portrait-1024.webp 1024w" sizes="(max-width: 760px) calc(100vw - 40px), 540px">
+            <img src="/images/studio/tyra-owner-portrait-768.jpg" width="768" height="1344" loading="lazy" decoding="async" alt="Owner of Tyra Hair Studio in a white dress">
+          </picture>
         </figure>
       </section>
 

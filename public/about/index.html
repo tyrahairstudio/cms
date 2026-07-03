@@ -21,7 +21,7 @@
     <meta name="twitter:image" content="https://tyrahairstudio-git.pages.dev/assets/social-preview.jpg">
     <meta name="theme-color" content="#17120f">
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
-    <link rel="preload" as="image" href="/images/studio/tyra-owner-portrait.png">
+    <link rel="preload" as="image" type="image/webp" href="/assets/tyra-cover-1440.webp">
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
@@ -33,7 +33,7 @@
       </div>
       <div class="main-nav-row">
         <a class="brand-mark" href="/" aria-label="Tyra Hair Studio home">
-          <img class="brand-logo" src="/assets/tyra-logo.png" width="720" height="745" alt="">
+          <img class="brand-logo" src="/assets/tyra-logo-192.webp" srcset="/assets/tyra-logo-96.webp 96w, /assets/tyra-logo-192.webp 192w" sizes="86px" width="192" height="199" alt="">
         </a>
         <nav class="nav-links" id="main-navigation" data-nav-links aria-label="Main navigation">
           <a href="/">Home</a>
@@ -67,7 +67,10 @@
           <a class="button primary" href="/service/">View more</a>
         </div>
         <figure class="about-image">
-          <img src="/images/studio/tyra-owner-portrait.png" width="1024" height="1792" alt="Owner of Tyra Hair Studio in a white dress">
+          <picture>
+            <source type="image/webp" srcset="/images/studio/tyra-owner-portrait-512.webp 512w, /images/studio/tyra-owner-portrait-768.webp 768w, /images/studio/tyra-owner-portrait-1024.webp 1024w" sizes="(max-width: 760px) calc(100vw - 40px), 540px">
+            <img src="/images/studio/tyra-owner-portrait-768.jpg" width="768" height="1344" loading="lazy" decoding="async" alt="Owner of Tyra Hair Studio in a white dress">
+          </picture>
         </figure>
       </section>
     </main>

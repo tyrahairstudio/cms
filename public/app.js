@@ -5,48 +5,56 @@ const hairLooks = [
     label: "Creamy blonde waves",
     src: "/images/hair/01_blonde_waves_back.jpg",
     coverSrc: "/images/covers/cover-01-blonde-waves-back.jpg",
+    webpWidth: 286,
     position: "50% 44%"
   },
   {
     label: "Blonde balayage",
     src: "/images/hair/02_blonde_balayage_side.jpg",
     coverSrc: "/images/covers/cover-02-blonde-balayage-side.jpg",
+    webpWidth: 263,
     position: "50% 42%"
   },
   {
     label: "Glass blonde",
     src: "/images/hair/03_straight_blonde_back.jpg",
     coverSrc: "/images/covers/cover-03-straight-blonde-back.jpg",
+    webpWidth: 258,
     position: "50% 43%"
   },
   {
     label: "Chocolate waves",
     src: "/images/hair/04_dark_brown_waves_back.jpg",
     coverSrc: "/images/covers/cover-04-dark-brown-waves-back.jpg",
+    webpWidth: 227,
     position: "50% 42%"
   },
   {
     label: "Copper glow",
     src: "/images/hair/05_copper_straight_side.jpg",
     coverSrc: "/images/covers/cover-05-copper-straight-side.jpg",
+    webpWidth: 288,
     position: "50% 42%"
   },
   {
     label: "Brunette balayage",
     src: "/images/hair/06_brunette_balayage_waves.jpg",
     coverSrc: "/images/covers/cover-06-brunette-balayage-waves.jpg",
+    webpWidth: 263,
     position: "50% 43%"
   },
   {
     label: "Light blonde movement",
     src: "/images/hair/07_light_blonde_waves_back.jpg",
     coverSrc: "/images/covers/cover-07-light-blonde-waves-back.jpg",
+    webpWidth: 258,
     position: "50% 43%"
   },
   {
     label: "Purple ombre",
     src: "/images/hair/08_black_purple_ombre_side.jpg",
     coverSrc: "/images/covers/cover-08-black-purple-ombre-side.jpg",
+    webpWidth: 220,
     position: "50% 42%"
   }
 ];
@@ -91,6 +99,12 @@ const heroLooks = [
   }
 ];
 
+const heroWidths = [960, 1440, 1920];
+
+const webpPath = (src, width) => src.replace(/\.(png|jpe?g)$/i, `-${width}.webp`);
+
+const webpSrcset = (src, widths) => widths.map((width) => `${webpPath(src, width)} ${width}w`).join(", ");
+
 const escapeHtml = (value = "") =>
   String(value).replace(/[&<>"']/g, (char) => ({
     "&": "&amp;",
@@ -128,14 +142,19 @@ function renderHeroSlideshow() {
   heroMedia.innerHTML = heroLooks
     .map(
       (look, index) => `
-        <img
+        <picture
           class="hero-slide${index === 0 ? " is-active" : ""}"
-          src="${look.coverSrc}"
-          alt=""
-          draggable="false"
-          loading="${index === 0 ? "eager" : "lazy"}"
           style="--hero-position: ${look.position}; --hero-mobile-position: ${look.mobilePosition}"
         >
+          <source type="image/webp" srcset="${webpSrcset(look.coverSrc, heroWidths)}" sizes="100vw">
+          <img
+            src="${look.coverSrc}"
+            alt=""
+            draggable="false"
+            loading="${index === 0 ? "eager" : "lazy"}"
+            decoding="async"
+          >
+        </picture>
       `
     )
     .join("");
@@ -298,7 +317,7 @@ function renderSite(site) {
           const image = serviceImages[index % serviceImages.length];
           return `
           <article class="service-card">
-            <div class="service-card-visual" style="--service-image: url('${image.src}'); --service-position: ${image.position}"></div>
+            <div class="service-card-visual" style="--service-image: url('${webpPath(image.src, image.webpWidth)}'); --service-position: ${image.position}"></div>
             <div class="service-card-content">
               <h3>${escapeHtml(service.name)}</h3>
               <p>${escapeHtml(service.description)}</p>
@@ -322,7 +341,10 @@ function renderSite(site) {
       .map(
         (look, index) => `
           <article class="look-tile">
-            <img src="${look.src}" alt="${escapeHtml(look.label)}" loading="eager" style="object-position: ${look.position}">
+            <picture>
+              <source type="image/webp" srcset="${webpPath(look.src, look.webpWidth)}">
+              <img src="${look.src}" alt="${escapeHtml(look.label)}" loading="lazy" decoding="async" style="object-position: ${look.position}">
+            </picture>
             <span>${escapeHtml(look.label)}</span>
           </article>
         `
