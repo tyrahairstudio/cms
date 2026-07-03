@@ -577,6 +577,7 @@ h2 {
 }
 
 .service-card-content {
+  align-content: start;
   background: var(--paper);
   display: grid;
   gap: 14px;
@@ -587,7 +588,7 @@ h2 {
 .hours-card h3 {
   font-family: var(--display-font);
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.05;
   margin: 0;
 }
@@ -596,6 +597,21 @@ h2 {
   color: rgba(23, 18, 15, 0.68);
   line-height: 1.55;
   margin: 0;
+}
+
+.service-list {
+  align-content: start;
+  color: rgba(23, 18, 15, 0.72);
+  display: grid;
+  gap: 8px;
+  line-height: 1.42;
+  list-style: disc;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.service-list li::marker {
+  color: var(--mahogany);
 }
 
 .service-card strong {

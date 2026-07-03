@@ -52,24 +52,79 @@
   "email": "tyrahairstudiocypress@gmail.com",
   "services": [
     {
-      "name": "Dimensional blonding",
-      "description": "Foilayage, balayage, and soft highlight placement for brightness that grows out gracefully.",
-      "price": "From $185"
+      "name": "Hair Cuts",
+      "items": [
+        "Women: cut only $35 and up; wash, cut, style $45 and up",
+        "Men: $20 and up",
+        "Boy: $18 and up",
+        "Girl: $30 and up",
+        "Beard trim: $10 and up",
+        "Bang trim: $10 and up",
+        "Hair wash: $10"
+      ]
     },
     {
-      "name": "Gloss and tone",
-      "description": "A shine reset that refines warmth, deepens richness, and makes color feel finished again.",
-      "price": "From $75"
+      "name": "Hair Color",
+      "items": [
+        "Men's color: $65 and up",
+        "Men's highlights: $85 and up",
+        "All over color: $130 and up",
+        "Partial highlights: $120 and up",
+        "Full highlights: $180 and up",
+        "Balayage/Ombré: $220 and up",
+        "Gray cover: $75 and up",
+        "Bleach & tone: $200 and up",
+        "Toner: $65 and up",
+        "Color correction: consultation required"
+      ]
     },
     {
-      "name": "Cut and shape",
-      "description": "Face-framing, long layers, blunt ends, and finishing built around your texture.",
-      "price": "From $65"
+      "name": "Hair Style",
+      "items": [
+        "Styling (curls/straight): $25 and up",
+        "Special up-dos: $45 and up",
+        "Shampoo and style (blowout): $35 and up"
+      ]
     },
     {
-      "name": "Color correction",
-      "description": "A consultation-led plan for banding, box dye, unwanted warmth, or major tone changes.",
-      "price": "Consultation"
+      "name": "Perms",
+      "items": [
+        "Silky cold perm: $100 and up",
+        "Men's perm: $85 and up",
+        "Body waves, spiral perm: $150 and up",
+        "Japanese straightening perm: $250 and up"
+      ]
+    },
+    {
+      "name": "Treatments",
+      "items": [
+        "Shiny glossing treatment: $35 and up",
+        "Olaplex treatment: $35 and up",
+        "Keratin treatment: $180 and up",
+        "Brazilian blowouts treatment: $220 and up"
+      ]
+    },
+    {
+      "name": "Waxing",
+      "items": [
+        "Eyebrow: $15 and up",
+        "Lip: $10 and up",
+        "Chin: $10 and up",
+        "Full face: $30 and up"
+      ]
+    },
+    {
+      "name": "Head Spa",
+      "items": [
+        "Scalp treatment, deep conditioning, head massage: $60 and up"
+      ]
+    },
+    {
+      "name": "Free Consultation",
+      "items": [
+        "Complimentary consultation for color, cuts, treatments, perms, or correction goals",
+        "We review your hair history, inspiration photos, timing, maintenance, and the best next step before booking"
+      ]
     }
   ]
 }

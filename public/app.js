@@ -60,10 +60,14 @@ const hairLooks = [
 ];
 
 const serviceImages = [
+  hairLooks[0],
   hairLooks[1],
   hairLooks[5],
   hairLooks[2],
-  hairLooks[7]
+  hairLooks[7],
+  hairLooks[4],
+  hairLooks[6],
+  hairLooks[3]
 ];
 
 const heroLooks = [
@@ -116,6 +120,21 @@ const escapeHtml = (value = "") =>
 
 const formatDate = (value) =>
   new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" }).format(new Date(`${value}T12:00:00`));
+
+const renderServiceDetails = (service) => {
+  if (Array.isArray(service.items) && service.items.length) {
+    return `
+      <ul class="service-list">
+        ${service.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    `;
+  }
+
+  return `
+    ${service.description ? `<p>${escapeHtml(service.description)}</p>` : ""}
+    ${service.price ? `<strong>${escapeHtml(service.price)}</strong>` : ""}
+  `;
+};
 
 const text = (selector, value) => {
   const node = document.querySelector(selector);
@@ -320,8 +339,7 @@ function renderSite(site) {
             <div class="service-card-visual" style="--service-image: url('${webpPath(image.src, image.webpWidth)}'); --service-position: ${image.position}"></div>
             <div class="service-card-content">
               <h3>${escapeHtml(service.name)}</h3>
-              <p>${escapeHtml(service.description)}</p>
-              <strong>${escapeHtml(service.price)}</strong>
+              ${renderServiceDetails(service)}
             </div>
           </article>
         `;
