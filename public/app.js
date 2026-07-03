@@ -302,33 +302,46 @@ function initRosefall() {
   if (!document.querySelector("[data-rosefall-style]")) {
     const styleLink = document.createElement("link");
     styleLink.rel = "stylesheet";
-    styleLink.href = "/rosefall.css?v=slow-opening-roses";
+    styleLink.href = "/rosefall.css?v=full-page-roses";
     styleLink.setAttribute("data-rosefall-style", "");
     document.head.appendChild(styleLink);
   }
 
-  const effectMs = 5000;
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const pageHeight = Math.max(
+    document.body.scrollHeight,
+    document.documentElement.scrollHeight,
+    viewportHeight
+  );
+  const fallDistance = pageHeight + viewportHeight * 0.28;
+  const fallMidDistance = fallDistance * 0.48;
   const layer = document.createElement("div");
   layer.className = "rosefall";
   layer.setAttribute("aria-hidden", "true");
+  layer.style.setProperty("--rosefall-height", `${pageHeight}px`);
+  layer.style.setProperty("--fall-distance", `${fallDistance}px`);
+  layer.style.setProperty("--fall-mid-distance", `${fallMidDistance}px`);
 
   const isSmallScreen = window.matchMedia("(max-width: 680px)").matches;
-  const roseCount = isSmallScreen ? 10 : 18;
+  const roseCount = Math.min(
+    isSmallScreen ? 34 : 54,
+    Math.max(isSmallScreen ? 16 : 24, Math.ceil(pageHeight / (isSmallScreen ? 180 : 150)))
+  );
+  const baseDuration = Math.max(18, pageHeight / (isSmallScreen ? 145 : 160));
 
   for (let index = 0; index < roseCount; index += 1) {
     const rose = document.createElement("span");
     rose.className = "rose-bloom";
     rose.style.setProperty("--fall-x", `${(index * 29 + 7) % 100}vw`);
     rose.style.setProperty("--fall-drift", `${(index % 2 === 0 ? 1 : -1) * (32 + (index % 5) * 16)}px`);
-    rose.style.setProperty("--fall-duration", `${12 + (index % 6) * 1.6}s`);
-    rose.style.setProperty("--fall-delay", `${-((index * 1.45) % 13)}s`);
+    rose.style.setProperty("--fall-duration", `${baseDuration + (index % 6) * 1.35}s`);
+    rose.style.setProperty("--fall-delay", `${-((index * 2.7) % baseDuration)}s`);
     rose.style.setProperty("--fall-size", `${16 + (index % 5) * 4}px`);
     rose.style.setProperty("--fall-spin", `${index % 2 === 0 ? 1 : -1}`);
     layer.appendChild(rose);
   }
 
   document.body.appendChild(layer);
-  window.setTimeout(() => layer.remove(), effectMs);
 
   reduceMotionQuery.addEventListener("change", (event) => {
     if (event.matches) layer.remove();
@@ -473,7 +486,6 @@ document.addEventListener("keydown", (event) => {
 
 initMobileMenu();
 renderHeroSlideshow();
-initRosefall();
 
 Promise.all([loadJson(siteUrl), loadJson(postsUrl)])
   .then(([site, blog]) => {
@@ -483,4 +495,7 @@ Promise.all([loadJson(siteUrl), loadJson(postsUrl)])
   .catch(() => {
     const postGrid = document.querySelector("[data-posts]");
     if (postGrid) postGrid.innerHTML = '<p class="load-error">The journal is taking a moment to load.</p>';
+  })
+  .finally(() => {
+    window.requestAnimationFrame(() => initRosefall());
   });

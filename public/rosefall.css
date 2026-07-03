@@ -1,9 +1,12 @@
 .rosefall {
   contain: layout style paint;
-  inset: 0;
+  height: var(--rosefall-height, 100vh);
+  left: 0;
   overflow: hidden;
   pointer-events: none;
-  position: fixed;
+  position: absolute;
+  right: 0;
+  top: 0;
   z-index: 2;
 }
 
@@ -18,7 +21,7 @@
   left: var(--fall-x);
   opacity: 0;
   position: absolute;
-  top: -14vh;
+  top: 0;
   transform-origin: 50% 45%;
   width: var(--fall-size);
   will-change: transform, opacity;
@@ -60,7 +63,7 @@
   }
 
   46% {
-    transform: translate3d(calc(var(--fall-drift) * -0.45), 48vh, 0) rotate(calc(var(--fall-spin) * 190deg)) scale(1);
+    transform: translate3d(calc(var(--fall-drift) * -0.45), var(--fall-mid-distance), 0) rotate(calc(var(--fall-spin) * 190deg)) scale(1);
   }
 
   54% {
@@ -69,7 +72,7 @@
 
   100% {
     opacity: 0;
-    transform: translate3d(var(--fall-drift), 116vh, 0) rotate(calc(var(--fall-spin) * 420deg)) scale(0.92);
+    transform: translate3d(var(--fall-drift), var(--fall-distance), 0) rotate(calc(var(--fall-spin) * 420deg)) scale(0.92);
   }
 }
 
