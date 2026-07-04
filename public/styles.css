@@ -1403,6 +1403,10 @@ body.booking-transition-active [data-booking] {
     white-space: nowrap;
   }
 
+  .top-ribbon a[data-phone-link] {
+    display: none;
+  }
+
   .main-nav-row {
     display: block;
     min-height: 0;
