@@ -1,5 +1,6 @@
 const siteUrl = "/content/site.json";
 const postsUrl = "/content/posts.json";
+const galleryUrl = "/content/gallery.json?v=gallery-home-v5";
 const hairLooks = [
   {
     label: "Creamy blonde waves",
@@ -146,6 +147,14 @@ const textAll = (selector, value) => {
   document.querySelectorAll(selector).forEach((node) => {
     node.textContent = value;
   });
+};
+
+const hasOpenOverlay = () =>
+  Array.from(document.querySelectorAll("[data-modal], [data-gallery-collection-modal], [data-gallery-lightbox]"))
+    .some((node) => !node.hidden);
+
+const releaseModalOpenIfClear = () => {
+  if (!hasOpenOverlay()) document.body.classList.remove("modal-open");
 };
 
 async function loadJson(url) {
@@ -446,6 +455,53 @@ function renderSite(site) {
   });
 }
 
+function renderHomeGalleryLooks(gallery) {
+  const lookTiles = document.querySelector("[data-looks]");
+  if (!lookTiles || !gallery) return;
+
+  const selected = [];
+  const seen = new Set();
+  const addLook = (item, label = item?.label) => {
+    if (!item || seen.has(item.id)) return;
+    seen.add(item.id);
+    selected.push({ ...item, label: label || item.label || "Salon work" });
+  };
+
+  (gallery.featured || []).forEach((item) => addLook(item));
+  (gallery.collections || []).forEach((collection) => {
+    addLook(collection.cover, collection.title);
+    (collection.preview || []).slice(0, 1).forEach((item) => addLook(item));
+  });
+
+  const homeLooks = selected.slice(0, 8);
+  if (!homeLooks.length) return;
+
+  lookTiles.innerHTML = homeLooks
+    .map(
+      (look) => `
+        <article class="look-tile">
+          <picture>
+            <source
+              type="image/webp"
+              srcset="${escapeHtml(look.thumb)} 360w, ${escapeHtml(look.display || look.thumb)} 760w"
+              sizes="(max-width: 680px) 76vw, (max-width: 1080px) 24vw, 14vw"
+            >
+            <img
+              src="${escapeHtml(look.display || look.thumb)}"
+              alt="${escapeHtml(look.label)}"
+              width="${look.width}"
+              height="${look.height}"
+              loading="lazy"
+              decoding="async"
+            >
+          </picture>
+          <span>${escapeHtml(look.label)}</span>
+        </article>
+      `
+    )
+    .join("");
+}
+
 function renderPosts(posts) {
   const grid = document.querySelector("[data-posts]");
   if (!grid) return;
@@ -484,7 +540,257 @@ function closePost() {
   const modal = document.querySelector("[data-modal]");
   if (!modal) return;
   modal.hidden = true;
-  document.body.classList.remove("modal-open");
+  releaseModalOpenIfClear();
+}
+
+const gallerySrcset = (item) => {
+  if (!item.display || item.display === item.thumb) return "";
+  return ` srcset="${escapeHtml(item.thumb)} 360w, ${escapeHtml(item.display)} 760w"`;
+};
+
+const galleryButton = (item, className = "gallery-photo") => `
+  <button
+    class="${className}${item.backdrop ? " has-backdrop" : ""}"
+    type="button"
+    data-gallery-image
+    data-large="${escapeHtml(item.large)}"
+    data-title="${escapeHtml(item.label)}"
+    data-category="${escapeHtml(item.category)}"
+  >
+    <img
+      src="${escapeHtml(item.display || item.thumb)}"
+      ${gallerySrcset(item)}
+      sizes="(max-width: 680px) 76vw, (max-width: 1180px) 45vw, 32vw"
+      alt="${escapeHtml(item.label)}"
+      width="${item.width}"
+      height="${item.height}"
+      loading="lazy"
+      decoding="async"
+    >
+    <span>
+      <small>${escapeHtml(item.category)}</small>
+      <strong>${escapeHtml(item.label)}</strong>
+    </span>
+  </button>
+`;
+
+const galleryAlbumButton = (item) => `
+  <button
+    class="gallery-album-photo${item.backdrop ? " has-backdrop" : ""}"
+    type="button"
+    data-gallery-image
+      data-large="${escapeHtml(item.large)}"
+    data-title="${escapeHtml(item.label)}"
+    data-category="${escapeHtml(item.category)}"
+  >
+    <img
+      src="${escapeHtml(item.thumb)}"
+      alt="${escapeHtml(item.label)}"
+      width="${item.width}"
+      height="${item.height}"
+      loading="lazy"
+      decoding="async"
+    >
+  </button>
+`;
+
+const collectionCard = (collection) => {
+  const cover = collection.cover;
+  const preview = collection.preview || [];
+  return `
+    <button
+      class="gallery-collection-card${cover.backdrop ? " has-backdrop" : ""}"
+      type="button"
+      data-gallery-collection="${escapeHtml(collection.id)}"
+    >
+      <span class="gallery-collection-cover">
+        <img
+          src="${escapeHtml(cover.display || cover.thumb)}"
+          ${gallerySrcset(cover)}
+          sizes="(max-width: 680px) 45vw, (max-width: 1180px) 44vw, 28vw"
+          alt=""
+          width="${cover.width}"
+          height="${cover.height}"
+          loading="lazy"
+          decoding="async"
+        >
+      </span>
+      <span class="gallery-collection-copy">
+        <small>${escapeHtml(collection.kicker)}</small>
+        <strong>${escapeHtml(collection.title)}</strong>
+        <span>${escapeHtml(collection.description)}</span>
+        <em>${collection.count} photos</em>
+      </span>
+      <span class="gallery-collection-preview" aria-hidden="true">
+        ${preview
+          .map((item) => `<img src="${escapeHtml(item.thumb)}" alt="" loading="lazy" decoding="async">`)
+          .join("")}
+      </span>
+    </button>
+  `;
+};
+
+function renderGalleryPage(gallery) {
+  const page = document.querySelector("[data-gallery-page]");
+  if (!page || !gallery) return;
+
+  const featured = gallery.featured?.length ? gallery.featured : (gallery.items || []).slice(0, 6);
+  const transformations = gallery.transformations || [];
+
+  const hero = document.querySelector("[data-gallery-hero]");
+  if (hero && featured[0]) {
+    hero.style.setProperty("--gallery-hero-image", `url("${featured[0].display || featured[0].thumb}")`);
+  }
+
+  const heroBoard = document.querySelector("[data-gallery-hero-board]");
+  if (heroBoard) {
+    heroBoard.innerHTML = featured
+      .slice(1, 4)
+      .map((item, index) => `
+        <figure class="gallery-hero-tile tile-${index + 1}${item.backdrop ? " has-backdrop" : ""}">
+          <img
+            src="${escapeHtml(item.display || item.thumb)}"
+            ${gallerySrcset(item)}
+            sizes="(max-width: 680px) 30vw, 16vw"
+            alt=""
+            loading="${index === 0 ? "eager" : "lazy"}"
+            decoding="async"
+          >
+        </figure>
+      `)
+      .join("");
+  }
+
+  const featuredGrid = document.querySelector("[data-gallery-featured]");
+  if (featuredGrid) {
+    featuredGrid.innerHTML = featured.slice(0, 5).map((item) => galleryButton(item, "gallery-featured-card")).join("");
+  }
+
+  const transformationStrip = document.querySelector("[data-gallery-transformations]");
+  if (transformationStrip) {
+    transformationStrip.innerHTML = transformations
+      .map((item) => galleryButton(item, "transformation-card"))
+      .join("");
+  }
+
+  const collections = document.querySelector("[data-gallery-collections]");
+  if (collections) {
+    collections.innerHTML = (gallery.collections || []).map(collectionCard).join("");
+  }
+
+  const count = document.querySelector("[data-gallery-count]");
+  if (count) {
+    count.textContent = `${gallery.itemCount} salon photos organized into ${(gallery.collections || []).length} easy albums.`;
+  }
+
+  initGalleryCollections(gallery.collections || []);
+  initGalleryLightbox();
+
+  if (window.location.hash === "#collections") {
+    const alignCollections = () => document.getElementById("collections")?.scrollIntoView({ block: "start" });
+    window.requestAnimationFrame(alignCollections);
+    window.setTimeout(alignCollections, 400);
+  }
+}
+
+function initGalleryCollections(collections) {
+  const modal = document.querySelector("[data-gallery-collection-modal]");
+  if (!modal) return;
+
+  const collectionMap = new Map(collections.map((collection) => [collection.id, collection]));
+  const title = modal.querySelector("[data-gallery-collection-title]");
+  const kicker = modal.querySelector("[data-gallery-collection-kicker]");
+  const description = modal.querySelector("[data-gallery-collection-description]");
+  const grid = modal.querySelector("[data-gallery-collection-grid]");
+  const closeButton = modal.querySelector("[data-gallery-collection-close]");
+
+  const openCollection = (collection) => {
+    title.textContent = collection.title;
+    kicker.textContent = `${collection.kicker} / ${collection.count} photos`;
+    description.textContent = collection.description;
+    grid.innerHTML = collection.items.map((item) => galleryAlbumButton(item)).join("");
+    modal.hidden = false;
+    document.body.classList.add("modal-open");
+    closeButton.focus();
+  };
+
+  const close = () => {
+    modal.hidden = true;
+    grid.innerHTML = "";
+    releaseModalOpenIfClear();
+  };
+
+  if (!modal.dataset.ready) {
+    document.addEventListener("click", (event) => {
+      const trigger = event.target instanceof Element ? event.target.closest("[data-gallery-collection]") : null;
+      if (!trigger) return;
+
+      const collection = collectionMap.get(trigger.dataset.galleryCollection);
+      if (!collection) return;
+
+      openCollection(collection);
+    });
+
+    modal.querySelectorAll("[data-gallery-collection-close]").forEach((node) => {
+      node.addEventListener("click", close);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const lightbox = document.querySelector("[data-gallery-lightbox]");
+      if (lightbox && !lightbox.hidden) return;
+      if (event.key === "Escape" && !modal.hidden) close();
+    });
+
+    modal.dataset.ready = "true";
+  }
+
+  modal.collectionMap = collectionMap;
+
+  const deepLinkedId = window.location.hash.startsWith("#album-")
+    ? window.location.hash.replace("#album-", "")
+    : "";
+  if (deepLinkedId && collectionMap.has(deepLinkedId) && modal.hidden) {
+    window.requestAnimationFrame(() => openCollection(collectionMap.get(deepLinkedId)));
+  }
+}
+
+function initGalleryLightbox() {
+  const lightbox = document.querySelector("[data-gallery-lightbox]");
+  if (!lightbox || lightbox.dataset.ready) return;
+
+  const image = lightbox.querySelector("[data-gallery-lightbox-image]");
+  const title = lightbox.querySelector("[data-gallery-lightbox-title]");
+  const category = lightbox.querySelector("[data-gallery-lightbox-category]");
+  const closeButton = lightbox.querySelector("[data-gallery-lightbox-close]");
+
+  const close = () => {
+    lightbox.hidden = true;
+    image.removeAttribute("src");
+    releaseModalOpenIfClear();
+  };
+
+  document.addEventListener("click", (event) => {
+    const trigger = event.target instanceof Element ? event.target.closest("[data-gallery-image]") : null;
+    if (!trigger) return;
+
+    image.src = trigger.dataset.large;
+    image.alt = trigger.dataset.title || "Tyra Hair Studio gallery image";
+    title.textContent = trigger.dataset.title || "";
+    category.textContent = trigger.dataset.category || "";
+    lightbox.hidden = false;
+    document.body.classList.add("modal-open");
+    closeButton.focus();
+  });
+
+  lightbox.querySelectorAll("[data-gallery-lightbox-close]").forEach((node) => {
+    node.addEventListener("click", close);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !lightbox.hidden) close();
+  });
+
+  lightbox.dataset.ready = "true";
 }
 
 let bookingTransitionTimer;
@@ -576,10 +882,16 @@ initBookingTransitions();
 initMobileMenu();
 renderHeroSlideshow();
 
-Promise.all([loadJson(siteUrl), loadJson(postsUrl)])
-  .then(([site, blog]) => {
+Promise.all([
+  loadJson(siteUrl),
+  loadJson(postsUrl),
+  document.querySelector("[data-gallery-page], [data-looks]") ? loadJson(galleryUrl) : Promise.resolve(null)
+])
+  .then(([site, blog, gallery]) => {
     renderSite(site);
+    renderHomeGalleryLooks(gallery);
     renderPosts(blog.posts);
+    renderGalleryPage(gallery);
   })
   .catch(() => {
     const postGrid = document.querySelector("[data-posts]");

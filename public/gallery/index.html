@@ -21,10 +21,9 @@
     <meta name="twitter:image" content="https://tyrahairstudio-git.pages.dev/assets/social-preview.jpg">
     <meta name="theme-color" content="#17120f">
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
-    <link rel="preload" as="image" type="image/webp" href="/images/covers/cover-01-blonde-waves-back-1440.webp" imagesrcset="/images/covers/cover-01-blonde-waves-back-960.webp 960w, /images/covers/cover-01-blonde-waves-back-1440.webp 1440w, /images/covers/cover-01-blonde-waves-back-1920.webp 1920w" imagesizes="100vw">
-    <link rel="stylesheet" href="/styles.css?v=mobile-header-menu-polish-v2">
+    <link rel="stylesheet" href="/styles.css?v=gallery-home-v5">
   </head>
-  <body>
+  <body class="gallery-page">
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header" data-header>
       <div class="top-ribbon" aria-label="Studio quick information">
@@ -51,20 +50,34 @@
       </div>
     </header>
     <main id="main">
-      <section class="page-hero" id="top" aria-labelledby="page-title" style="--page-hero-image: url('/images/covers/cover-01-blonde-waves-back-1440.webp')">
-        <p class="eyebrow">Our Photos</p>
-        <h1 id="page-title">Gallery</h1>
-        <p>A studio wall of shine, contrast, and movement.</p>
-      </section>
-      <section class="section gallery-section" aria-labelledby="gallery-title">
-        <div class="section-kicker">Our Photos</div>
-        <div class="looks-layout">
-          <div>
-            <h2 id="gallery-title">Bright pieces, soft depth, and touchable finish.</h2>
-            <p>The signature Tyra finish is polished but touchable: bright pieces where they matter, depth where the hair needs softness, and a cut that does not collapse after one wash.</p>
-          </div>
-          <div class="look-tiles" data-looks></div>
+      <section class="gallery-page-hero" id="top" aria-labelledby="page-title" data-gallery-hero>
+        <div class="gallery-hero-copy">
+          <p class="eyebrow">Our Photos</p>
+          <h1 id="page-title">Gallery</h1>
+          <p>A polished wall of real salon work: soft blonding, lived-in brunettes, vivid transformations, gloss, cuts, and movement.</p>
         </div>
+        <div class="gallery-hero-board" data-gallery-hero-board aria-hidden="true"></div>
+      </section>
+
+      <section class="gallery-showcase" aria-labelledby="gallery-title" data-gallery-page>
+        <div class="gallery-intro">
+          <p class="section-kicker">Tyra Work Wall</p>
+          <div>
+            <h2 id="gallery-title">Color that still looks touchable.</h2>
+            <p>Selected looks are staged like a studio wall, then organized into easy albums for browsing by finish.</p>
+          </div>
+        </div>
+
+        <div class="gallery-featured-grid" data-gallery-featured></div>
+
+        <div class="gallery-collections-heading" id="collections">
+          <div>
+            <p class="section-kicker">Browse By Look</p>
+            <h2>Choose a finish, then explore the set.</h2>
+          </div>
+          <p data-gallery-count></p>
+        </div>
+        <div class="gallery-collections" data-gallery-collections></div>
       </section>
     </main>
     <div class="floating-actions" aria-label="Quick actions">
@@ -150,6 +163,31 @@
         </div>
       </div>
     </footer>
-    <script src="/app.js?v=booking-transition-mobile-header-menu-polish" type="module"></script>
+    <div class="gallery-lightbox" data-gallery-lightbox hidden>
+      <button class="gallery-lightbox-close" type="button" data-gallery-lightbox-close aria-label="Close gallery image">Close</button>
+      <button class="gallery-lightbox-backdrop" type="button" data-gallery-lightbox-close aria-label="Close gallery image"></button>
+      <figure class="gallery-lightbox-frame" role="dialog" aria-modal="true" aria-labelledby="gallery-lightbox-title">
+        <img data-gallery-lightbox-image src="" alt="">
+        <figcaption>
+          <span data-gallery-lightbox-category></span>
+          <strong id="gallery-lightbox-title" data-gallery-lightbox-title></strong>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="gallery-collection-modal" data-gallery-collection-modal hidden>
+      <button class="gallery-collection-backdrop" type="button" data-gallery-collection-close aria-label="Close collection"></button>
+      <section class="gallery-collection-panel" role="dialog" aria-modal="true" aria-labelledby="gallery-collection-title">
+        <div class="gallery-collection-panel-header">
+          <div>
+            <span data-gallery-collection-kicker></span>
+            <h2 id="gallery-collection-title" data-gallery-collection-title></h2>
+            <p data-gallery-collection-description></p>
+          </div>
+          <button type="button" data-gallery-collection-close>Close</button>
+        </div>
+        <div class="gallery-collection-grid" data-gallery-collection-grid></div>
+      </section>
+    </div>
+    <script src="/app.js?v=gallery-home-v5" type="module"></script>
   </body>
 </html>
