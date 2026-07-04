@@ -1893,6 +1893,12 @@ body.booking-transition-active [data-booking] {
 }
 
 .footer-credit p {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  justify-content: space-between;
+  width: 100%;
   margin: 0;
 }
 

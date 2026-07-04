@@ -376,6 +376,7 @@ function renderSite(site) {
   text("[data-top-address]", address);
   textAll("[data-footer-address]", address);
   textAll("[data-phone-text]", site.phone);
+  textAll("[data-current-year]", String(new Date().getFullYear()));
 
   document.querySelectorAll("[data-booking]").forEach((link) => {
     link.href = site.bookingUrl;
