@@ -487,12 +487,92 @@ function closePost() {
   document.body.classList.remove("modal-open");
 }
 
+let bookingTransitionTimer;
+let bookingTransitionFallbackTimer;
+
+function ensureBookingTransitionOverlay() {
+  let overlay = document.querySelector("[data-booking-transition]");
+  if (overlay) return overlay;
+
+  overlay = document.createElement("div");
+  overlay.className = "booking-transition";
+  overlay.setAttribute("data-booking-transition", "");
+  overlay.setAttribute("role", "status");
+  overlay.setAttribute("aria-live", "polite");
+  overlay.setAttribute("aria-atomic", "true");
+  overlay.innerHTML = `
+    <div class="booking-transition-card">
+      <span class="booking-transition-spinner" aria-hidden="true"></span>
+      <span class="booking-transition-title">Opening booking</span>
+      <span class="booking-transition-copy">Taking you to the appointment calendar.</span>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  return overlay;
+}
+
+function clearBookingTransition() {
+  window.clearTimeout(bookingTransitionTimer);
+  window.clearTimeout(bookingTransitionFallbackTimer);
+  document.body.classList.remove("booking-transition-active");
+  document.body.removeAttribute("aria-busy");
+  document.querySelectorAll("[data-booking].is-booking-loading").forEach((link) => {
+    link.classList.remove("is-booking-loading");
+    link.removeAttribute("aria-disabled");
+  });
+  document.querySelector("[data-booking-transition]")?.remove();
+}
+
+function shouldHandleBookingClick(event, link) {
+  if (
+    event.defaultPrevented ||
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey ||
+    link.hasAttribute("download") ||
+    (link.target && link.target !== "_self")
+  ) {
+    return false;
+  }
+
+  return Boolean(link.href);
+}
+
+function initBookingTransitions() {
+  document.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const link = target ? target.closest("[data-booking]") : null;
+    if (!link || !shouldHandleBookingClick(event, link)) return;
+
+    event.preventDefault();
+    if (document.body.classList.contains("booking-transition-active")) return;
+
+    document.body.classList.add("booking-transition-active");
+    document.body.setAttribute("aria-busy", "true");
+    link.classList.add("is-booking-loading");
+    link.setAttribute("aria-disabled", "true");
+    ensureBookingTransitionOverlay();
+
+    window.clearTimeout(bookingTransitionTimer);
+    bookingTransitionTimer = window.setTimeout(() => {
+      window.location.assign(link.href);
+    }, 140);
+
+    bookingTransitionFallbackTimer = window.setTimeout(clearBookingTransition, 12000);
+  });
+
+  window.addEventListener("pageshow", clearBookingTransition);
+}
+
 document.querySelectorAll("[data-close]").forEach((node) => node.addEventListener("click", closePost));
 document.addEventListener("keydown", (event) => {
   const modal = document.querySelector("[data-modal]");
   if (event.key === "Escape" && modal && !modal.hidden) closePost();
 });
 
+initBookingTransitions();
 initMobileMenu();
 renderHeroSlideshow();
 
