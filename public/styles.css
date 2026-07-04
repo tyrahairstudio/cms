@@ -1387,18 +1387,20 @@ body.booking-transition-active [data-booking] {
   }
 
   .top-ribbon {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 3px;
+    display: block;
     justify-content: center;
-    min-height: 52px;
-    padding: 7px 16px;
+    min-height: 36px;
+    padding: 8px 64px 8px 16px;
   }
 
   .top-ribbon span,
   .top-ribbon a {
+    display: block;
     font-size: 12px;
     line-height: 1.35;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .main-nav-row {
@@ -1419,9 +1421,10 @@ body.booking-transition-active [data-booking] {
     color: var(--paper);
     display: inline-grid;
     height: 36px;
-    left: 10px;
+    left: auto;
     position: fixed;
-    top: 52px;
+    right: 10px;
+    top: 42px;
     width: 44px;
     z-index: 32;
   }
@@ -1430,11 +1433,11 @@ body.booking-transition-active [data-booking] {
     box-shadow: 0 16px 34px rgba(23, 18, 15, 0.2);
     gap: 6px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    left: 62px;
+    left: 8px;
     padding: 6px;
     position: fixed;
-    right: 8px;
-    top: 52px;
+    right: 62px;
+    top: 42px;
     z-index: 31;
   }
 
