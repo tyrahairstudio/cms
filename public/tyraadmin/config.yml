@@ -10,8 +10,8 @@ publish_mode: editorial_workflow
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
-site_url: "https://tyrahairstudio-git.pages.dev"
-display_url: "https://tyrahairstudio-git.pages.dev"
+site_url: "https://tyrahairstudio.com"
+display_url: "https://tyrahairstudio.com"
 logo_url: "/assets/tyra-cover-960.webp"
 
 collections:

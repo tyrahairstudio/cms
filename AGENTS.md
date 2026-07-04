@@ -4,8 +4,10 @@
 
 This workspace contains the Tyra Hair Studio static website.
 
-- Current Git-deployed site: https://tyrahairstudio-git.pages.dev
-- Current Git-deployed admin CMS path: https://tyrahairstudio-git.pages.dev/tyraadmin/
+- Current custom-domain site: https://tyrahairstudio.com
+- Current custom-domain admin CMS path: https://tyrahairstudio.com/tyraadmin/
+- Current Git-deployed Pages fallback site: https://tyrahairstudio-git.pages.dev
+- Current Git-deployed Pages fallback admin CMS path: https://tyrahairstudio-git.pages.dev/tyraadmin/
 - Current Cloudflare Pages project name: `tyrahairstudio-git`
 - Legacy Direct Upload site: https://tyrahairstudio.pages.dev
 - Legacy Direct Upload Cloudflare Pages project name: `tyrahairstudio`
