@@ -149,6 +149,24 @@ const textAll = (selector, value) => {
   });
 };
 
+const linkAddressAll = (selector, address, directionsUrl) => {
+  if (!address || !directionsUrl) return;
+  document.querySelectorAll(selector).forEach((node) => {
+    const link = node.matches("a") ? node : document.createElement("a");
+    link.href = directionsUrl;
+    link.textContent = address;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.classList.add("address-map-link");
+    link.setAttribute("aria-label", `Open Google Maps directions to ${address}`);
+
+    if (link !== node) {
+      node.textContent = "";
+      node.appendChild(link);
+    }
+  });
+};
+
 const hasOpenOverlay = () =>
   Array.from(document.querySelectorAll("[data-modal], [data-gallery-collection-modal], [data-gallery-lightbox]"))
     .some((node) => !node.hidden);
@@ -373,8 +391,8 @@ function renderSite(site) {
 
   text("[data-intro]", site.intro);
   text("[data-headline]", site.headline);
-  text("[data-top-address]", address);
-  textAll("[data-footer-address]", address);
+  linkAddressAll("[data-top-address]", address, directionsUrl);
+  linkAddressAll("[data-footer-address]", address, directionsUrl);
   textAll("[data-phone-text]", site.phone);
   textAll("[data-current-year]", String(new Date().getFullYear()));
 
