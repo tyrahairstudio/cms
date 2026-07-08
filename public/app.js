@@ -60,16 +60,42 @@ const hairLooks = [
   }
 ];
 
-const serviceImages = [
-  hairLooks[0],
-  hairLooks[1],
-  hairLooks[5],
-  hairLooks[2],
-  hairLooks[7],
-  hairLooks[4],
-  hairLooks[6],
-  hairLooks[3]
-];
+const serviceImagesByName = {
+  "Hair Cuts": {
+    src: "/images/services/hair-cuts.webp",
+    position: "50% 47%"
+  },
+  "Hair Color": {
+    src: "/images/services/hair-color.webp",
+    position: "50% 48%"
+  },
+  "Hair Style": {
+    src: "/images/services/hair-style.webp",
+    position: "50% 49%"
+  },
+  "Perms": {
+    src: "/images/services/perms.webp",
+    position: "50% 46%"
+  },
+  "Treatments": {
+    src: "/images/services/treatments.webp",
+    position: "50% 52%"
+  },
+  "Waxing": {
+    src: "/images/services/waxing.webp",
+    position: "50% 48%"
+  },
+  "Head Spa": {
+    src: "/images/services/head-spa.webp",
+    position: "50% 48%"
+  },
+  "Free Consultation": {
+    src: "/images/services/free-consultation.webp",
+    position: "50% 50%"
+  }
+};
+
+const fallbackServiceImage = serviceImagesByName["Hair Color"];
 
 const heroLooks = [
   {
@@ -422,11 +448,11 @@ function renderSite(site) {
   if (serviceGrid) {
     serviceGrid.innerHTML = site.services
       .map(
-        (service, index) => {
-          const image = serviceImages[index % serviceImages.length];
+        (service) => {
+          const image = serviceImagesByName[service.name] || fallbackServiceImage;
           return `
           <article class="service-card">
-            <div class="service-card-visual" style="--service-image: url('${webpPath(image.src, image.webpWidth)}'); --service-position: ${image.position}"></div>
+            <div class="service-card-visual" style="--service-image: url('${image.src}'); --service-position: ${image.position}"></div>
             <div class="service-card-content">
               <h3>${escapeHtml(service.name)}</h3>
               ${renderServiceDetails(service)}
