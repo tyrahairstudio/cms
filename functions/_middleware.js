@@ -3,7 +3,7 @@ export async function onRequest(context) {
 
   if (url.hostname === "tyrahairstudio.com") {
     url.hostname = "www.tyrahairstudio.com";
-    return Response.redirect(url.toString(), 301);
+    return Response.redirect(url.toString(), 302);
   }
 
   return context.next();
