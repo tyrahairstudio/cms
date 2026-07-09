@@ -2558,9 +2558,19 @@ body.booking-transition-active [data-booking] {
     font-size: 36px;
   }
 
+  .footer-hours-panel dl {
+    column-gap: 12px;
+    grid-template-columns: max-content minmax(0, 1fr);
+    row-gap: 12px;
+  }
+
   .footer-hours-panel div {
-    gap: 8px;
-    grid-template-columns: 1fr;
+    display: contents;
+  }
+
+  .footer-hours-panel dt,
+  .footer-hours-panel dd {
+    white-space: nowrap;
   }
 
   .map-panel {
