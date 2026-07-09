@@ -1,6 +1,7 @@
 const siteUrl = "/content/site.json";
 const postsUrl = "/content/posts.json";
 const galleryUrl = "/content/gallery.json?v=gallery-home-v7";
+const galleryHeroIds = ["gallery-015-img-4787", "gallery-073-img-9580", "custom-blonde-blue-shirt"];
 const hairLooks = [
   {
     label: "Creamy blonde waves",
@@ -684,8 +685,13 @@ function renderGalleryPage(gallery) {
 
   const heroBoard = document.querySelector("[data-gallery-hero-board]");
   if (heroBoard) {
-    heroBoard.innerHTML = featured
-      .slice(1, 4)
+    const heroItems = galleryHeroIds
+      .map((id) => featured.find((item) => item.id === id) || (gallery.items || []).find((item) => item.id === id))
+      .filter(Boolean);
+    const selectedHeroItems = heroItems.length === galleryHeroIds.length ? heroItems : featured.slice(1, 4);
+
+    heroBoard.innerHTML = selectedHeroItems
+      .slice(0, 3)
       .map((item, index) => `
         <figure class="gallery-hero-tile tile-${index + 1}${item.backdrop ? " has-backdrop" : ""}">
           <img
