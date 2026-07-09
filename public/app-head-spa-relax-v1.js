@@ -682,11 +682,6 @@ function renderGalleryPage(gallery) {
   const featured = gallery.featured?.length ? gallery.featured : (gallery.items || []).slice(0, 6);
   const transformations = gallery.transformations || [];
 
-  const hero = document.querySelector("[data-gallery-hero]");
-  if (hero && featured[0]) {
-    hero.style.setProperty("--gallery-hero-image", `url("${featured[0].display || featured[0].thumb}")`);
-  }
-
   const heroBoard = document.querySelector("[data-gallery-hero-board]");
   if (heroBoard) {
     heroBoard.innerHTML = featured

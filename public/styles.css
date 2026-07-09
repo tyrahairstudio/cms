@@ -3237,3 +3237,48 @@ body.gallery-page .gallery-collections-heading {
     display: flex;
   }
 }
+
+body.gallery-page .gallery-page-hero {
+  background:
+    linear-gradient(90deg, rgba(23, 18, 15, 0.86), rgba(23, 18, 15, 0.42)),
+    url("/assets/tyra-cover-1440.webp") center / cover;
+  display: block;
+  margin-top: 0;
+  min-height: 54vh;
+  padding: clamp(172px, 22vh, 230px) clamp(22px, 6vw, 82px) clamp(64px, 9vw, 110px);
+}
+
+body.gallery-page .gallery-page-hero::before,
+body.gallery-page .gallery-hero-board {
+  display: none;
+}
+
+body.gallery-page .gallery-hero-copy {
+  display: block !important;
+  max-width: 760px;
+  padding-top: 0;
+  width: auto;
+}
+
+body.gallery-page .gallery-hero-copy h1 {
+  font-size: clamp(56px, 9vw, 116px);
+  font-style: normal;
+  line-height: 0.94;
+  margin: 18px 0 22px;
+  text-shadow: none;
+}
+
+body.gallery-page .gallery-hero-copy p:last-child {
+  color: var(--paper);
+  font-size: clamp(20px, 3vw, 32px);
+  line-height: 1.2;
+  margin: 0;
+  max-width: 760px;
+  text-shadow: none;
+}
+
+@media (max-width: 680px) {
+  body.gallery-page .gallery-page-hero {
+    padding: 88px 20px 72px;
+  }
+}
