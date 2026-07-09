@@ -62,7 +62,7 @@ const hairLooks = [
 
 const serviceImagesByName = {
   "Hair Cuts": {
-    src: "/images/services/hair-cuts.webp",
+    src: "/images/services/hair-cuts.webp?v=professional-v2",
     position: "50% 47%"
   },
   "Hair Color": {
@@ -70,7 +70,7 @@ const serviceImagesByName = {
     position: "50% 45%"
   },
   "Hair Style": {
-    src: "/images/services/hair-style-curling.webp",
+    src: "/images/services/hair-style-curling.webp?v=professional-v2",
     position: "48% 50%"
   },
   "Perms": {
