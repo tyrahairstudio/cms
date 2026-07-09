@@ -1,6 +1,6 @@
 const siteUrl = "/content/site.json";
 const postsUrl = "/content/posts.json";
-const galleryUrl = "/content/gallery.json?v=gallery-home-v5";
+const galleryUrl = "/content/gallery.json?v=gallery-home-v7";
 const hairLooks = [
   {
     label: "Creamy blonde waves",
@@ -66,12 +66,12 @@ const serviceImagesByName = {
     position: "50% 47%"
   },
   "Hair Color": {
-    src: "/images/services/hair-color.webp",
-    position: "50% 48%"
+    src: "/images/gallery/gallery-062-img-7902-display.webp",
+    position: "50% 45%"
   },
   "Hair Style": {
-    src: "/images/services/hair-style.webp",
-    position: "50% 49%"
+    src: "/images/services/hair-style-curling.webp",
+    position: "48% 50%"
   },
   "Perms": {
     src: "/images/services/perms.webp",
