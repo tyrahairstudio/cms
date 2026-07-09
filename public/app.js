@@ -86,7 +86,7 @@ const serviceImagesByName = {
     position: "50% 48%"
   },
   "Head Spa": {
-    src: "/images/services/head-spa.webp",
+    src: "/images/services/head-spa.webp?v=head-spa-relax-v1",
     position: "50% 48%"
   },
   "Free Consultation": {
