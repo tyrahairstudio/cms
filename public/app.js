@@ -67,7 +67,7 @@ const serviceImagesByName = {
     position: "50% 47%"
   },
   "Hair Color": {
-    src: "/images/gallery/gallery-062-img-7902-display.webp",
+    src: "/images/services/hair-color-professional.webp",
     position: "50% 45%"
   },
   "Hair Style": {
