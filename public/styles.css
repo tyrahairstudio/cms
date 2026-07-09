@@ -528,12 +528,31 @@ h2 {
   text-align: center;
 }
 
+.services-title {
+  color: var(--ink);
+  font-family: var(--display-font);
+  font-size: clamp(54px, 7.5vw, 104px);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 0.92;
+  margin-bottom: 18px;
+  text-transform: none;
+}
+
 .section-heading {
   align-items: end;
   display: grid;
   gap: 24px;
   grid-template-columns: minmax(0, 0.95fr) minmax(260px, 0.45fr);
   margin-bottom: 34px;
+}
+
+.services-heading {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 620px;
+  text-align: center;
 }
 
 .section-heading.compact {
@@ -2460,6 +2479,11 @@ body.booking-transition-active [data-booking] {
   .section-kicker {
     margin-bottom: 12px;
     text-align: left;
+  }
+
+  .services-title {
+    font-size: clamp(46px, 14vw, 64px);
+    text-align: center;
   }
 
   .section-heading,
