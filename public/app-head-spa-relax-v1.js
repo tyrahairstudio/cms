@@ -413,7 +413,7 @@ function initRosefall() {
 function renderSite(site) {
   document.title = `${site.brand} | Cypress, TX`;
   const address = site.addressLines.join(", ");
-  const directionsUrl = `https://maps.google.com/?q=${encodeURIComponent(address)}`;
+  const directionsUrl = "https://maps.app.goo.gl/rhgYgCchRQ7YYKUZ7";
 
   text("[data-intro]", site.intro);
   text("[data-headline]", site.headline);
