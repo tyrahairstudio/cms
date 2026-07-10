@@ -37,10 +37,6 @@ body.modal-open {
   overflow: hidden;
 }
 
-body.booking-transition-active {
-  cursor: progress;
-}
-
 img {
   display: block;
   max-width: 100%;
@@ -1803,73 +1799,6 @@ h2 {
   transform: translateY(-2px);
 }
 
-body.booking-transition-active [data-booking] {
-  cursor: progress;
-  pointer-events: none;
-}
-
-[data-booking].is-booking-loading {
-  animation: none !important;
-  filter: brightness(0.96) saturate(0.96);
-  opacity: 0.9;
-  transform: translateY(0) scale(0.985);
-}
-
-.booking-transition {
-  align-items: center;
-  backdrop-filter: blur(6px);
-  background:
-    radial-gradient(circle at 50% 44%, rgba(217, 191, 143, 0.28), transparent 34%),
-    rgba(23, 18, 15, 0.38);
-  display: grid;
-  inset: 0;
-  justify-items: center;
-  opacity: 0;
-  padding: 22px;
-  pointer-events: none;
-  position: fixed;
-  z-index: 80;
-  animation: booking-transition-in 160ms ease forwards;
-}
-
-.booking-transition-card {
-  align-items: center;
-  background: rgba(255, 250, 243, 0.96);
-  border: 1px solid rgba(217, 191, 143, 0.5);
-  border-radius: 8px;
-  box-shadow: 0 24px 70px rgba(23, 18, 15, 0.32);
-  color: var(--ink);
-  display: grid;
-  gap: 10px;
-  justify-items: center;
-  max-width: min(360px, calc(100vw - 44px));
-  padding: 24px 26px 22px;
-  text-align: center;
-}
-
-.booking-transition-spinner {
-  border: 2px solid rgba(111, 51, 39, 0.18);
-  border-radius: 999px;
-  border-top-color: var(--mahogany);
-  height: 42px;
-  width: 42px;
-  animation: booking-transition-spin 760ms linear infinite;
-}
-
-.booking-transition-title {
-  color: var(--coffee);
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.booking-transition-copy {
-  color: rgba(23, 18, 15, 0.66);
-  font-size: 14px;
-  line-height: 1.45;
-}
-
 .post-modal[hidden] {
   display: none;
 }
@@ -2823,36 +2752,6 @@ body.booking-transition-active [data-booking] {
     transform: none !important;
   }
 
-  .booking-transition {
-    opacity: 1;
-  }
-}
-
-@keyframes float-booking-breathe {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-2px);
-  }
-}
-
-@keyframes booking-transition-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes booking-transition-spin {
-  to {
-    transform: rotate(1turn);
-  }
 }
 
 /* Gallery UX pass: compact first impression, clear albums, clean thumbnails. */
