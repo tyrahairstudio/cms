@@ -4,7 +4,7 @@ const serviceCatalog = [
     name: "Hair Cuts",
     services: [
       { id: "women-cut-only", name: "Women: Cut Only", duration: 35, price: 35, priceLabel: "$35+" },
-      { id: "women-wash-cut-style", name: "Women: Wash Cut Style", duration: 45, price: 45, priceLabel: "$45+" },
+      { id: "women-wash-cut-style", name: "Women: Wash Cut Blow Out", duration: 45, price: 45, priceLabel: "$45+" },
       { id: "men-cut", name: "Men", duration: 20, price: 20, priceLabel: "$20+" },
       { id: "boy-cut", name: "Boy", duration: 18, price: 18, priceLabel: "$18+" },
       { id: "girl-cut", name: "Girl", duration: 30, price: 30, priceLabel: "$30+" },
