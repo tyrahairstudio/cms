@@ -308,6 +308,7 @@ button {
 
 .nav-links a[aria-current="page"] {
   background: rgba(217, 191, 143, 0.28);
+  color: var(--ink);
 }
 
 .page-panel {
