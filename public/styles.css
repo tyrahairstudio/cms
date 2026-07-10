@@ -1740,7 +1740,7 @@ h2 {
 }
 
 .float-pill[data-booking] {
-  animation: float-booking-breathe 3.4s ease-in-out infinite;
+  animation: none;
   background: linear-gradient(135deg, #6f3327 0%, #b8693f 58%, #d9bf8f 100%);
   border-color: rgba(255, 250, 243, 0.58);
   box-shadow: 0 18px 44px rgba(111, 51, 39, 0.36), 0 0 0 1px rgba(255, 250, 243, 0.24) inset;
@@ -1772,6 +1772,7 @@ h2 {
 .float-pill[data-booking]:focus-visible {
   animation: none;
   box-shadow: 0 24px 54px rgba(111, 51, 39, 0.44), 0 0 0 1px rgba(255, 250, 243, 0.32) inset;
+  transform: none;
 }
 
 .float-pill[data-booking]:hover::after,

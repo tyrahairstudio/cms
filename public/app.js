@@ -933,7 +933,6 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && modal && !modal.hidden) closePost();
 });
 
-initBookingTransitions();
 initMobileMenu();
 renderHeroSlideshow();
 
