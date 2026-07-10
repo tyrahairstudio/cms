@@ -2037,10 +2037,10 @@ a {
   }
 
   .time-groups {
-    max-height: min(38dvh, 330px);
-    overscroll-behavior: contain;
-    overflow-y: auto;
-    padding-right: 2px;
+    max-height: none;
+    overscroll-behavior: auto;
+    overflow: visible;
+    padding-right: 0;
   }
 
   .mobile-booking-dock {
