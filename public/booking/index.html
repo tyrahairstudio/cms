@@ -103,13 +103,9 @@
               <div class="mobile-staff-panel" data-mobile-staff-panel hidden>
                 <div class="mobile-staff-heading">
                   <h3>Choose your stylist</h3>
-                  <p>Select a preferred stylist, or choose the first available appointment.</p>
+                  <p>TYRA will be your stylist for this appointment.</p>
                 </div>
                 <div class="mobile-staff-options" aria-label="Stylist preference">
-                  <button type="button" data-staff-option="Any available staff"><span>A</span><strong>Any available</strong><small>First available stylist</small></button>
-                  <button type="button" data-staff-option="CATHY"><span>C</span><strong>CATHY</strong><small>Stylist</small></button>
-                  <button type="button" data-staff-option="SAMANTHA"><span>S</span><strong>SAMANTHA</strong><small>Stylist</small></button>
-                  <button type="button" data-staff-option="VIVIAN"><span>V</span><strong>VIVIAN</strong><small>Stylist</small></button>
                   <button type="button" data-staff-option="TYRA"><span>T</span><strong>TYRA</strong><small>Stylist</small></button>
                 </div>
               </div>
@@ -129,12 +125,8 @@
                   <p>Times shown are for Tyra Hair Studio in Cypress, Texas.</p>
                 </div>
                 <label class="staff-select">
-                  <span>Stylist preference</span>
+                  <span>Your stylist</span>
                   <select data-staff>
-                    <option value="Any available staff">Any available staff</option>
-                    <option value="CATHY">CATHY</option>
-                    <option value="SAMANTHA">SAMANTHA</option>
-                    <option value="VIVIAN">VIVIAN</option>
                     <option value="TYRA">TYRA</option>
                   </select>
                 </label>
@@ -252,7 +244,7 @@
             <dl class="summary-meta">
               <div><dt>Date</dt><dd data-summary-date>Not selected</dd></div>
               <div><dt>Time</dt><dd data-summary-time>Not selected</dd></div>
-              <div><dt>Stylist</dt><dd data-summary-staff>Any available staff</dd></div>
+              <div><dt>Stylist</dt><dd data-summary-staff>TYRA</dd></div>
             </dl>
             <div class="summary-total">
               <div><span>Estimated time</span><strong data-summary-duration>0 min</strong></div>
@@ -276,7 +268,7 @@
       </div>
     </main>
 
-    <script src="/booking/booking.js?v=booking-review-summary-v1" type="module"></script>
+    <script src="/booking/booking.js?v=booking-tyra-staff-v1" type="module"></script>
     <script src="/app-head-spa-relax-v1.js" type="module"></script>
   </body>
 </html>

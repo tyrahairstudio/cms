@@ -82,7 +82,7 @@ function validatePayload(input) {
         startTime,
         endTime,
         duration,
-        staff: cleanText(appointment.staff || "Any available staff", 80)
+        staff: cleanText(appointment.staff || "TYRA", 80)
       },
       services: sanitizedServices,
       notes: cleanText(input.notes, 600),

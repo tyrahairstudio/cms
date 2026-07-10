@@ -82,7 +82,7 @@ serviceCatalog.forEach((category) => {
   category.services.forEach((service) => serviceMap.set(service.id, { ...service, category: category.name }));
 });
 
-const staffChoices = ["Any available staff", "CATHY", "SAMANTHA", "VIVIAN", "TYRA"];
+const staffChoices = ["TYRA"];
 const mobileBookingQuery = window.matchMedia("(max-width: 680px)");
 const localPreviewHosts = new Set(["localhost", "127.0.0.1", "::1"]);
 const bookingApiUrl = localPreviewHosts.has(window.location.hostname)
@@ -104,7 +104,7 @@ const state = {
   selectedIds: new Set((savedState.selectedIds || []).filter((id) => serviceMap.has(id))),
   selectedDate: isBookableIsoDate(savedState.selectedDate) ? savedState.selectedDate : "",
   selectedTime: savedState.selectedTime || "",
-  staff: staffChoices.includes(savedState.staff) ? savedState.staff : "Any available staff",
+  staff: staffChoices.includes(savedState.staff) ? savedState.staff : "TYRA",
   mobileSelection: savedState.mobileSelection === "staff" ? "staff" : "services",
   currentMonth: firstOfMonth(savedState.selectedDate ? parseIsoDate(savedState.selectedDate) : today),
   busyIntervals: [],
@@ -841,7 +841,7 @@ function resetBooking() {
   state.activeCategory = serviceCatalog[0].id;
   state.selectedDate = "";
   state.selectedTime = "";
-  state.staff = "Any available staff";
+  state.staff = "TYRA";
   state.mobileSelection = "services";
   state.busyIntervals = [];
   state.currentMonth = firstOfMonth(today);
@@ -885,7 +885,7 @@ document.addEventListener("click", (event) => {
   if (staffOption) {
     state.staff = staffChoices.includes(staffOption.dataset.staffOption)
       ? staffOption.dataset.staffOption
-      : "Any available staff";
+      : "TYRA";
     saveState();
     syncStaffChoices();
     renderSummary();
