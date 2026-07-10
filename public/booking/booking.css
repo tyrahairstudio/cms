@@ -2050,8 +2050,8 @@ a {
     bottom: 0;
     box-shadow: 0 -10px 30px rgba(23, 18, 15, 0.12);
     display: grid;
-    gap: 10px;
-    grid-template-columns: minmax(0, 0.9fr) minmax(150px, 1.1fr);
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr) minmax(150px, 1.05fr);
     left: 0;
     padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
     position: fixed;
@@ -2070,17 +2070,34 @@ a {
   }
 
   .mobile-dock-summary {
-    background: transparent;
-    border: 0;
+    align-items: center;
+    background: #f8f4ef;
+    border: 1px solid #dfd6ce;
+    border-radius: 13px;
     cursor: pointer;
     display: grid;
+    gap: 7px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 52px;
     min-width: 0;
-    padding: 3px 2px;
+    padding: 7px 8px 7px 10px;
     text-align: left;
+    transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .mobile-dock-summary.has-selection {
+    background: #fff7ef;
+    border-color: #d6a27e;
+    box-shadow: 0 4px 14px rgba(111, 51, 39, 0.12);
+  }
+
+  .mobile-dock-summary-copy {
+    display: grid;
+    min-width: 0;
   }
 
   .mobile-dock-summary small {
-    color: #7c716a;
+    color: #7d4939;
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -2089,11 +2106,24 @@ a {
 
   .mobile-dock-summary strong {
     font-size: 12px;
-    line-height: 1.3;
+    line-height: 1.25;
     margin-top: 3px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+  }
+
+  .mobile-dock-review-icon {
+    align-items: center;
+    background: var(--ink);
+    border-radius: 50%;
+    color: #ffffff;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 15px;
+    font-weight: 800;
+    height: 27px;
+    justify-content: center;
+    width: 27px;
   }
 
   .mobile-dock-primary {
@@ -2415,5 +2445,37 @@ a {
     height: 30px;
     right: 14px;
     width: 30px;
+  }
+}
+
+@media (max-width: 340px) {
+  .booking1-page .mobile-booking-dock {
+    gap: 6px;
+    grid-template-columns: minmax(0, 1fr) 140px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .booking1-page .mobile-dock-summary {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: 9px;
+  }
+
+  .booking1-page .mobile-dock-review-icon {
+    display: none;
+  }
+
+  .booking1-page .mobile-dock-summary small {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  .booking1-page .mobile-dock-summary strong {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .booking1-page .mobile-dock-primary {
+    padding-inline: 10px;
   }
 }

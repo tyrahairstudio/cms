@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
     <link rel="preload" as="image" type="image/webp" href="/images/covers/tyra-cover-02-champagne-blonde-960.webp">
     <link rel="stylesheet" href="/styles.css?v=services-heading-v1">
-    <link rel="stylesheet" href="/booking/booking.css?v=booking-full-schedule-v1">
+    <link rel="stylesheet" href="/booking/booking.css?v=booking-review-summary-v1">
   </head>
   <body class="booking1-page">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -265,15 +265,18 @@
 
       <button class="mobile-sheet-backdrop" type="button" data-summary-close aria-label="Close appointment summary" hidden></button>
       <div class="mobile-booking-dock" data-mobile-booking-dock>
-        <button class="mobile-dock-summary" type="button" data-summary-open aria-label="Review appointment summary">
-          <small>Your visit</small>
-          <strong data-mobile-dock-summary>0 services</strong>
+        <button class="mobile-dock-summary" type="button" data-summary-open aria-label="Review booking summary">
+          <span class="mobile-dock-summary-copy">
+            <small data-mobile-dock-label>Your services</small>
+            <strong data-mobile-dock-summary>0 services</strong>
+          </span>
+          <span class="mobile-dock-review-icon" aria-hidden="true">↑</span>
         </button>
         <button class="mobile-dock-primary" type="button" data-mobile-primary disabled>Choose a service</button>
       </div>
     </main>
 
-    <script src="/booking/booking.js?v=booking-full-service-list-v1" type="module"></script>
+    <script src="/booking/booking.js?v=booking-review-summary-v1" type="module"></script>
     <script src="/app-head-spa-relax-v1.js" type="module"></script>
   </body>
 </html>

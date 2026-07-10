@@ -144,6 +144,8 @@ const elements = {
   summarySheet: document.querySelector(".appointment-ribbon"),
   summaryBackdrop: document.querySelector(".mobile-sheet-backdrop"),
   mobileDock: document.querySelector("[data-mobile-booking-dock]"),
+  mobileDockSummaryButton: document.querySelector("[data-summary-open]"),
+  mobileDockLabel: document.querySelector("[data-mobile-dock-label]"),
   mobileDockSummary: document.querySelector("[data-mobile-dock-summary]"),
   mobilePrimary: document.querySelector("[data-mobile-primary]")
 };
@@ -341,6 +343,15 @@ function formatShortDate(iso) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(parseIsoDate(iso));
 }
 
+function setMobileDockReview(label, summary) {
+  elements.mobileDockLabel.textContent = label;
+  elements.mobileDockSummary.textContent = summary;
+  elements.mobileDockSummaryButton?.setAttribute(
+    "aria-label",
+    `${label}: ${summary}. Tap to review your appointment summary.`
+  );
+}
+
 function updateMobileDock() {
   if (!elements.mobileDock) return;
   const services = selectedServices();
@@ -351,27 +362,37 @@ function updateMobileDock() {
   elements.mobileDock.hidden = confirmed;
   if (confirmed) return;
 
+  elements.mobileDockSummaryButton?.classList.toggle("has-selection", hasServices);
+  const serviceCount = `${services.length} ${services.length === 1 ? "service" : "services"}`;
+
   if (state.step === 1) {
-    elements.mobileDockSummary.textContent = hasServices
-      ? `${services.length} ${services.length === 1 ? "service" : "services"} · ${totalDuration() ? formatDuration(totalDuration()) : "Consultation"}`
-      : "0 services";
+    setMobileDockReview(
+      "Your services",
+      hasServices
+        ? `${serviceCount} · ${totalDuration() ? formatDuration(totalDuration()) : "Consultation"}`
+        : "0 services"
+    );
     elements.mobilePrimary.textContent = hasServices ? "Continue" : "Choose a service";
     elements.mobilePrimary.disabled = !hasServices;
     return;
   }
 
   if (state.step === 2) {
-    elements.mobileDockSummary.textContent = state.selectedDate
+    const schedule = state.selectedDate
       ? `${formatShortDate(state.selectedDate)} · ${state.selectedTime ? formatTime(state.selectedTime) : "Choose time"}`
       : state.staff;
+    setMobileDockReview("Your appointment", `${serviceCount} · ${schedule}`);
     elements.mobilePrimary.textContent = hasSchedule ? "Continue" : "Choose a time";
     elements.mobilePrimary.disabled = !hasSchedule;
     return;
   }
 
-  elements.mobileDockSummary.textContent = hasSchedule
-    ? `${formatShortDate(state.selectedDate)} · ${formatTime(state.selectedTime)}`
-    : "Review appointment";
+  setMobileDockReview(
+    "Review booking",
+    hasSchedule
+      ? `${serviceCount} · ${formatShortDate(state.selectedDate)} · ${formatTime(state.selectedTime)}`
+      : `${serviceCount} · Review appointment`
+  );
   elements.mobilePrimary.textContent = "Send request";
   elements.mobilePrimary.disabled = false;
 }
