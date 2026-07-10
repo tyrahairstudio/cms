@@ -343,6 +343,29 @@ button {
   font-weight: 600;
 }
 
+.contact-card dl {
+  display: grid;
+  gap: 10px;
+  margin: 4px 0 0;
+}
+
+.contact-card dl > div {
+  align-items: baseline;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 104px minmax(0, 1fr);
+}
+
+.contact-card dt,
+.contact-card dd {
+  line-height: 1.45;
+  margin: 0;
+}
+
+.contact-card dd {
+  white-space: nowrap;
+}
+
 .page-panel .button.ghost.light {
   border-color: rgba(23, 18, 15, 0.22);
   color: var(--ink);
