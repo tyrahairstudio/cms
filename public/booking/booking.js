@@ -82,6 +82,8 @@ serviceCatalog.forEach((category) => {
   category.services.forEach((service) => serviceMap.set(service.id, { ...service, category: category.name }));
 });
 
+const staffChoices = ["Any available staff", "CATHY", "SAMANTHA", "VIVIAN", "TYRA"];
+const mobileBookingQuery = window.matchMedia("(max-width: 680px)");
 const localPreviewHosts = new Set(["localhost", "127.0.0.1", "::1"]);
 const bookingApiUrl = localPreviewHosts.has(window.location.hostname)
   ? "https://tyrahairstudio.com/api/booking"
@@ -102,7 +104,8 @@ const state = {
   selectedIds: new Set((savedState.selectedIds || []).filter((id) => serviceMap.has(id))),
   selectedDate: isBookableIsoDate(savedState.selectedDate) ? savedState.selectedDate : "",
   selectedTime: savedState.selectedTime || "",
-  staff: savedState.staff || "Any available staff",
+  staff: staffChoices.includes(savedState.staff) ? savedState.staff : "Any available staff",
+  mobileSelection: savedState.mobileSelection === "staff" ? "staff" : "services",
   currentMonth: firstOfMonth(savedState.selectedDate ? parseIsoDate(savedState.selectedDate) : today),
   busyIntervals: [],
   availabilityRequest: 0
@@ -112,6 +115,8 @@ const elements = {
   categoryRibbon: document.querySelector("[data-category-ribbon]"),
   serviceGroups: document.querySelector("[data-service-groups]"),
   serviceSearch: document.querySelector("[data-service-search]"),
+  mobileServicePanel: document.querySelector("[data-mobile-service-panel]"),
+  mobileStaffPanel: document.querySelector("[data-mobile-staff-panel]"),
   emptyServices: document.querySelector("[data-empty-services]"),
   calendarTitle: document.querySelector("[data-calendar-title]"),
   calendarGrid: document.querySelector("[data-calendar-grid]"),
@@ -192,7 +197,8 @@ function saveState() {
     activeCategory: state.activeCategory,
     selectedDate: state.selectedDate,
     selectedTime: state.selectedTime,
-    staff: state.staff
+    staff: state.staff,
+    mobileSelection: state.mobileSelection
   }));
 }
 
@@ -208,13 +214,25 @@ function schedulingDuration() {
   return totalDuration() || 30;
 }
 
-function renderServices(query = "") {
-  const normalized = query.trim().toLowerCase();
+function serviceOptionMarkup(service) {
+  const selected = state.selectedIds.has(service.id);
+  const durationLabel = service.duration ? `${service.duration} minutes` : "Consultation required";
+  return `
+    <button class="service-option${selected ? " is-selected" : ""}" type="button" data-service-id="${service.id}" aria-pressed="${selected}">
+      <span class="service-check" aria-hidden="true">✓</span>
+      <strong>${escapeHtml(service.name)}</strong>
+      <small>${durationLabel}</small>
+    </button>
+  `;
+}
+
+function renderDesktopServices(normalized) {
   const category = serviceCatalog.find((item) => item.id === state.activeCategory) || serviceCatalog[0];
   const visibleServices = category.services.filter((service) =>
     !normalized || service.name.toLowerCase().includes(normalized)
   );
 
+  elements.categoryRibbon.hidden = false;
   elements.categoryRibbon.innerHTML = serviceCatalog.map((item) => `
     <button
       class="category-button${item.id === category.id ? " is-active" : ""}"
@@ -235,24 +253,77 @@ function renderServices(query = "") {
         <span>${visibleServices.length} ${visibleServices.length === 1 ? "service" : "services"}</span>
       </div>
       <div class="service-list">
-        ${visibleServices.map((service) => {
-          const selected = state.selectedIds.has(service.id);
-          const durationLabel = service.duration ? `${service.duration} minutes` : "Consultation required";
-          return `
-            <button class="service-option${selected ? " is-selected" : ""}" type="button" data-service-id="${service.id}" aria-pressed="${selected}">
-              <span class="service-check" aria-hidden="true">✓</span>
-              <strong>${escapeHtml(service.name)}</strong>
-              <small>${durationLabel}</small>
-            </button>
-          `;
-        }).join("")}
+        ${visibleServices.map(serviceOptionMarkup).join("")}
       </div>
     </section>
   `;
 
   elements.emptyServices.hidden = visibleServices.length > 0;
-  elements.categoryRibbon.hidden = false;
+}
+
+function renderMobileServices(normalized) {
+  let matchCount = 0;
+  elements.categoryRibbon.hidden = true;
+  elements.categoryRibbon.innerHTML = "";
+  elements.serviceGroups.innerHTML = serviceCatalog.map((category) => {
+    const visibleServices = category.services.filter((service) =>
+      !normalized || service.name.toLowerCase().includes(normalized)
+    );
+    matchCount += visibleServices.length;
+    if (normalized && !visibleServices.length) return "";
+
+    const expanded = Boolean(normalized) || state.activeCategory === category.id;
+    const selectedCount = category.services.filter((service) => state.selectedIds.has(service.id)).length;
+    return `
+      <section class="mobile-service-category${expanded ? " is-expanded" : ""}">
+        <button
+          class="mobile-category-toggle"
+          type="button"
+          aria-expanded="${expanded}"
+          aria-controls="mobile-category-${category.id}"
+          data-category-target="${category.id}"
+        >
+          <span><strong>${escapeHtml(category.name)}</strong><small>${visibleServices.length} ${visibleServices.length === 1 ? "service" : "services"}${selectedCount ? ` · ${selectedCount} selected` : ""}</small></span>
+          <i aria-hidden="true"></i>
+        </button>
+        <div class="mobile-category-services" id="mobile-category-${category.id}" ${expanded ? "" : "hidden"}>
+          ${visibleServices.map(serviceOptionMarkup).join("")}
+        </div>
+      </section>
+    `;
+  }).join("");
+
+  elements.emptyServices.hidden = matchCount > 0;
+}
+
+function renderServices(query = "") {
+  const normalized = query.trim().toLowerCase();
+  if (mobileBookingQuery.matches) renderMobileServices(normalized);
+  else renderDesktopServices(normalized);
   updateNavigation();
+}
+
+function syncStaffChoices() {
+  document.querySelectorAll("[data-staff-option]").forEach((button) => {
+    const selected = button.dataset.staffOption === state.staff;
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+  elements.staff.value = state.staff;
+}
+
+function setMobileSelection(view) {
+  state.mobileSelection = view === "staff" ? "staff" : "services";
+  const staffActive = state.mobileSelection === "staff";
+  document.querySelectorAll("[data-mobile-selection]").forEach((button) => {
+    const selected = button.dataset.mobileSelection === state.mobileSelection;
+    button.classList.toggle("is-active", selected);
+    button.setAttribute("aria-selected", String(selected));
+  });
+  elements.mobileServicePanel.hidden = mobileBookingQuery.matches && staffActive;
+  elements.mobileStaffPanel.hidden = !mobileBookingQuery.matches || !staffActive;
+  elements.serviceSearch.closest(".service-search").hidden = mobileBookingQuery.matches && staffActive;
+  saveState();
 }
 
 function toggleService(id) {
@@ -669,6 +740,7 @@ function resetBooking() {
   state.selectedDate = "";
   state.selectedTime = "";
   state.staff = "Any available staff";
+  state.mobileSelection = "services";
   state.busyIntervals = [];
   state.currentMonth = firstOfMonth(today);
   elements.form.reset();
@@ -678,12 +750,28 @@ function resetBooking() {
   renderCalendar();
   renderTimes();
   renderSummary();
+  syncStaffChoices();
+  setMobileSelection("services");
   setStep(1);
 }
 
 document.addEventListener("click", (event) => {
   const target = event.target instanceof Element ? event.target : null;
   if (!target) return;
+
+  const mobileSelectionButton = target.closest("[data-mobile-selection]");
+  if (mobileSelectionButton) return setMobileSelection(mobileSelectionButton.dataset.mobileSelection);
+
+  const staffOption = target.closest("[data-staff-option]");
+  if (staffOption) {
+    state.staff = staffChoices.includes(staffOption.dataset.staffOption)
+      ? staffOption.dataset.staffOption
+      : "Any available staff";
+    saveState();
+    syncStaffChoices();
+    renderSummary();
+    return;
+  }
 
   const serviceButton = target.closest("[data-service-id]");
   if (serviceButton) return toggleService(serviceButton.dataset.serviceId);
@@ -693,7 +781,9 @@ document.addEventListener("click", (event) => {
 
   const categoryButton = target.closest("[data-category-target]");
   if (categoryButton) {
-    state.activeCategory = categoryButton.dataset.categoryTarget;
+    state.activeCategory = mobileBookingQuery.matches && state.activeCategory === categoryButton.dataset.categoryTarget
+      ? ""
+      : categoryButton.dataset.categoryTarget;
     elements.serviceSearch.value = "";
     saveState();
     renderServices();
@@ -732,6 +822,7 @@ elements.serviceSearch.addEventListener("input", (event) => renderServices(event
 elements.staff.addEventListener("change", (event) => {
   state.staff = event.target.value;
   saveState();
+  syncStaffChoices();
   renderSummary();
 });
 elements.form.addEventListener("submit", submitBooking);
@@ -739,7 +830,13 @@ elements.form.addEventListener("input", (event) => {
   if (event.target.matches("[aria-invalid='true']")) event.target.removeAttribute("aria-invalid");
 });
 
-elements.staff.value = state.staff;
+mobileBookingQuery.addEventListener("change", () => {
+  setMobileSelection(state.mobileSelection);
+  renderServices(elements.serviceSearch.value);
+});
+
+syncStaffChoices();
+setMobileSelection(state.mobileSelection);
 renderServices();
 renderCalendar();
 renderTimes();

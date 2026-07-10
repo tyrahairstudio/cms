@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
     <link rel="preload" as="image" type="image/webp" href="/images/covers/tyra-cover-02-champagne-blonde-960.webp">
     <link rel="stylesheet" href="/styles.css?v=services-heading-v1">
-    <link rel="stylesheet" href="/booking/booking.css?v=booking-v1">
+    <link rel="stylesheet" href="/booking/booking.css?v=booking-mobile-simple-v1">
   </head>
   <body class="booking1-page">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -89,9 +89,30 @@
                 </label>
               </div>
 
-              <div class="category-ribbon" data-category-ribbon role="tablist" aria-label="Service categories"></div>
-              <div class="service-groups" data-service-groups></div>
-              <p class="empty-services" data-empty-services hidden>No matching services. Try another search.</p>
+              <div class="mobile-booking-tabs" role="tablist" aria-label="Choose services or staff">
+                <button class="is-active" type="button" role="tab" aria-selected="true" data-mobile-selection="services">Services</button>
+                <button type="button" role="tab" aria-selected="false" data-mobile-selection="staff">Staff</button>
+              </div>
+
+              <div data-mobile-service-panel>
+                <div class="category-ribbon" data-category-ribbon role="tablist" aria-label="Service categories"></div>
+                <div class="service-groups" data-service-groups></div>
+                <p class="empty-services" data-empty-services hidden>No matching services. Try another search.</p>
+              </div>
+
+              <div class="mobile-staff-panel" data-mobile-staff-panel hidden>
+                <div class="mobile-staff-heading">
+                  <h3>Choose your stylist</h3>
+                  <p>Select a preferred stylist, or choose the first available appointment.</p>
+                </div>
+                <div class="mobile-staff-options" aria-label="Stylist preference">
+                  <button type="button" data-staff-option="Any available staff"><span>A</span><strong>Any available</strong><small>First available stylist</small></button>
+                  <button type="button" data-staff-option="CATHY"><span>C</span><strong>CATHY</strong><small>Stylist</small></button>
+                  <button type="button" data-staff-option="SAMANTHA"><span>S</span><strong>SAMANTHA</strong><small>Stylist</small></button>
+                  <button type="button" data-staff-option="VIVIAN"><span>V</span><strong>VIVIAN</strong><small>Stylist</small></button>
+                  <button type="button" data-staff-option="TYRA"><span>T</span><strong>TYRA</strong><small>Stylist</small></button>
+                </div>
+              </div>
 
               <div class="panel-actions end">
                 <button class="action-button primary" type="button" data-next-step="2" disabled>
@@ -111,6 +132,10 @@
                   <span>Stylist preference</span>
                   <select data-staff>
                     <option value="Any available staff">Any available staff</option>
+                    <option value="CATHY">CATHY</option>
+                    <option value="SAMANTHA">SAMANTHA</option>
+                    <option value="VIVIAN">VIVIAN</option>
+                    <option value="TYRA">TYRA</option>
                   </select>
                 </label>
               </div>
@@ -313,7 +338,7 @@
       </div>
     </footer>
 
-    <script src="/booking/booking.js?v=booking-v1" type="module"></script>
+    <script src="/booking/booking.js?v=booking-mobile-simple-v1" type="module"></script>
     <script src="/app-head-spa-relax-v1.js" type="module"></script>
   </body>
 </html>
