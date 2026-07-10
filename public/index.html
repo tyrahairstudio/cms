@@ -249,6 +249,18 @@
       </article>
     </div>
 
+    <div class="gallery-lightbox" data-gallery-lightbox hidden>
+      <button class="gallery-lightbox-close" type="button" data-gallery-lightbox-close aria-label="Close gallery image">Close</button>
+      <button class="gallery-lightbox-backdrop" type="button" data-gallery-lightbox-close aria-label="Close gallery image"></button>
+      <figure class="gallery-lightbox-frame" role="dialog" aria-modal="true" aria-labelledby="gallery-lightbox-title">
+        <img data-gallery-lightbox-image src="" alt="">
+        <figcaption>
+          <span data-gallery-lightbox-category></span>
+          <strong id="gallery-lightbox-title" data-gallery-lightbox-title></strong>
+        </figcaption>
+      </figure>
+    </div>
+
     <script src="/app-head-spa-relax-v1.js" type="module"></script>
   </body>
 </html>

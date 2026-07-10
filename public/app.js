@@ -525,7 +525,14 @@ function renderHomeGalleryLooks(gallery) {
   lookTiles.innerHTML = homeLooks
     .map(
       (look) => `
-        <article class="look-tile">
+        <button
+          class="look-tile${look.backdrop ? " has-backdrop" : ""}"
+          type="button"
+          data-gallery-image
+          data-large="${escapeHtml(look.large || look.display || look.thumb)}"
+          data-title="${escapeHtml(look.label)}"
+          data-category="${escapeHtml(look.category || "Our Photos")}"
+        >
           <picture>
             <source
               type="image/webp"
@@ -542,10 +549,12 @@ function renderHomeGalleryLooks(gallery) {
             >
           </picture>
           <span>${escapeHtml(look.label)}</span>
-        </article>
+        </button>
       `
     )
     .join("");
+
+  initGalleryLightbox();
 }
 
 function renderPosts(posts) {

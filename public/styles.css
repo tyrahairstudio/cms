@@ -685,9 +685,16 @@ h2 {
 
 .look-tile {
   aspect-ratio: 0.82;
+  background: transparent;
   border: 2px solid rgba(184, 105, 63, 0.28);
+  color: inherit;
+  cursor: zoom-in;
+  display: block;
+  font: inherit;
   overflow: hidden;
+  padding: 0;
   position: relative;
+  text-align: inherit;
 }
 
 .look-tile picture,
@@ -699,6 +706,7 @@ h2 {
 
 .look-tile img {
   object-fit: cover;
+  transition: transform 220ms ease;
 }
 
 .look-tile::after {
@@ -719,6 +727,16 @@ h2 {
   right: 14px;
   text-transform: uppercase;
   z-index: 1;
+}
+
+.look-tile:hover img,
+.look-tile:focus-visible img {
+  transform: scale(1.04);
+}
+
+.look-tile:focus-visible {
+  outline: 3px solid rgba(184, 105, 63, 0.72);
+  outline-offset: 4px;
 }
 
 .gallery-cta {
@@ -2694,7 +2712,7 @@ body.booking-transition-active [data-booking] {
   background:
     linear-gradient(90deg, rgba(23, 18, 15, 0.88) 0%, rgba(23, 18, 15, 0.74) 38%, rgba(23, 18, 15, 0.24) 72%),
     linear-gradient(0deg, rgba(23, 18, 15, 0.62), rgba(23, 18, 15, 0.08) 52%),
-    var(--gallery-hero-image, url("/images/gallery/gallery-017-img-4786-large.webp")) center 42% / cover;
+    var(--gallery-hero-image, url("/images/gallery/gallery-014-img-4786-large.webp")) center 42% / cover;
   display: flex;
   min-height: min(560px, calc(100vh - 132px));
   padding: clamp(64px, 8vw, 96px) clamp(20px, 5vw, 70px);
@@ -2780,7 +2798,7 @@ body.booking-transition-active [data-booking] {
   .gallery-page-hero {
     background:
       linear-gradient(180deg, rgba(23, 18, 15, 0.88) 0%, rgba(23, 18, 15, 0.7) 52%, rgba(23, 18, 15, 0.42) 100%),
-      var(--gallery-hero-image, url("/images/gallery/gallery-017-img-4786-large.webp")) center / cover;
+      var(--gallery-hero-image, url("/images/gallery/gallery-014-img-4786-large.webp")) center / cover;
     padding: 76px 20px 34px;
   }
 
