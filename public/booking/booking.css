@@ -2479,3 +2479,112 @@ a {
     padding-inline: 10px;
   }
 }
+
+/* Desktop readability: a balanced type scale for booking tasks and review. */
+@media (min-width: 861px) {
+  .booking1-page .nav-links a {
+    font-size: 14px;
+  }
+
+  .booking1-page .progress-step strong {
+    font-size: 16px;
+  }
+
+  .booking1-page .progress-step small {
+    font-size: 13px;
+  }
+
+  .booking1-page .step-label {
+    font-size: 13px;
+  }
+
+  .booking1-page .panel-heading h2,
+  .booking1-page .confirmation-panel h2 {
+    font-size: clamp(36px, 3.4vw, 50px);
+  }
+
+  .booking1-page .panel-heading > div > p:last-child,
+  .booking1-page .confirmation-panel > p {
+    font-size: 17px;
+  }
+
+  .booking1-page .category-button {
+    font-size: 14px;
+  }
+
+  .booking1-page .service-group-head h3 {
+    font-size: 30px;
+  }
+
+  .booking1-page .service-group-head span {
+    font-size: 12px;
+  }
+
+  .booking1-page .service-number {
+    font-size: 14px;
+  }
+
+  .booking1-page .service-option strong {
+    font-size: 16px;
+  }
+
+  .booking1-page .service-option small {
+    font-size: 13px;
+  }
+
+  .booking1-page .action-button {
+    font-size: 15px;
+  }
+
+  .booking1-page .staff-select span,
+  .booking1-page .weekday-row,
+  .booking1-page .time-group h4 {
+    font-size: 12px;
+  }
+
+  .booking1-page .calendar-day,
+  .booking1-page .time-option,
+  .booking1-page .availability-message,
+  .booking1-page .booking-form label:not(.consent-row):not(.honeypot),
+  .booking1-page .form-status {
+    font-size: 14px;
+  }
+
+  .booking1-page .staff-select select,
+  .booking1-page .booking-form input,
+  .booking1-page .booking-form textarea {
+    font-size: 16px;
+  }
+
+  .booking1-page .consent-row,
+  .booking1-page .duration-pill {
+    font-size: 13px;
+  }
+
+  .booking1-page .ribbon-head p,
+  .booking1-page .ribbon-head span {
+    font-size: 12px;
+  }
+
+  .booking1-page .appointment-ribbon h2 {
+    font-size: 33px;
+  }
+
+  .booking1-page .summary-empty p,
+  .booking1-page .summary-service small,
+  .booking1-page .summary-meta dt,
+  .booking1-page .summary-meta dd,
+  .booking1-page .summary-total span,
+  .booking1-page .summary-note,
+  .booking1-page .summary-help {
+    font-size: 13px;
+  }
+
+  .booking1-page .summary-service strong {
+    font-size: 14px;
+  }
+
+  .booking1-page .summary-total strong {
+    font-size: 22px;
+  }
+}
