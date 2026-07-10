@@ -1,6 +1,6 @@
 const MAX_BODY_BYTES = 32_000;
 const MAX_UPSTREAM_BYTES = 64_000;
-const UPSTREAM_TIMEOUT_MS = 12_000;
+const UPSTREAM_TIMEOUT_MS = 30_000;
 const DEFAULT_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyr3KlC6GcxTsp-VT3LXfRR4jbV4-Yqu3qtePM7Ai92ucyf3I89OdiHucgt2aypeVqdkA/exec";
 
 function jsonResponse(data, status = 200) {
