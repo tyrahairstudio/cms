@@ -1,6 +1,7 @@
 const MAX_BODY_BYTES = 32_000;
 const MAX_UPSTREAM_BYTES = 64_000;
 const UPSTREAM_TIMEOUT_MS = 30_000;
+const BACKGROUND_UPSTREAM_TIMEOUT_MS = 25_000;
 const DEFAULT_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyr3KlC6GcxTsp-VT3LXfRR4jbV4-Yqu3qtePM7Ai92ucyf3I89OdiHucgt2aypeVqdkA/exec";
 
 function jsonResponse(data, status = 200) {
@@ -120,12 +121,41 @@ async function readScriptResponse(response) {
   }
 }
 
-function logUpstreamError(stage, error) {
+function logUpstreamError(stage, error, requestId = "") {
   console.error(JSON.stringify({
     message: "booking upstream request failed",
     stage,
+    requestId,
     error: error instanceof Error ? error.message : String(error)
   }));
+}
+
+async function forwardBooking(env, payload) {
+  const timestamp = String(Date.now());
+  const payloadText = JSON.stringify(payload);
+  const signature = await hmacHex(env.BOOKING_WEBHOOK_SECRET, `${timestamp}.${payloadText}`);
+
+  try {
+    const response = await fetch(appsScriptUrl(env), {
+      method: "POST",
+      headers: { "content-type": "application/json; charset=utf-8", accept: "application/json" },
+      body: JSON.stringify({ timestamp, signature, payload: payloadText }),
+      redirect: "follow",
+      signal: AbortSignal.timeout(BACKGROUND_UPSTREAM_TIMEOUT_MS)
+    });
+    const result = await readScriptResponse(response);
+    if (!response.ok || !result.ok) {
+      console.error(JSON.stringify({
+        message: "booking upstream rejected request",
+        stage: "booking",
+        requestId: payload.requestId,
+        status: response.status,
+        code: result.code || "UPSTREAM_REJECTED"
+      }));
+    }
+  } catch (error) {
+    logUpstreamError("booking", error, payload.requestId);
+  }
 }
 
 function statusForScriptResult(result) {
@@ -173,7 +203,9 @@ export async function onRequestGet({ request, env }) {
   }
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost(context) {
+  const request = context.request;
+  const env = context.env;
   if (!configured(env)) {
     return jsonResponse({ ok: false, code: "NOT_CONFIGURED", message: "Booking integration is not configured yet." }, 503);
   }
@@ -203,24 +235,14 @@ export async function onRequestPost({ request, env }) {
     return jsonResponse({ ok: false, code: "TOO_FAST", message: "Please review your appointment before sending." }, 400);
   }
 
-  const timestamp = String(Date.now());
-  const payloadText = JSON.stringify(payload);
-  const signature = await hmacHex(env.BOOKING_WEBHOOK_SECRET, `${timestamp}.${payloadText}`);
-
-  try {
-    const response = await fetch(appsScriptUrl(env), {
-      method: "POST",
-      headers: { "content-type": "application/json; charset=utf-8", accept: "application/json" },
-      body: JSON.stringify({ timestamp, signature, payload: payloadText }),
-      redirect: "follow",
-      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS)
-    });
-    const result = await readScriptResponse(response);
-    return jsonResponse(result, statusForScriptResult(result));
-  } catch (error) {
-    logUpstreamError("booking", error);
-    return jsonResponse({ ok: false, code: "UPSTREAM_ERROR", message: "We could not save your request. Please try again or call the salon." }, 502);
-  }
+  context.waitUntil(forwardBooking(env, payload));
+  return jsonResponse({
+    ok: true,
+    accepted: true,
+    status: "Pending",
+    requestId: payload.requestId,
+    bookingId: payload.requestId
+  }, 202);
 }
 
 export function onRequestOptions() {

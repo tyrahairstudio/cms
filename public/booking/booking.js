@@ -785,13 +785,15 @@ async function submitBooking(event) {
   const submitButton = elements.form.querySelector('[type="submit"]');
   submitButton.disabled = true;
   submitButton.classList.add("is-loading");
-  elements.submitLabel.textContent = "Sending securely…";
+  elements.submitLabel.textContent = "Sending…";
 
   try {
+    const requestBody = JSON.stringify(payload);
     const response = await fetch(bookingApiUrl, {
       method: "POST",
       headers: { "content-type": "application/json", accept: "application/json" },
-      body: JSON.stringify(payload)
+      body: requestBody,
+      keepalive: true
     });
     const data = await readApiJson(response);
 
@@ -809,7 +811,7 @@ async function submitBooking(event) {
 
     pendingRequestId = "";
     pendingRequestFingerprint = "";
-    showConfirmation(data.bookingId || payload.requestId, payload);
+    showConfirmation(data.requestId || data.bookingId || payload.requestId, payload);
   } catch (error) {
     elements.formStatus.textContent = friendlySubmitError(error);
   } finally {
