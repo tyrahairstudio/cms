@@ -138,7 +138,12 @@ const elements = {
   summaryDate: document.querySelector("[data-summary-date]"),
   summaryTime: document.querySelector("[data-summary-time]"),
   summaryStaff: document.querySelector("[data-summary-staff]"),
-  summaryDuration: document.querySelector("[data-summary-duration]")
+  summaryDuration: document.querySelector("[data-summary-duration]"),
+  summarySheet: document.querySelector(".appointment-ribbon"),
+  summaryBackdrop: document.querySelector(".mobile-sheet-backdrop"),
+  mobileDock: document.querySelector("[data-mobile-booking-dock]"),
+  mobileDockSummary: document.querySelector("[data-mobile-dock-summary]"),
+  mobilePrimary: document.querySelector("[data-mobile-primary]")
 };
 
 function escapeHtml(value = "") {
@@ -326,6 +331,70 @@ function setMobileSelection(view) {
   saveState();
 }
 
+function formatShortDate(iso) {
+  if (!iso) return "Choose a date";
+  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(parseIsoDate(iso));
+}
+
+function updateMobileDock() {
+  if (!elements.mobileDock) return;
+  const services = selectedServices();
+  const hasServices = services.length > 0;
+  const hasSchedule = Boolean(state.selectedDate && state.selectedTime);
+  const confirmed = !elements.confirmation.hidden;
+
+  elements.mobileDock.hidden = confirmed;
+  if (confirmed) return;
+
+  if (state.step === 1) {
+    elements.mobileDockSummary.textContent = hasServices
+      ? `${services.length} ${services.length === 1 ? "service" : "services"} · ${totalDuration() ? formatDuration(totalDuration()) : "Consultation"}`
+      : "0 services";
+    elements.mobilePrimary.textContent = hasServices ? "Continue" : "Choose a service";
+    elements.mobilePrimary.disabled = !hasServices;
+    return;
+  }
+
+  if (state.step === 2) {
+    elements.mobileDockSummary.textContent = state.selectedDate
+      ? `${formatShortDate(state.selectedDate)} · ${state.selectedTime ? formatTime(state.selectedTime) : "Choose time"}`
+      : state.staff;
+    elements.mobilePrimary.textContent = hasSchedule ? "Continue" : "Choose a time";
+    elements.mobilePrimary.disabled = !hasSchedule;
+    return;
+  }
+
+  elements.mobileDockSummary.textContent = hasSchedule
+    ? `${formatShortDate(state.selectedDate)} · ${formatTime(state.selectedTime)}`
+    : "Review appointment";
+  elements.mobilePrimary.textContent = "Send request";
+  elements.mobilePrimary.disabled = false;
+}
+
+function openSummarySheet() {
+  if (!mobileBookingQuery.matches || !elements.summarySheet) return;
+  elements.summarySheet.classList.add("is-open");
+  elements.summarySheet.setAttribute("role", "dialog");
+  elements.summarySheet.setAttribute("aria-modal", "true");
+  elements.summaryBackdrop.hidden = false;
+  document.body.classList.add("booking-sheet-open");
+  window.setTimeout(() => {
+    elements.summarySheet.querySelector("[data-summary-close]")?.focus({ preventScroll: true });
+  }, 240);
+}
+
+function closeSummarySheet(restoreFocus = false) {
+  if (!elements.summarySheet) return;
+  elements.summarySheet.classList.remove("is-open");
+  elements.summarySheet.removeAttribute("role");
+  elements.summarySheet.removeAttribute("aria-modal");
+  elements.summaryBackdrop.hidden = true;
+  document.body.classList.remove("booking-sheet-open");
+  if (restoreFocus && mobileBookingQuery.matches) {
+    document.querySelector("[data-summary-open]")?.focus({ preventScroll: true });
+  }
+}
+
 function toggleService(id) {
   if (!serviceMap.has(id)) return;
   if (state.selectedIds.has(id)) state.selectedIds.delete(id);
@@ -376,12 +445,14 @@ function updateNavigation() {
   document.querySelectorAll('[data-next-step="3"]').forEach((button) => { button.disabled = !hasSchedule; });
   document.querySelectorAll('[data-step-nav="2"]').forEach((button) => { button.disabled = !hasServices; });
   document.querySelectorAll('[data-step-nav="3"]').forEach((button) => { button.disabled = !hasSchedule; });
+  updateMobileDock();
 }
 
 function setStep(step) {
   if (step === 2 && !state.selectedIds.size) return;
   if (step === 3 && !(state.selectedDate && state.selectedTime)) return;
   state.step = step;
+  closeSummarySheet();
 
   document.querySelectorAll("[data-panel]").forEach((panel) => {
     const active = Number(panel.dataset.panel) === step;
@@ -402,6 +473,7 @@ function setStep(step) {
     if (state.selectedDate) loadAvailability(state.selectedDate);
   }
 
+  updateMobileDock();
   document.querySelector(".booking-progress")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -721,6 +793,7 @@ async function submitBooking(event) {
 }
 
 function showConfirmation(bookingId, payload) {
+  closeSummarySheet();
   document.querySelectorAll("[data-panel]").forEach((panel) => { panel.hidden = true; });
   elements.confirmation.hidden = false;
   elements.confirmationTicket.innerHTML = `
@@ -730,6 +803,7 @@ function showConfirmation(bookingId, payload) {
     <div><span>Name</span><strong>${escapeHtml(payload.customer.name)}</strong></div>
   `;
   sessionStorage.removeItem(storageKey);
+  updateMobileDock();
   elements.confirmation.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -758,6 +832,23 @@ function resetBooking() {
 document.addEventListener("click", (event) => {
   const target = event.target instanceof Element ? event.target : null;
   if (!target) return;
+
+  if (target.closest("[data-summary-close]")) {
+    closeSummarySheet(true);
+    return;
+  }
+
+  if (target.closest("[data-summary-open]")) {
+    openSummarySheet();
+    return;
+  }
+
+  if (target.closest("[data-mobile-primary]")) {
+    if (state.step === 1) setStep(2);
+    else if (state.step === 2) setStep(3);
+    else elements.form.requestSubmit();
+    return;
+  }
 
   const mobileSelectionButton = target.closest("[data-mobile-selection]");
   if (mobileSelectionButton) return setMobileSelection(mobileSelectionButton.dataset.mobileSelection);
@@ -831,8 +922,15 @@ elements.form.addEventListener("input", (event) => {
 });
 
 mobileBookingQuery.addEventListener("change", () => {
+  if (!mobileBookingQuery.matches) closeSummarySheet();
   setMobileSelection(state.mobileSelection);
   renderServices(elements.serviceSearch.value);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && elements.summarySheet.classList.contains("is-open")) {
+    closeSummarySheet(true);
+  }
 });
 
 syncStaffChoices();

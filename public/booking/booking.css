@@ -1382,7 +1382,10 @@ a {
 }
 
 .mobile-booking-tabs,
-.mobile-staff-panel {
+.mobile-staff-panel,
+.mobile-sheet-close,
+.mobile-sheet-backdrop,
+.mobile-booking-dock {
   display: none;
 }
 
@@ -1680,9 +1683,11 @@ a {
     border: 1px solid #d9d0c8;
     color: transparent;
     height: 24px;
+    left: auto;
     opacity: 1;
     right: 13px;
-    transform: none;
+    top: 50%;
+    transform: translateY(-50%);
     width: 24px;
   }
 
@@ -1695,6 +1700,7 @@ a {
     background: var(--rose);
     border-color: var(--rose);
     color: #ffffff;
+    transform: translateY(-50%);
   }
 
   .mobile-staff-panel {
@@ -1840,5 +1846,323 @@ a {
   .confirmation-panel {
     padding: 14px 0 24px;
     text-align: center;
+  }
+
+  body.booking1-page {
+    padding-bottom: calc(82px + env(safe-area-inset-bottom));
+  }
+
+  body.booking-sheet-open {
+    overflow: hidden;
+  }
+
+  .hero-copy {
+    padding: 12px 18px 16px;
+  }
+
+  .hero-copy::before {
+    height: 46px;
+    margin-bottom: 4px;
+    width: 45px;
+  }
+
+  .hero-copy .eyebrow {
+    display: none;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(25px, 7.2vw, 30px);
+    line-height: 1.02;
+    max-width: 14ch;
+  }
+
+  .hero-copy > p:not(.eyebrow) {
+    font-size: 11px;
+    line-height: 1.4;
+    margin-top: 7px;
+    max-width: 42ch;
+  }
+
+  .trust-row {
+    display: none;
+  }
+
+  .booking-progress {
+    border-radius: 12px;
+    margin: 8px 0;
+    min-height: 48px;
+  }
+
+  .progress-step {
+    padding: 7px 4px;
+  }
+
+  .progress-step > span {
+    font-size: 11px;
+    height: 28px;
+    width: 28px;
+  }
+
+  .booking-card {
+    padding-top: 12px;
+  }
+
+  .panel-heading {
+    margin-bottom: 12px;
+  }
+
+  .panel-heading h2,
+  .confirmation-panel h2 {
+    font-size: clamp(24px, 6.8vw, 30px);
+  }
+
+  .panel-heading > div > p:last-child,
+  .confirmation-panel > p {
+    font-size: 11px;
+    line-height: 1.4;
+    margin-top: 4px;
+  }
+
+  .step-label {
+    display: none;
+  }
+
+  .booking-panel[data-panel="1"]:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .booking-panel[data-panel="1"] > .panel-heading {
+    display: contents;
+  }
+
+  .booking-panel[data-panel="1"] > .panel-heading > div {
+    margin-bottom: 10px;
+    order: 1;
+  }
+
+  .booking-panel[data-panel="1"] > .mobile-booking-tabs {
+    margin-bottom: 10px;
+    order: 2;
+  }
+
+  .booking-panel[data-panel="1"] > .panel-heading > .service-search {
+    margin-bottom: 10px;
+    order: 3;
+  }
+
+  .booking-panel[data-panel="1"] > [data-mobile-service-panel],
+  .booking-panel[data-panel="1"] > .mobile-staff-panel {
+    order: 4;
+  }
+
+  .booking-panel[data-panel="1"] > .panel-actions {
+    display: none;
+  }
+
+  .mobile-booking-tabs button {
+    min-height: 42px;
+  }
+
+  .service-search input {
+    min-height: 44px;
+  }
+
+  .service-search::before {
+    top: 15px;
+  }
+
+  .service-groups {
+    gap: 8px;
+  }
+
+  .mobile-category-toggle {
+    min-height: 56px;
+    padding-block: 9px;
+  }
+
+  .mobile-category-services {
+    max-height: min(42dvh, 350px);
+    overscroll-behavior: contain;
+    overflow-y: auto;
+  }
+
+  .mobile-staff-options {
+    max-height: min(43dvh, 370px);
+    overscroll-behavior: contain;
+    overflow-y: auto;
+    padding: 1px;
+  }
+
+  .panel-actions .action-button.primary {
+    display: none;
+  }
+
+  .panel-actions.split {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 12px;
+  }
+
+  .panel-actions .action-button.quiet {
+    align-self: flex-start;
+    min-height: 40px;
+    padding-inline: 4px;
+    width: auto;
+  }
+
+  .time-groups {
+    max-height: min(38dvh, 330px);
+    overscroll-behavior: contain;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+
+  .mobile-booking-dock {
+    align-items: stretch;
+    background: rgba(255, 255, 255, 0.97);
+    border-top: 1px solid #ded6ce;
+    bottom: 0;
+    box-shadow: 0 -10px 30px rgba(23, 18, 15, 0.12);
+    display: grid;
+    gap: 10px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(150px, 1.1fr);
+    left: 0;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    position: fixed;
+    right: 0;
+    transition: transform 180ms ease;
+    z-index: 80;
+  }
+
+  body.booking-sheet-open .mobile-booking-dock {
+    pointer-events: none;
+    transform: translateY(110%);
+  }
+
+  .mobile-booking-dock[hidden] {
+    display: none !important;
+  }
+
+  .mobile-dock-summary {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: grid;
+    min-width: 0;
+    padding: 3px 2px;
+    text-align: left;
+  }
+
+  .mobile-dock-summary small {
+    color: #7c716a;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mobile-dock-summary strong {
+    font-size: 12px;
+    line-height: 1.3;
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-dock-primary {
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    min-height: 50px;
+    padding: 10px 16px;
+  }
+
+  .mobile-dock-primary:disabled {
+    background: #d5cec8;
+    border-color: #d5cec8;
+    color: #ffffff;
+    cursor: not-allowed;
+  }
+
+  .mobile-sheet-backdrop {
+    background: rgba(23, 18, 15, 0.48);
+    border: 0;
+    bottom: 0;
+    display: block;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 90;
+  }
+
+  .mobile-sheet-backdrop[hidden] {
+    display: none;
+  }
+
+  .appointment-ribbon {
+    border-radius: 24px 24px 0 0;
+    bottom: 0;
+    left: 0;
+    margin: 0 auto;
+    max-height: min(82dvh, 720px);
+    max-width: 540px;
+    overflow-y: auto;
+    padding: 34px 20px calc(28px + env(safe-area-inset-bottom));
+    pointer-events: none;
+    position: fixed !important;
+    right: 0;
+    top: auto;
+    transform: translateY(105%);
+    transition: transform 220ms ease, visibility 220ms ease;
+    visibility: hidden;
+    width: 100%;
+    z-index: 92;
+  }
+
+  .appointment-ribbon::before {
+    background: rgba(255, 255, 255, 0.38);
+    border-radius: 999px;
+    content: "";
+    height: 4px;
+    left: 50%;
+    position: absolute;
+    top: 12px;
+    transform: translateX(-50%);
+    width: 44px;
+  }
+
+  .appointment-ribbon.is-open {
+    pointer-events: auto;
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  .mobile-sheet-close {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 0;
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    font-size: 23px;
+    height: 38px;
+    justify-content: center;
+    position: absolute;
+    right: 16px;
+    top: 22px;
+    width: 38px;
+    z-index: 2;
+  }
+
+  .appointment-ribbon .ribbon-head {
+    padding-right: 48px;
   }
 }
