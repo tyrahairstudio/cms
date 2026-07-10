@@ -86,7 +86,7 @@ const localPreviewHosts = new Set(["localhost", "127.0.0.1", "::1"]);
 const bookingApiUrl = localPreviewHosts.has(window.location.hostname)
   ? "https://tyrahairstudio.com/api/booking"
   : "/api/booking";
-const storageKey = "tyra-booking1-state";
+const storageKey = "tyra-booking-state";
 const startedAt = Date.now();
 const today = startOfDay(new Date());
 const lastBookableDate = addDays(today, 90);
@@ -607,7 +607,7 @@ async function submitBooking(event) {
     })),
     notes: String(formData.get("notes") || "").trim(),
     company: String(formData.get("company") || ""),
-    source: "tyrahairstudio.com/booking1",
+    source: "tyrahairstudio.com/booking",
     locale: navigator.language || "en-US"
   };
   payload.requestId = requestIdFor(payload);

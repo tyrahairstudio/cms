@@ -1,0 +1,2 @@
+/booking1 /booking/ 301
+/booking1/* /booking/:splat 301

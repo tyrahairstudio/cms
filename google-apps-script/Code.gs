@@ -142,7 +142,7 @@ function doPost(e) {
         safeSheetText_(formatServices_(payload.services)),
         safeSheetText_(payload.appointment.staff || "Any available staff"),
         safeSheetText_(payload.notes || ""),
-        safeSheetText_(payload.source || "tyrahairstudio.com/booking1"),
+        safeSheetText_(payload.source || "tyrahairstudio.com/booking"),
         safeSheetText_(payload.requestId)
       ]);
       SpreadsheetApp.flush();
