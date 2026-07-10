@@ -1,0 +1,700 @@
+const serviceCatalog = [
+  {
+    id: "hair-cuts",
+    name: "Hair Cuts",
+    services: [
+      { id: "women-cut-only", name: "Women: Cut Only", duration: 35, price: 35, priceLabel: "$35+" },
+      { id: "women-wash-cut-style", name: "Women: Wash Cut Style", duration: 45, price: 45, priceLabel: "$45+" },
+      { id: "men-cut", name: "Men", duration: 20, price: 20, priceLabel: "$20+" },
+      { id: "boy-cut", name: "Boy", duration: 18, price: 18, priceLabel: "$18+" },
+      { id: "girl-cut", name: "Girl", duration: 30, price: 30, priceLabel: "$30+" },
+      { id: "beard-trim", name: "Beard Trim", duration: 10, price: 10, priceLabel: "$10+" },
+      { id: "bang-trim", name: "Bang Trim", duration: 10, price: 10, priceLabel: "$10+" },
+      { id: "hair-wash", name: "Hair Wash", duration: 10, price: 10, priceLabel: "$10" }
+    ]
+  },
+  {
+    id: "hair-color",
+    name: "Hair Color",
+    services: [
+      { id: "mens-color", name: "Men's Color", duration: 65, price: 65, priceLabel: "$65+" },
+      { id: "mens-highlights", name: "Men's Highlights", duration: 85, price: 85, priceLabel: "$85+" },
+      { id: "all-over-color", name: "All Over Color", duration: 130, price: 130, priceLabel: "$130+" },
+      { id: "partial-highlights", name: "Partial Highlights", duration: 120, price: 120, priceLabel: "$120+" },
+      { id: "full-highlights", name: "Full Highlights", duration: 180, price: 180, priceLabel: "$180+" },
+      { id: "balayage-ombre", name: "Balayage / Ombre", duration: 220, price: 220, priceLabel: "$220+" },
+      { id: "gray-cover", name: "Gray Cover", duration: 75, price: 75, priceLabel: "$75+" },
+      { id: "bleach-tone", name: "Bleach & Tone", duration: 200, price: 200, priceLabel: "$200+" },
+      { id: "toner", name: "Toner", duration: 65, price: 65, priceLabel: "$65+" },
+      { id: "color-correction", name: "Color Correction", duration: 0, price: null, priceLabel: "Consult" }
+    ]
+  },
+  {
+    id: "hair-style",
+    name: "Hair Style",
+    services: [
+      { id: "styling", name: "Styling (Curls / Straight)", duration: 25, price: 25, priceLabel: "$25+" },
+      { id: "special-updos", name: "Special Up-dos", duration: 45, price: 45, priceLabel: "$45+" },
+      { id: "shampoo-style", name: "Shampoo And Style (Blowout)", duration: 35, price: 35, priceLabel: "$35+" }
+    ]
+  },
+  {
+    id: "perm",
+    name: "Perm",
+    services: [
+      { id: "silky-cold-perm", name: "Silky Cold Perm", duration: 100, price: 100, priceLabel: "$100+" },
+      { id: "mens-perm", name: "Men's Perm", duration: 85, price: 85, priceLabel: "$85+" },
+      { id: "body-spiral-perm", name: "Body Waves / Spiral Perm", duration: 150, price: 150, priceLabel: "$150+" },
+      { id: "japanese-straightening", name: "Japanese Straightening Perm", duration: 250, price: 250, priceLabel: "$250+" }
+    ]
+  },
+  {
+    id: "treatments",
+    name: "Treatments",
+    services: [
+      { id: "shiny-glossing", name: "Shiny Glossing Treatment", duration: 35, price: 35, priceLabel: "$35+" },
+      { id: "olaplex", name: "Olaplex Treatment", duration: 35, price: 35, priceLabel: "$35+" },
+      { id: "keratin", name: "Keratin Treatment", duration: 180, price: 180, priceLabel: "$180+" },
+      { id: "brazilian-blowout", name: "Brazilian Blowouts Treatment", duration: 220, price: 220, priceLabel: "$220+" }
+    ]
+  },
+  {
+    id: "waxing",
+    name: "Waxing",
+    services: [
+      { id: "eyebrow", name: "Eyebrow", duration: 15, price: 15, priceLabel: "$15+" },
+      { id: "lip", name: "Lip", duration: 10, price: 10, priceLabel: "$10+" },
+      { id: "chin", name: "Chin", duration: 10, price: 10, priceLabel: "$10+" },
+      { id: "full-face", name: "Full Face", duration: 30, price: 30, priceLabel: "$30+" }
+    ]
+  },
+  {
+    id: "head-spa",
+    name: "Head Spa",
+    services: [
+      { id: "scalp-deep-conditioning-massage", name: "Scalp Treatment / Deep Conditioning / Head Massage", duration: 60, price: 60, priceLabel: "$60+" }
+    ]
+  }
+];
+
+const serviceMap = new Map();
+serviceCatalog.forEach((category) => {
+  category.services.forEach((service) => serviceMap.set(service.id, { ...service, category: category.name }));
+});
+
+const storageKey = "tyra-booking1-state";
+const startedAt = Date.now();
+const today = startOfDay(new Date());
+const lastBookableDate = addDays(today, 90);
+const savedState = readSavedState();
+
+const state = {
+  step: 1,
+  selectedIds: new Set((savedState.selectedIds || []).filter((id) => serviceMap.has(id))),
+  selectedDate: isBookableIsoDate(savedState.selectedDate) ? savedState.selectedDate : "",
+  selectedTime: savedState.selectedTime || "",
+  staff: savedState.staff || "Any available staff",
+  currentMonth: firstOfMonth(savedState.selectedDate ? parseIsoDate(savedState.selectedDate) : today),
+  busyIntervals: [],
+  availabilityRequest: 0
+};
+
+const elements = {
+  categoryRibbon: document.querySelector("[data-category-ribbon]"),
+  serviceGroups: document.querySelector("[data-service-groups]"),
+  serviceSearch: document.querySelector("[data-service-search]"),
+  emptyServices: document.querySelector("[data-empty-services]"),
+  calendarTitle: document.querySelector("[data-calendar-title]"),
+  calendarGrid: document.querySelector("[data-calendar-grid]"),
+  calendarPrev: document.querySelector("[data-calendar-prev]"),
+  calendarNext: document.querySelector("[data-calendar-next]"),
+  selectedDateLabel: document.querySelector("[data-selected-date-label]"),
+  durationPill: document.querySelector("[data-duration-pill]"),
+  timeGroups: document.querySelector("[data-time-groups]"),
+  availabilityMessage: document.querySelector("[data-availability-message]"),
+  staff: document.querySelector("[data-staff]"),
+  form: document.querySelector("[data-booking-form]"),
+  formStatus: document.querySelector("[data-form-status]"),
+  submitLabel: document.querySelector("[data-submit-label]"),
+  confirmation: document.querySelector("[data-confirmation]"),
+  confirmationTicket: document.querySelector("[data-confirmation-ticket]"),
+  summaryCount: document.querySelector("[data-summary-count]"),
+  summaryEmpty: document.querySelector("[data-summary-empty]"),
+  summaryServices: document.querySelector("[data-summary-services]"),
+  summaryDate: document.querySelector("[data-summary-date]"),
+  summaryTime: document.querySelector("[data-summary-time]"),
+  summaryStaff: document.querySelector("[data-summary-staff]"),
+  summaryDuration: document.querySelector("[data-summary-duration]"),
+  summaryPrice: document.querySelector("[data-summary-price]")
+};
+
+function escapeHtml(value = "") {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function startOfDay(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function addDays(date, amount) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + amount);
+  return next;
+}
+
+function firstOfMonth(date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
+function toIsoDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function parseIsoDate(value) {
+  const [year, month, day] = String(value).split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function isBookableIsoDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return false;
+  const date = startOfDay(parseIsoDate(value));
+  return date >= today && date <= lastBookableDate;
+}
+
+function readSavedState() {
+  try {
+    return JSON.parse(sessionStorage.getItem(storageKey) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveState() {
+  sessionStorage.setItem(storageKey, JSON.stringify({
+    selectedIds: [...state.selectedIds],
+    selectedDate: state.selectedDate,
+    selectedTime: state.selectedTime,
+    staff: state.staff
+  }));
+}
+
+function selectedServices() {
+  return [...state.selectedIds].map((id) => serviceMap.get(id)).filter(Boolean);
+}
+
+function totalDuration() {
+  return selectedServices().reduce((total, service) => total + service.duration, 0);
+}
+
+function schedulingDuration() {
+  return totalDuration() || 30;
+}
+
+function totalPrice() {
+  return selectedServices().reduce((total, service) => total + (service.price || 0), 0);
+}
+
+function renderServices(query = "") {
+  const normalized = query.trim().toLowerCase();
+  const categories = serviceCatalog.map((category) => ({
+    ...category,
+    services: category.services.filter((service) =>
+      !normalized || `${category.name} ${service.name}`.toLowerCase().includes(normalized)
+    )
+  })).filter((category) => category.services.length);
+
+  elements.categoryRibbon.innerHTML = serviceCatalog.map((category, index) => `
+    <button class="category-button${index === 0 ? " is-active" : ""}" type="button" data-category-target="${category.id}">
+      ${escapeHtml(category.name)}
+    </button>
+  `).join("");
+
+  elements.serviceGroups.innerHTML = categories.map((category) => `
+    <section class="service-group" id="category-${category.id}" data-category-group="${category.id}">
+      <div class="service-group-head">
+        <h3>${escapeHtml(category.name)}</h3>
+        <span>${category.services.length} ${category.services.length === 1 ? "service" : "services"}</span>
+      </div>
+      <div class="service-list">
+        ${category.services.map((service) => {
+          const selected = state.selectedIds.has(service.id);
+          const durationLabel = service.duration ? `${service.duration} minutes` : "Consultation required";
+          return `
+            <button class="service-option${selected ? " is-selected" : ""}" type="button" data-service-id="${service.id}" aria-pressed="${selected}">
+              <span class="service-check" aria-hidden="true">✓</span>
+              <strong>${escapeHtml(service.name)}</strong>
+              <small>${durationLabel}</small>
+              <span class="service-price">${escapeHtml(service.priceLabel)}</span>
+            </button>
+          `;
+        }).join("")}
+      </div>
+    </section>
+  `).join("");
+
+  elements.emptyServices.hidden = categories.length > 0;
+  elements.categoryRibbon.hidden = normalized.length > 0;
+  updateNavigation();
+}
+
+function toggleService(id) {
+  if (!serviceMap.has(id)) return;
+  if (state.selectedIds.has(id)) state.selectedIds.delete(id);
+  else state.selectedIds.add(id);
+
+  state.selectedTime = "";
+  state.busyIntervals = [];
+  saveState();
+  renderServices(elements.serviceSearch.value);
+  renderSummary();
+  renderTimes();
+}
+
+function removeService(id) {
+  if (!state.selectedIds.delete(id)) return;
+  state.selectedTime = "";
+  state.busyIntervals = [];
+  saveState();
+  renderServices(elements.serviceSearch.value);
+  renderSummary();
+  renderTimes();
+}
+
+function renderSummary() {
+  const services = selectedServices();
+  elements.summaryCount.textContent = `${services.length} ${services.length === 1 ? "service" : "services"}`;
+  elements.summaryEmpty.hidden = services.length > 0;
+  elements.summaryServices.innerHTML = services.map((service) => `
+    <div class="summary-service">
+      <strong>${escapeHtml(service.name)}</strong>
+      <small>${service.duration ? `${service.duration} min` : "Consultation"} · ${escapeHtml(service.priceLabel)}</small>
+      <button type="button" data-remove-service="${service.id}" aria-label="Remove ${escapeHtml(service.name)}">×</button>
+    </div>
+  `).join("");
+
+  elements.summaryDate.textContent = state.selectedDate ? formatLongDate(state.selectedDate) : "Not selected";
+  elements.summaryTime.textContent = state.selectedTime ? formatTime(state.selectedTime) : "Not selected";
+  elements.summaryStaff.textContent = state.staff;
+  elements.summaryDuration.textContent = totalDuration() ? formatDuration(totalDuration()) : (services.length ? "Consultation" : "0 min");
+  elements.summaryPrice.textContent = services.some((service) => service.price === null) && !totalPrice()
+    ? "Consultation"
+    : `$${totalPrice()}+`;
+  elements.durationPill.textContent = `${formatDuration(schedulingDuration())} visit`;
+  updateNavigation();
+}
+
+function updateNavigation() {
+  const hasServices = state.selectedIds.size > 0;
+  const hasSchedule = Boolean(state.selectedDate && state.selectedTime);
+  document.querySelectorAll('[data-next-step="2"]').forEach((button) => { button.disabled = !hasServices; });
+  document.querySelectorAll('[data-next-step="3"]').forEach((button) => { button.disabled = !hasSchedule; });
+  document.querySelectorAll('[data-step-nav="2"]').forEach((button) => { button.disabled = !hasServices; });
+  document.querySelectorAll('[data-step-nav="3"]').forEach((button) => { button.disabled = !hasSchedule; });
+}
+
+function setStep(step) {
+  if (step === 2 && !state.selectedIds.size) return;
+  if (step === 3 && !(state.selectedDate && state.selectedTime)) return;
+  state.step = step;
+
+  document.querySelectorAll("[data-panel]").forEach((panel) => {
+    const active = Number(panel.dataset.panel) === step;
+    panel.hidden = !active;
+    panel.classList.toggle("is-active", active);
+  });
+
+  document.querySelectorAll("[data-step-nav]").forEach((button) => {
+    const buttonStep = Number(button.dataset.stepNav);
+    button.classList.toggle("is-active", buttonStep === step);
+    button.classList.toggle("is-complete", buttonStep < step);
+    if (buttonStep === step) button.setAttribute("aria-current", "step");
+    else button.removeAttribute("aria-current");
+  });
+
+  if (step === 2) {
+    renderCalendar();
+    if (state.selectedDate) loadAvailability(state.selectedDate);
+  }
+
+  document.querySelector(".booking-progress")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderCalendar() {
+  const year = state.currentMonth.getFullYear();
+  const month = state.currentMonth.getMonth();
+  const gridStart = addDays(firstOfMonth(state.currentMonth), -firstOfMonth(state.currentMonth).getDay());
+  elements.calendarTitle.textContent = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(state.currentMonth);
+
+  elements.calendarGrid.innerHTML = Array.from({ length: 42 }, (_, index) => {
+    const date = addDays(gridStart, index);
+    const iso = toIsoDate(date);
+    const outside = date.getMonth() !== month;
+    const disabled = date < today || date > lastBookableDate;
+    const selected = iso === state.selectedDate;
+    const todayClass = iso === toIsoDate(today);
+    return `
+      <button
+        class="calendar-day${outside ? " is-outside" : ""}${selected ? " is-selected" : ""}${todayClass ? " is-today" : ""}"
+        type="button"
+        role="gridcell"
+        data-date="${iso}"
+        aria-label="${escapeHtml(formatLongDate(iso))}"
+        aria-selected="${selected}"
+        ${disabled ? "disabled" : ""}
+      >${date.getDate()}</button>
+    `;
+  }).join("");
+
+  const currentFirst = firstOfMonth(today);
+  const lastFirst = firstOfMonth(lastBookableDate);
+  elements.calendarPrev.disabled = state.currentMonth <= currentFirst;
+  elements.calendarNext.disabled = state.currentMonth >= lastFirst;
+}
+
+async function selectDate(iso) {
+  if (!isBookableIsoDate(iso)) return;
+  state.selectedDate = iso;
+  state.selectedTime = "";
+  state.currentMonth = firstOfMonth(parseIsoDate(iso));
+  state.busyIntervals = [];
+  saveState();
+  renderCalendar();
+  renderSummary();
+  await loadAvailability(iso);
+}
+
+function businessHours(date) {
+  const day = date.getDay();
+  if (day === 0) return { open: 11 * 60, close: 17 * 60 };
+  if (day === 6) return { open: 9 * 60, close: 18 * 60 + 30 };
+  return { open: 9 * 60 + 30, close: 19 * 60 };
+}
+
+function minutesToTime(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+}
+
+function timeToMinutes(value) {
+  const [hours, minutes] = String(value).split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+function addMinutesToTime(value, amount) {
+  return minutesToTime(timeToMinutes(value) + amount);
+}
+
+function formatTime(value) {
+  const [hours, minutes] = String(value).split(":").map(Number);
+  const suffix = hours >= 12 ? "PM" : "AM";
+  return `${hours % 12 || 12}:${String(minutes).padStart(2, "0")} ${suffix}`;
+}
+
+function formatLongDate(iso) {
+  return new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }).format(parseIsoDate(iso));
+}
+
+function formatDuration(minutes) {
+  if (minutes < 60) return `${minutes} min`;
+  const hours = Math.floor(minutes / 60);
+  const remainder = minutes % 60;
+  return remainder ? `${hours} hr ${remainder} min` : `${hours} hr`;
+}
+
+function overlapsBusyInterval(start, duration) {
+  const startMinutes = timeToMinutes(start);
+  const endMinutes = startMinutes + duration;
+  return state.busyIntervals.some((interval) => {
+    const busyStart = timeToMinutes(interval.start);
+    const busyEnd = timeToMinutes(interval.end);
+    return startMinutes < busyEnd && endMinutes > busyStart;
+  });
+}
+
+function renderTimes() {
+  elements.selectedDateLabel.textContent = state.selectedDate ? formatLongDate(state.selectedDate) : "Select a date";
+  if (!state.selectedDate) {
+    elements.timeGroups.innerHTML = "";
+    elements.availabilityMessage.textContent = "Choose a date to see times.";
+    updateNavigation();
+    return;
+  }
+
+  const date = parseIsoDate(state.selectedDate);
+  const { open, close } = businessHours(date);
+  const duration = schedulingDuration();
+  const now = new Date();
+  const isToday = state.selectedDate === toIsoDate(today);
+  const earliestToday = now.getHours() * 60 + now.getMinutes() + 30;
+  const groups = { Morning: [], Afternoon: [], Evening: [] };
+
+  for (let minutes = open; minutes + duration <= close; minutes += 15) {
+    const value = minutesToTime(minutes);
+    const disabled = (isToday && minutes < earliestToday) || overlapsBusyInterval(value, duration);
+    const label = minutes < 12 * 60 ? "Morning" : minutes < 17 * 60 ? "Afternoon" : "Evening";
+    groups[label].push({ value, disabled });
+  }
+
+  elements.timeGroups.innerHTML = Object.entries(groups).filter(([, slots]) => slots.length).map(([label, slots]) => `
+    <section class="time-group">
+      <h4>${label}</h4>
+      <div class="time-options">
+        ${slots.map((slot) => `
+          <button
+            class="time-option${slot.value === state.selectedTime ? " is-selected" : ""}"
+            type="button"
+            data-time="${slot.value}"
+            aria-pressed="${slot.value === state.selectedTime}"
+            ${slot.disabled ? "disabled" : ""}
+          >${formatTime(slot.value)}</button>
+        `).join("")}
+      </div>
+    </section>
+  `).join("");
+
+  const availableCount = Object.values(groups).flat().filter((slot) => !slot.disabled).length;
+  if (!elements.availabilityMessage.classList.contains("is-error")) {
+    elements.availabilityMessage.textContent = availableCount
+      ? `${availableCount} start times available for this visit.`
+      : "No times fit this visit on the selected date. Try another day.";
+  }
+  updateNavigation();
+}
+
+async function loadAvailability(iso) {
+  const requestNumber = ++state.availabilityRequest;
+  elements.availabilityMessage.classList.remove("is-error");
+  elements.availabilityMessage.textContent = "Checking live availability…";
+  renderTimes();
+
+  try {
+    const params = new URLSearchParams({
+      action: "availability",
+      date: iso,
+      duration: String(schedulingDuration())
+    });
+    const response = await fetch(`/api/booking?${params}`, { headers: { accept: "application/json" } });
+    const data = await response.json();
+    if (!response.ok || !data.ok) throw new Error(data.message || "Availability is temporarily unavailable.");
+    if (requestNumber !== state.availabilityRequest) return;
+    state.busyIntervals = Array.isArray(data.busyIntervals) ? data.busyIntervals : [];
+    elements.availabilityMessage.classList.remove("is-error");
+    renderTimes();
+  } catch {
+    if (requestNumber !== state.availabilityRequest) return;
+    state.busyIntervals = [];
+    elements.availabilityMessage.classList.add("is-error");
+    elements.availabilityMessage.textContent = "Live availability is being connected. Your selected time will be checked when you send the request.";
+    renderTimes();
+  }
+}
+
+function selectTime(value) {
+  state.selectedTime = value;
+  saveState();
+  renderTimes();
+  renderSummary();
+}
+
+function validateForm() {
+  let firstInvalid = null;
+  elements.form.querySelectorAll("[required]").forEach((field) => {
+    const valid = field.checkValidity();
+    field.setAttribute("aria-invalid", String(!valid));
+    if (!valid && !firstInvalid) firstInvalid = field;
+  });
+  firstInvalid?.focus();
+  return !firstInvalid;
+}
+
+function createRequestId() {
+  if (globalThis.crypto?.randomUUID) return crypto.randomUUID();
+  return `tyra-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+async function submitBooking(event) {
+  event.preventDefault();
+  elements.formStatus.textContent = "";
+  elements.formStatus.classList.remove("is-success");
+
+  if (!validateForm()) {
+    elements.formStatus.textContent = "Please complete the required fields before sending your request.";
+    return;
+  }
+
+  if (!state.selectedIds.size || !state.selectedDate || !state.selectedTime) {
+    elements.formStatus.textContent = "Your services, date, or time selection is missing.";
+    return;
+  }
+
+  const formData = new FormData(elements.form);
+  const requestId = createRequestId();
+  const services = selectedServices();
+  const duration = schedulingDuration();
+  const payload = {
+    requestId,
+    createdAt: new Date().toISOString(),
+    clientStartedAt: new Date(startedAt).toISOString(),
+    customer: {
+      name: String(formData.get("name") || "").trim(),
+      phone: String(formData.get("phone") || "").trim(),
+      email: String(formData.get("email") || "").trim()
+    },
+    appointment: {
+      date: state.selectedDate,
+      startTime: state.selectedTime,
+      endTime: addMinutesToTime(state.selectedTime, duration),
+      duration,
+      staff: state.staff
+    },
+    services: services.map((service) => ({
+      id: service.id,
+      name: service.name,
+      category: service.category,
+      duration: service.duration,
+      price: service.price,
+      priceLabel: service.priceLabel
+    })),
+    notes: String(formData.get("notes") || "").trim(),
+    company: String(formData.get("company") || ""),
+    source: "tyrahairstudio.com/booking1",
+    locale: navigator.language || "en-US"
+  };
+
+  const submitButton = elements.form.querySelector('[type="submit"]');
+  submitButton.disabled = true;
+  submitButton.classList.add("is-loading");
+  elements.submitLabel.textContent = "Sending securely…";
+
+  try {
+    const response = await fetch("/api/booking", {
+      method: "POST",
+      headers: { "content-type": "application/json", accept: "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      if (data.code === "SLOT_UNAVAILABLE") {
+        state.selectedTime = "";
+        saveState();
+        renderSummary();
+        await loadAvailability(state.selectedDate);
+        setStep(2);
+        throw new Error("That time was just taken. Please choose another available time.");
+      }
+      throw new Error(data.message || "We could not send the request. Please try again or call the salon.");
+    }
+
+    showConfirmation(data.bookingId || requestId, payload);
+  } catch (error) {
+    elements.formStatus.textContent = error.message || "We could not send the request. Please try again or call the salon.";
+  } finally {
+    submitButton.disabled = false;
+    submitButton.classList.remove("is-loading");
+    elements.submitLabel.textContent = "Send appointment request";
+  }
+}
+
+function showConfirmation(bookingId, payload) {
+  document.querySelectorAll("[data-panel]").forEach((panel) => { panel.hidden = true; });
+  elements.confirmation.hidden = false;
+  elements.confirmationTicket.innerHTML = `
+    <div><span>Request</span><strong>${escapeHtml(bookingId)}</strong></div>
+    <div><span>Date</span><strong>${escapeHtml(formatLongDate(payload.appointment.date))}</strong></div>
+    <div><span>Time</span><strong>${escapeHtml(formatTime(payload.appointment.startTime))}</strong></div>
+    <div><span>Name</span><strong>${escapeHtml(payload.customer.name)}</strong></div>
+  `;
+  sessionStorage.removeItem(storageKey);
+  elements.confirmation.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function resetBooking() {
+  state.step = 1;
+  state.selectedIds.clear();
+  state.selectedDate = "";
+  state.selectedTime = "";
+  state.staff = "Any available staff";
+  state.busyIntervals = [];
+  state.currentMonth = firstOfMonth(today);
+  elements.form.reset();
+  elements.confirmation.hidden = true;
+  sessionStorage.removeItem(storageKey);
+  renderServices();
+  renderCalendar();
+  renderTimes();
+  renderSummary();
+  setStep(1);
+}
+
+document.addEventListener("click", (event) => {
+  const target = event.target instanceof Element ? event.target : null;
+  if (!target) return;
+
+  const serviceButton = target.closest("[data-service-id]");
+  if (serviceButton) return toggleService(serviceButton.dataset.serviceId);
+
+  const removeButton = target.closest("[data-remove-service]");
+  if (removeButton) return removeService(removeButton.dataset.removeService);
+
+  const categoryButton = target.closest("[data-category-target]");
+  if (categoryButton) {
+    document.querySelectorAll("[data-category-target]").forEach((button) => button.classList.toggle("is-active", button === categoryButton));
+    document.querySelector(`#category-${categoryButton.dataset.categoryTarget}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  const next = target.closest("[data-next-step]");
+  if (next) return setStep(Number(next.dataset.nextStep));
+
+  const previous = target.closest("[data-prev-step]");
+  if (previous) return setStep(Number(previous.dataset.prevStep));
+
+  const stepNav = target.closest("[data-step-nav]");
+  if (stepNav && !stepNav.disabled) return setStep(Number(stepNav.dataset.stepNav));
+
+  const dateButton = target.closest("[data-date]");
+  if (dateButton && !dateButton.disabled) return selectDate(dateButton.dataset.date);
+
+  const timeButton = target.closest("[data-time]");
+  if (timeButton && !timeButton.disabled) return selectTime(timeButton.dataset.time);
+
+  if (target.closest("[data-calendar-prev]")) {
+    state.currentMonth = new Date(state.currentMonth.getFullYear(), state.currentMonth.getMonth() - 1, 1);
+    return renderCalendar();
+  }
+
+  if (target.closest("[data-calendar-next]")) {
+    state.currentMonth = new Date(state.currentMonth.getFullYear(), state.currentMonth.getMonth() + 1, 1);
+    return renderCalendar();
+  }
+
+  if (target.closest("[data-new-booking]")) resetBooking();
+});
+
+elements.serviceSearch.addEventListener("input", (event) => renderServices(event.target.value));
+elements.staff.addEventListener("change", (event) => {
+  state.staff = event.target.value;
+  saveState();
+  renderSummary();
+});
+elements.form.addEventListener("submit", submitBooking);
+elements.form.addEventListener("input", (event) => {
+  if (event.target.matches("[aria-invalid='true']")) event.target.removeAttribute("aria-invalid");
+});
+
+elements.staff.value = state.staff;
+renderServices();
+renderCalendar();
+renderTimes();
+renderSummary();

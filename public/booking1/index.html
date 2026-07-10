@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Booking1 | Tyra Hair Studio</title>
+    <meta name="description" content="Book hair cuts, color, styling, perms, treatments, waxing, and head spa services at Tyra Hair Studio in Cypress, Texas.">
+    <link rel="canonical" href="https://tyrahairstudio.com/booking1/">
+    <meta name="theme-color" content="#2b1717">
+    <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
+    <link rel="preload" as="image" type="image/webp" href="/images/covers/tyra-cover-02-champagne-blonde-960.webp">
+    <link rel="stylesheet" href="/booking1/booking.css?v=booking1-v1">
+  </head>
+  <body>
+    <a class="skip-link" href="#booking-app">Skip to booking</a>
+
+    <header class="booking-header">
+      <a class="booking-brand" href="/" aria-label="Tyra Hair Studio home">
+        <img src="/assets/tyra-logo-192.webp" width="76" height="79" alt="">
+        <span><strong>Tyra</strong> Hair Studio</span>
+      </a>
+      <div class="header-actions">
+        <a href="/service/">Services</a>
+        <a class="header-call" href="tel:3466667580">Call (346) 666-7580</a>
+      </div>
+    </header>
+
+    <main id="booking-app">
+      <section class="booking-hero" aria-labelledby="booking-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Cypress, Texas · online booking</p>
+          <h1 id="booking-title">Your next great hair day starts here.</h1>
+          <p>Choose your services, find a time, and send your appointment request in a few easy steps.</p>
+          <div class="trust-row" aria-label="Booking information">
+            <span>34 salon services</span>
+            <span>15-minute time slots</span>
+            <span>Secure request</span>
+          </div>
+        </div>
+        <div class="hero-portrait" aria-hidden="true">
+          <picture>
+            <source type="image/webp" srcset="/images/covers/tyra-cover-02-champagne-blonde-960.webp 960w, /images/covers/tyra-cover-02-champagne-blonde-1440.webp 1440w">
+            <img src="/images/covers/tyra-cover-02-champagne-blonde.jpg" alt="">
+          </picture>
+          <div class="hero-seal"><span>TYRA</span><small>BOOKING 1</small></div>
+        </div>
+      </section>
+
+      <section class="booking-section" aria-label="Book an appointment">
+        <div class="booking-progress" aria-label="Booking progress">
+          <button class="progress-step is-active" type="button" data-step-nav="1" aria-current="step">
+            <span>1</span><strong>Services</strong><small>Choose your visit</small>
+          </button>
+          <button class="progress-step" type="button" data-step-nav="2" disabled>
+            <span>2</span><strong>Date &amp; time</strong><small>Find your moment</small>
+          </button>
+          <button class="progress-step" type="button" data-step-nav="3" disabled>
+            <span>3</span><strong>Your details</strong><small>Review &amp; request</small>
+          </button>
+        </div>
+
+        <div class="booking-layout">
+          <div class="booking-card">
+            <section class="booking-panel is-active" data-panel="1" aria-labelledby="services-heading">
+              <div class="panel-heading">
+                <div>
+                  <p class="step-label">Step 1 of 3</p>
+                  <h2 id="services-heading">What can we do for you?</h2>
+                  <p>Select one or more services. Times are combined automatically.</p>
+                </div>
+                <label class="service-search">
+                  <span class="sr-only">Search services</span>
+                  <input type="search" data-service-search placeholder="Search services…" autocomplete="off">
+                </label>
+              </div>
+
+              <div class="category-ribbon" data-category-ribbon aria-label="Service categories"></div>
+              <div class="service-groups" data-service-groups></div>
+              <p class="empty-services" data-empty-services hidden>No matching services. Try another search.</p>
+
+              <div class="panel-actions end">
+                <button class="action-button primary" type="button" data-next-step="2" disabled>
+                  Choose date &amp; time <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="booking-panel" data-panel="2" aria-labelledby="schedule-heading" hidden>
+              <div class="panel-heading schedule-heading">
+                <div>
+                  <p class="step-label">Step 2 of 3</p>
+                  <h2 id="schedule-heading">Choose your date and time</h2>
+                  <p>Times shown are for Tyra Hair Studio in Cypress, Texas.</p>
+                </div>
+                <label class="staff-select">
+                  <span>Stylist preference</span>
+                  <select data-staff>
+                    <option value="Any available staff">Any available staff</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="schedule-grid">
+                <div class="calendar-card">
+                  <div class="calendar-toolbar">
+                    <button type="button" data-calendar-prev aria-label="Previous month">←</button>
+                    <h3 data-calendar-title></h3>
+                    <button type="button" data-calendar-next aria-label="Next month">→</button>
+                  </div>
+                  <div class="weekday-row" aria-hidden="true">
+                    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                  </div>
+                  <div class="calendar-grid" data-calendar-grid role="grid" aria-label="Appointment dates"></div>
+                </div>
+
+                <div class="time-card">
+                  <div class="time-heading">
+                    <div>
+                      <p class="step-label">Available times</p>
+                      <h3 data-selected-date-label>Select a date</h3>
+                    </div>
+                    <span class="duration-pill" data-duration-pill></span>
+                  </div>
+                  <div class="availability-message" data-availability-message aria-live="polite">Choose a date to see times.</div>
+                  <div class="time-groups" data-time-groups></div>
+                </div>
+              </div>
+
+              <div class="panel-actions split">
+                <button class="action-button quiet" type="button" data-prev-step="1">← Back to services</button>
+                <button class="action-button primary" type="button" data-next-step="3" disabled>
+                  Review appointment <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="booking-panel" data-panel="3" aria-labelledby="details-heading" hidden>
+              <div class="panel-heading">
+                <div>
+                  <p class="step-label">Step 3 of 3</p>
+                  <h2 id="details-heading">Tell us how to reach you</h2>
+                  <p>We will email your request details. The salon will confirm the appointment.</p>
+                </div>
+              </div>
+
+              <form class="booking-form" data-booking-form novalidate>
+                <div class="form-grid">
+                  <label>
+                    <span>Full name <b aria-hidden="true">*</b></span>
+                    <input type="text" name="name" autocomplete="name" maxlength="80" required placeholder="Your full name">
+                  </label>
+                  <label>
+                    <span>Mobile number <b aria-hidden="true">*</b></span>
+                    <input type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="24" required placeholder="(000) 000-0000">
+                  </label>
+                  <label class="full-field">
+                    <span>Email <b aria-hidden="true">*</b></span>
+                    <input type="email" name="email" autocomplete="email" maxlength="120" required placeholder="you@example.com">
+                  </label>
+                  <label class="full-field">
+                    <span>Anything you would like us to know?</span>
+                    <textarea name="notes" rows="4" maxlength="600" placeholder="Hair history, inspiration, accessibility needs, or a special request"></textarea>
+                  </label>
+                  <label class="honeypot" aria-hidden="true">
+                    <span>Company</span>
+                    <input type="text" name="company" tabindex="-1" autocomplete="off">
+                  </label>
+                </div>
+
+                <label class="consent-row">
+                  <input type="checkbox" name="consent" required>
+                  <span>I agree that Tyra Hair Studio may contact me about this appointment request.</span>
+                </label>
+
+                <div class="form-status" data-form-status role="status" aria-live="polite"></div>
+
+                <div class="panel-actions split">
+                  <button class="action-button quiet" type="button" data-prev-step="2">← Back to date &amp; time</button>
+                  <button class="action-button primary submit-button" type="submit">
+                    <span data-submit-label>Send appointment request</span>
+                    <span aria-hidden="true">→</span>
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <section class="confirmation-panel" data-confirmation hidden aria-labelledby="confirmation-title">
+              <div class="confirmation-mark" aria-hidden="true">✓</div>
+              <p class="step-label">Request received</p>
+              <h2 id="confirmation-title">We have your appointment request.</h2>
+              <p>A copy has been sent to your email. Tyra Hair Studio will confirm the time with you shortly.</p>
+              <div class="confirmation-ticket" data-confirmation-ticket></div>
+              <div class="confirmation-actions">
+                <a class="action-button primary" href="/">Return home</a>
+                <button class="action-button quiet" type="button" data-new-booking>Book another visit</button>
+              </div>
+            </section>
+          </div>
+
+          <aside class="appointment-ribbon" aria-labelledby="summary-heading">
+            <div class="ribbon-head">
+              <p>YOUR VISIT</p>
+              <span data-summary-count>0 services</span>
+            </div>
+            <h2 id="summary-heading">Appointment summary</h2>
+            <div class="summary-empty" data-summary-empty>
+              <span aria-hidden="true">✦</span>
+              <p>Your selected services will appear here.</p>
+            </div>
+            <div class="summary-services" data-summary-services></div>
+            <dl class="summary-meta">
+              <div><dt>Date</dt><dd data-summary-date>Not selected</dd></div>
+              <div><dt>Time</dt><dd data-summary-time>Not selected</dd></div>
+              <div><dt>Stylist</dt><dd data-summary-staff>Any available staff</dd></div>
+            </dl>
+            <div class="summary-total">
+              <div><span>Estimated time</span><strong data-summary-duration>0 min</strong></div>
+              <div><span>Starting at</span><strong data-summary-price>$0</strong></div>
+            </div>
+            <p class="summary-note">Final price may vary by hair length, density, and consultation.</p>
+            <a class="summary-help" href="tel:3466667580">Need help? Call the studio</a>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="booking-footer">
+      <div><strong>Tyra Hair Studio</strong><span>9212 Fry Rd #160, Cypress, TX 77433</span></div>
+      <div><a href="tel:3466667580">(346) 666-7580</a><a href="/">tyrahairstudio.com</a></div>
+    </footer>
+
+    <script src="/booking1/booking.js?v=booking1-v1" type="module"></script>
+  </body>
+</html>
