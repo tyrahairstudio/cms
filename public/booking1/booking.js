@@ -90,6 +90,9 @@ const savedState = readSavedState();
 
 const state = {
   step: 1,
+  activeCategory: serviceCatalog.some((category) => category.id === savedState.activeCategory)
+    ? savedState.activeCategory
+    : serviceCatalog[0].id,
   selectedIds: new Set((savedState.selectedIds || []).filter((id) => serviceMap.has(id))),
   selectedDate: isBookableIsoDate(savedState.selectedDate) ? savedState.selectedDate : "",
   selectedTime: savedState.selectedTime || "",
@@ -124,8 +127,7 @@ const elements = {
   summaryDate: document.querySelector("[data-summary-date]"),
   summaryTime: document.querySelector("[data-summary-time]"),
   summaryStaff: document.querySelector("[data-summary-staff]"),
-  summaryDuration: document.querySelector("[data-summary-duration]"),
-  summaryPrice: document.querySelector("[data-summary-price]")
+  summaryDuration: document.querySelector("[data-summary-duration]")
 };
 
 function escapeHtml(value = "") {
@@ -181,6 +183,7 @@ function readSavedState() {
 function saveState() {
   sessionStorage.setItem(storageKey, JSON.stringify({
     selectedIds: [...state.selectedIds],
+    activeCategory: state.activeCategory,
     selectedDate: state.selectedDate,
     selectedTime: state.selectedTime,
     staff: state.staff
@@ -199,33 +202,34 @@ function schedulingDuration() {
   return totalDuration() || 30;
 }
 
-function totalPrice() {
-  return selectedServices().reduce((total, service) => total + (service.price || 0), 0);
-}
-
 function renderServices(query = "") {
   const normalized = query.trim().toLowerCase();
-  const categories = serviceCatalog.map((category) => ({
-    ...category,
-    services: category.services.filter((service) =>
-      !normalized || `${category.name} ${service.name}`.toLowerCase().includes(normalized)
-    )
-  })).filter((category) => category.services.length);
+  const category = serviceCatalog.find((item) => item.id === state.activeCategory) || serviceCatalog[0];
+  const visibleServices = category.services.filter((service) =>
+    !normalized || service.name.toLowerCase().includes(normalized)
+  );
 
-  elements.categoryRibbon.innerHTML = serviceCatalog.map((category, index) => `
-    <button class="category-button${index === 0 ? " is-active" : ""}" type="button" data-category-target="${category.id}">
-      ${escapeHtml(category.name)}
+  elements.categoryRibbon.innerHTML = serviceCatalog.map((item) => `
+    <button
+      class="category-button${item.id === category.id ? " is-active" : ""}"
+      type="button"
+      role="tab"
+      aria-selected="${item.id === category.id}"
+      aria-controls="category-${item.id}"
+      data-category-target="${item.id}"
+    >
+      ${escapeHtml(item.name)}
     </button>
   `).join("");
 
-  elements.serviceGroups.innerHTML = categories.map((category) => `
-    <section class="service-group" id="category-${category.id}" data-category-group="${category.id}">
+  elements.serviceGroups.innerHTML = `
+    <section class="service-group" id="category-${category.id}" role="tabpanel" data-category-group="${category.id}">
       <div class="service-group-head">
         <h3>${escapeHtml(category.name)}</h3>
-        <span>${category.services.length} ${category.services.length === 1 ? "service" : "services"}</span>
+        <span>${visibleServices.length} ${visibleServices.length === 1 ? "service" : "services"}</span>
       </div>
       <div class="service-list">
-        ${category.services.map((service) => {
+        ${visibleServices.map((service) => {
           const selected = state.selectedIds.has(service.id);
           const durationLabel = service.duration ? `${service.duration} minutes` : "Consultation required";
           return `
@@ -233,16 +237,15 @@ function renderServices(query = "") {
               <span class="service-check" aria-hidden="true">✓</span>
               <strong>${escapeHtml(service.name)}</strong>
               <small>${durationLabel}</small>
-              <span class="service-price">${escapeHtml(service.priceLabel)}</span>
             </button>
           `;
         }).join("")}
       </div>
     </section>
-  `).join("");
+  `;
 
-  elements.emptyServices.hidden = categories.length > 0;
-  elements.categoryRibbon.hidden = normalized.length > 0;
+  elements.emptyServices.hidden = visibleServices.length > 0;
+  elements.categoryRibbon.hidden = false;
   updateNavigation();
 }
 
@@ -276,7 +279,7 @@ function renderSummary() {
   elements.summaryServices.innerHTML = services.map((service) => `
     <div class="summary-service">
       <strong>${escapeHtml(service.name)}</strong>
-      <small>${service.duration ? `${service.duration} min` : "Consultation"} · ${escapeHtml(service.priceLabel)}</small>
+      <small>${service.duration ? `${service.duration} minutes` : "Consultation required"}</small>
       <button type="button" data-remove-service="${service.id}" aria-label="Remove ${escapeHtml(service.name)}">×</button>
     </div>
   `).join("");
@@ -285,9 +288,6 @@ function renderSummary() {
   elements.summaryTime.textContent = state.selectedTime ? formatTime(state.selectedTime) : "Not selected";
   elements.summaryStaff.textContent = state.staff;
   elements.summaryDuration.textContent = totalDuration() ? formatDuration(totalDuration()) : (services.length ? "Consultation" : "0 min");
-  elements.summaryPrice.textContent = services.some((service) => service.price === null) && !totalPrice()
-    ? "Consultation"
-    : `$${totalPrice()}+`;
   elements.durationPill.textContent = `${formatDuration(schedulingDuration())} visit`;
   updateNavigation();
 }
@@ -622,6 +622,7 @@ function showConfirmation(bookingId, payload) {
 function resetBooking() {
   state.step = 1;
   state.selectedIds.clear();
+  state.activeCategory = serviceCatalog[0].id;
   state.selectedDate = "";
   state.selectedTime = "";
   state.staff = "Any available staff";
@@ -649,8 +650,10 @@ document.addEventListener("click", (event) => {
 
   const categoryButton = target.closest("[data-category-target]");
   if (categoryButton) {
-    document.querySelectorAll("[data-category-target]").forEach((button) => button.classList.toggle("is-active", button === categoryButton));
-    document.querySelector(`#category-${categoryButton.dataset.categoryTarget}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    state.activeCategory = categoryButton.dataset.categoryTarget;
+    elements.serviceSearch.value = "";
+    saveState();
+    renderServices();
     return;
   }
 

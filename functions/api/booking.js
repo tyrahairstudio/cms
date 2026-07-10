@@ -1,6 +1,7 @@
 const MAX_BODY_BYTES = 32_000;
 const MAX_UPSTREAM_BYTES = 64_000;
 const UPSTREAM_TIMEOUT_MS = 12_000;
+const DEFAULT_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyr3KlC6GcxTsp-VT3LXfRR4jbV4-Yqu3qtePM7Ai92ucyf3I89OdiHucgt2aypeVqdkA/exec";
 
 function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -14,7 +15,11 @@ function jsonResponse(data, status = 200) {
 }
 
 function configured(env) {
-  return Boolean(env.BOOKING_APPS_SCRIPT_URL && env.BOOKING_WEBHOOK_SECRET);
+  return Boolean(env.BOOKING_WEBHOOK_SECRET);
+}
+
+function appsScriptUrl(env) {
+  return env.BOOKING_APPS_SCRIPT_URL || DEFAULT_APPS_SCRIPT_URL;
 }
 
 function isValidDate(value) {
@@ -149,7 +154,7 @@ export async function onRequestGet({ request, env }) {
   const canonical = `availability|${date}|${duration}|${timestamp}`;
   const signature = await hmacHex(env.BOOKING_WEBHOOK_SECRET, canonical);
   try {
-    const scriptUrl = new URL(env.BOOKING_APPS_SCRIPT_URL);
+    const scriptUrl = new URL(appsScriptUrl(env));
     scriptUrl.searchParams.set("action", "availability");
     scriptUrl.searchParams.set("date", date);
     scriptUrl.searchParams.set("duration", String(duration));
@@ -203,7 +208,7 @@ export async function onRequestPost({ request, env }) {
   const signature = await hmacHex(env.BOOKING_WEBHOOK_SECRET, `${timestamp}.${payloadText}`);
 
   try {
-    const response = await fetch(env.BOOKING_APPS_SCRIPT_URL, {
+    const response = await fetch(appsScriptUrl(env), {
       method: "POST",
       headers: { "content-type": "application/json; charset=utf-8", accept: "application/json" },
       body: JSON.stringify({ timestamp, signature, payload: payloadText }),

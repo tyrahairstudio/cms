@@ -41,10 +41,24 @@
     </header>
 
     <main id="main">
-      <section class="page-hero booking-page-hero" id="top" aria-labelledby="page-title">
-        <p class="eyebrow">Online booking</p>
-        <h1 id="page-title">Booking</h1>
-        <p>Choose your services, find a time, and send your appointment request in a few easy steps.</p>
+      <section class="booking-hero" id="top" aria-labelledby="booking-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Cypress, Texas &middot; online booking</p>
+          <h1 id="booking-title">Your next great hair day starts here.</h1>
+          <p>Choose your services, find a time, and send your appointment request in a few easy steps.</p>
+          <div class="trust-row" aria-label="Booking information">
+            <span>34 salon services</span>
+            <span>15-minute time slots</span>
+            <span>Secure request</span>
+          </div>
+        </div>
+        <div class="hero-portrait" aria-hidden="true">
+          <picture>
+            <source type="image/webp" srcset="/images/covers/tyra-cover-02-champagne-blonde-960.webp 960w, /images/covers/tyra-cover-02-champagne-blonde-1440.webp 1440w">
+            <img src="/images/covers/tyra-cover-02-champagne-blonde.jpg" alt="">
+          </picture>
+          <div class="hero-seal"><span>TYRA</span><small>BOOKING 1</small></div>
+        </div>
       </section>
 
       <section class="booking-section" aria-label="Book an appointment">
@@ -75,7 +89,7 @@
                 </label>
               </div>
 
-              <div class="category-ribbon" data-category-ribbon aria-label="Service categories"></div>
+              <div class="category-ribbon" data-category-ribbon role="tablist" aria-label="Service categories"></div>
               <div class="service-groups" data-service-groups></div>
               <p class="empty-services" data-empty-services hidden>No matching services. Try another search.</p>
 
@@ -216,26 +230,13 @@
             </dl>
             <div class="summary-total">
               <div><span>Estimated time</span><strong data-summary-duration>0 min</strong></div>
-              <div><span>Starting at</span><strong data-summary-price>$0</strong></div>
             </div>
-            <p class="summary-note">Final price may vary by hair length, density, and consultation.</p>
+            <p class="summary-note">Your final appointment length may be adjusted after consultation.</p>
             <a class="summary-help" href="tel:3466667580">Need help? Call the studio</a>
           </aside>
         </div>
       </section>
     </main>
-
-    <div class="floating-actions" aria-label="Quick actions">
-      <a class="float-pill" data-phone-link href="tel:3466667580" aria-label="Call Tyra Hair Studio">
-        <span class="float-label">Call now</span>
-        <span data-phone-text>(346) 666-7580</span>
-      </a>
-      <a class="float-pill" data-booking href="/booking1/" aria-label="Book an appointment">
-        <span class="float-label">Reserve</span>
-        <span>Booking</span>
-      </a>
-      <a class="float-top" href="#main" aria-label="Back to top">&uarr;</a>
-    </div>
 
     <footer class="global-footer visit-section" id="contact" aria-labelledby="visit-title">
       <div class="visit-inner">

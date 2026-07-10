@@ -23,16 +23,21 @@ Choose **Deploy → New deployment → Web app**:
 - Execute as: **Me**
 - Who has access: **Anyone**
 
-Copy the deployed `/exec` URL. Do not use the editor `/dev` URL.
+Current deployed Web app URL:
+
+`https://script.google.com/macros/s/AKfycbyr3KlC6GcxTsp-VT3LXfRR4jbV4-Yqu3qtePM7Ai92ucyf3I89OdiHucgt2aypeVqdkA/exec`
+
+Use the deployed `/exec` URL, never the editor `/dev` URL.
 
 ## 3. Add Cloudflare Pages secrets
 
-In the Cloudflare Pages project `tyrahairstudio-git`, add these Production variables:
+In the Cloudflare Pages project `tyrahairstudio-git`, add this encrypted Production secret:
 
-- `BOOKING_APPS_SCRIPT_URL`: the deployed Apps Script `/exec` URL
 - `BOOKING_WEBHOOK_SECRET`: the secret printed by `setupBookingSystem`
 
-Store both as encrypted secrets where Cloudflare offers that option. Redeploy the latest commit after adding them.
+The current Apps Script `/exec` URL is already configured in the server function. `BOOKING_APPS_SCRIPT_URL` remains an optional override for a future deployment URL.
+
+Store the webhook secret as encrypted. Redeploy the latest commit after adding it.
 
 ## Security notes
 
