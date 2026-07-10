@@ -6,44 +6,45 @@
     <title>Booking1 | Tyra Hair Studio</title>
     <meta name="description" content="Book hair cuts, color, styling, perms, treatments, waxing, and head spa services at Tyra Hair Studio in Cypress, Texas.">
     <link rel="canonical" href="https://tyrahairstudio.com/booking1/">
-    <meta name="theme-color" content="#2b1717">
+    <meta name="theme-color" content="#17120f">
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
     <link rel="preload" as="image" type="image/webp" href="/images/covers/tyra-cover-02-champagne-blonde-960.webp">
-    <link rel="stylesheet" href="/booking1/booking.css?v=booking1-v1">
+    <link rel="stylesheet" href="/styles.css?v=services-heading-v1">
+    <link rel="stylesheet" href="/booking1/booking.css?v=booking1-v2">
   </head>
-  <body>
-    <a class="skip-link" href="#booking-app">Skip to booking</a>
+  <body class="booking1-page">
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="booking-header">
-      <a class="booking-brand" href="/" aria-label="Tyra Hair Studio home">
-        <img src="/assets/tyra-logo-192.webp" width="76" height="79" alt="">
-        <span><strong>Tyra</strong> Hair Studio</span>
-      </a>
-      <div class="header-actions">
-        <a href="/service/">Services</a>
-        <a class="header-call" href="tel:3466667580">Call (346) 666-7580</a>
+    <header class="site-header" data-header>
+      <div class="top-ribbon" aria-label="Studio quick information">
+        <span data-top-address>9212 Fry Rd #160, Cypress, TX 77433</span>
+      </div>
+      <div class="main-nav-row">
+        <a class="brand-mark" href="/" aria-label="Tyra Hair Studio home">
+          <img class="brand-logo" src="/assets/tyra-logo-192.webp" srcset="/assets/tyra-logo-96.webp 96w, /assets/tyra-logo-192.webp 192w" sizes="86px" width="192" height="199" alt="">
+        </a>
+        <nav class="nav-links" id="main-navigation" data-nav-links aria-label="Main navigation">
+          <a href="/">Home</a>
+          <a href="/about/">About us</a>
+          <a href="/service/">Services</a>
+          <a data-booking href="/booking1/" aria-current="page">Booking</a>
+          <a href="/gallery/">Gallery</a>
+          <a href="/contact/">Contact us</a>
+        </nav>
+        <a class="mobile-booking" data-booking href="/booking1/">Booking</a>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-controls="main-navigation" aria-expanded="false" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </header>
 
-    <main id="booking-app">
-      <section class="booking-hero" aria-labelledby="booking-title">
-        <div class="hero-copy">
-          <p class="eyebrow">Cypress, Texas · online booking</p>
-          <h1 id="booking-title">Your next great hair day starts here.</h1>
-          <p>Choose your services, find a time, and send your appointment request in a few easy steps.</p>
-          <div class="trust-row" aria-label="Booking information">
-            <span>34 salon services</span>
-            <span>15-minute time slots</span>
-            <span>Secure request</span>
-          </div>
-        </div>
-        <div class="hero-portrait" aria-hidden="true">
-          <picture>
-            <source type="image/webp" srcset="/images/covers/tyra-cover-02-champagne-blonde-960.webp 960w, /images/covers/tyra-cover-02-champagne-blonde-1440.webp 1440w">
-            <img src="/images/covers/tyra-cover-02-champagne-blonde.jpg" alt="">
-          </picture>
-          <div class="hero-seal"><span>TYRA</span><small>BOOKING 1</small></div>
-        </div>
+    <main id="main">
+      <section class="page-hero booking-page-hero" id="top" aria-labelledby="page-title">
+        <p class="eyebrow">Online booking</p>
+        <h1 id="page-title">Booking</h1>
+        <p>Choose your services, find a time, and send your appointment request in a few easy steps.</p>
       </section>
 
       <section class="booking-section" aria-label="Book an appointment">
@@ -224,11 +225,94 @@
       </section>
     </main>
 
-    <footer class="booking-footer">
-      <div><strong>Tyra Hair Studio</strong><span>9212 Fry Rd #160, Cypress, TX 77433</span></div>
-      <div><a href="tel:3466667580">(346) 666-7580</a><a href="/">tyrahairstudio.com</a></div>
+    <div class="floating-actions" aria-label="Quick actions">
+      <a class="float-pill" data-phone-link href="tel:3466667580" aria-label="Call Tyra Hair Studio">
+        <span class="float-label">Call now</span>
+        <span data-phone-text>(346) 666-7580</span>
+      </a>
+      <a class="float-pill" data-booking href="/booking1/" aria-label="Book an appointment">
+        <span class="float-label">Reserve</span>
+        <span>Booking</span>
+      </a>
+      <a class="float-top" href="#main" aria-label="Back to top">&uarr;</a>
+    </div>
+
+    <footer class="global-footer visit-section" id="contact" aria-labelledby="visit-title">
+      <div class="visit-inner">
+        <div class="visit-info-grid">
+          <div class="social-panel">
+            <h2 id="visit-title">Tyra Hair Studio</h2>
+            <p>Follow us to get more updates</p>
+            <div class="social-links" aria-label="Social links">
+              <a class="social-link facebook" data-facebook href="https://www.facebook.com/profile.php?id=61590465365520" aria-label="Tyra Hair Studio on Facebook">f</a>
+              <a class="social-link email" data-email href="mailto:tyrahairstudiocypress@gmail.com" aria-label="Email Tyra Hair Studio">@</a>
+            </div>
+            <div class="facebook-card">
+              <iframe
+                title="Tyra Hair Studio Facebook page"
+                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61590465365520&tabs&width=340&height=154&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false"
+                width="340"
+                height="154"
+                scrolling="no"
+                frameborder="0"
+                allowfullscreen
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            </div>
+          </div>
+
+          <div class="footer-contact-panel">
+            <h2>Contact us</h2>
+            <div class="contact-method">
+              <span aria-hidden="true">&#8962;</span>
+              <div>
+                <strong>Address:</strong>
+                <p data-footer-address>9212 Fry Rd #160, Cypress, TX 77433</p>
+              </div>
+            </div>
+            <div class="contact-method">
+              <span aria-hidden="true">&#9742;</span>
+              <div>
+                <strong>Phone:</strong>
+                <a data-phone-link href="tel:3466667580"><span data-phone-text>(346) 666-7580</span></a>
+              </div>
+            </div>
+            <div class="contact-method">
+              <span aria-hidden="true">&#9993;</span>
+              <div>
+                <strong>Email:</strong>
+                <a data-email href="mailto:tyrahairstudiocypress@gmail.com" data-email-text>tyrahairstudiocypress@gmail.com</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-hours-panel">
+            <h2>Open Hours</h2>
+            <dl data-hours></dl>
+          </div>
+        </div>
+
+        <div class="location-block">
+          <h2>Location</h2>
+          <div class="map-panel" aria-label="Tyra Hair Studio map">
+            <iframe
+              title="Tyra Hair Studio location on Google Maps"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4138.116729362885!2d-95.73008642391918!3d29.916524624619374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8640d75f3af8e82f%3A0xef9957b82c6be909!2sTyra%20Hair%20Studio!5e1!3m2!1sen!2s!4v1783031896559!5m2!1sen!2s"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          </div>
+        </div>
+
+        <div class="footer-credit">
+          <p>
+            <span>Copyright &copy; <span data-current-year>2026</span> <strong>Tyra Hair Studio</strong>. All rights reserved.</span>
+            <span data-footer-address>9212 Fry Rd #160, Cypress, TX 77433</span>
+          </p>
+        </div>
+      </div>
     </footer>
 
-    <script src="/booking1/booking.js?v=booking1-v1" type="module"></script>
+    <script src="/booking1/booking.js?v=booking1-v2" type="module"></script>
+    <script src="/app-head-spa-relax-v1.js" type="module"></script>
   </body>
 </html>

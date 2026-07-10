@@ -1,23 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&family=DM+Sans:wght@400;500;600;700&display=swap");
-
 :root {
-  --ink: #211819;
-  --wine: #2b1717;
-  --plum: #613847;
-  --rose: #a9636f;
-  --coral: #e18870;
-  --gold: #caa66b;
-  --pearl: #fbf9f7;
-  --blush: #f4ece9;
-  --almond: #e5dad3;
-  --muted: #766b68;
+  --ink: #17120f;
+  --wine: #17120f;
+  --plum: #6f3327;
+  --rose: #b8693f;
+  --coral: #b8693f;
+  --gold: #d9bf8f;
+  --pearl: #f8f3eb;
+  --blush: #fffaf3;
+  --almond: #e8dfd2;
+  --muted: #786b64;
   --white: #ffffff;
   --error: #a13b3b;
   --success: #3c7256;
   --shadow: 0 24px 80px rgba(43, 23, 23, 0.12);
   --soft-shadow: 0 12px 32px rgba(43, 23, 23, 0.08);
-  --body-font: "DM Sans", "Segoe UI", sans-serif;
-  --display-font: "Bodoni Moda", Georgia, serif;
+  --body-font: "Manrope", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --display-font: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   color-scheme: light;
   font-family: var(--body-font);
 }
@@ -41,17 +39,6 @@ body {
   color: var(--ink);
   min-width: 320px;
   overflow-x: clip;
-}
-
-body::before {
-  background-image: radial-gradient(circle at 1px 1px, rgba(97, 56, 71, 0.12) 1px, transparent 0);
-  background-size: 28px 28px;
-  content: "";
-  inset: 0;
-  opacity: 0.2;
-  pointer-events: none;
-  position: fixed;
-  z-index: -1;
 }
 
 button,
@@ -307,6 +294,11 @@ a {
   margin: 0 auto;
   max-width: 1540px;
   padding: 0 clamp(18px, 4vw, 60px) clamp(70px, 8vw, 120px);
+}
+
+.booking-page-hero {
+  --page-hero-image: url("/images/covers/tyra-cover-02-champagne-blonde-1440.webp");
+  background-position: center 18%;
 }
 
 .booking-progress {
