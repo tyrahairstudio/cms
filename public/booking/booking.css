@@ -1673,49 +1673,7 @@ a {
     padding: 10px;
   }
 
-  .mobile-service-list-shell {
-    position: relative;
-  }
-
-  .mobile-service-list-shell[hidden] {
-    display: none;
-  }
-
-  .service-scroll-guide {
-    align-items: center;
-    background: linear-gradient(180deg, rgba(250, 248, 245, 0), rgba(250, 248, 245, 0.97) 34%);
-    bottom: 0;
-    color: #4f443e;
-    display: flex;
-    font-size: 12px;
-    font-weight: 700;
-    gap: 7px;
-    justify-content: center;
-    left: 0;
-    line-height: 1.35;
-    margin: 0;
-    padding: 24px 10px 11px;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    z-index: 2;
-  }
-
-  .service-scroll-guide span {
-    align-items: center;
-    background: var(--ink);
-    border-radius: 50%;
-    color: #ffffff;
-    display: inline-flex;
-    flex: 0 0 auto;
-    font-size: 14px;
-    height: 24px;
-    justify-content: center;
-    width: 24px;
-  }
-
-  .service-scroll-guide[hidden] {
+  .mobile-category-services[hidden] {
     display: none;
   }
 
@@ -2052,12 +2010,6 @@ a {
   .mobile-category-toggle {
     min-height: 56px;
     padding-block: 9px;
-  }
-
-  .mobile-category-services {
-    max-height: min(42dvh, 350px);
-    overscroll-behavior: contain;
-    overflow-y: auto;
   }
 
   .mobile-staff-options {

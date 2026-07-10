@@ -236,31 +236,6 @@ function serviceOptionMarkup(service, index) {
   `;
 }
 
-function updateServiceScrollGuide(scroller) {
-  const shell = scroller.closest("[data-mobile-service-shell]");
-  const guide = shell?.querySelector("[data-service-scroll-guide]");
-  if (!shell || !guide) return;
-
-  const hasOverflow = scroller.scrollHeight > scroller.clientHeight + 2;
-  const hasMoreBelow = scroller.scrollTop + scroller.clientHeight < scroller.scrollHeight - 8;
-  shell.classList.toggle("has-overflow", hasOverflow);
-  guide.hidden = !(hasOverflow && hasMoreBelow);
-}
-
-function setupServiceScrollGuides() {
-  document.querySelectorAll("[data-mobile-service-scroll]").forEach((scroller) => {
-    if (!scroller.dataset.scrollGuideReady) {
-      scroller.addEventListener("scroll", () => updateServiceScrollGuide(scroller), { passive: true });
-      scroller.dataset.scrollGuideReady = "true";
-    }
-    updateServiceScrollGuide(scroller);
-  });
-}
-
-function scheduleServiceScrollGuideUpdate() {
-  window.requestAnimationFrame(setupServiceScrollGuides);
-}
-
 function renderDesktopServices(normalized) {
   const category = serviceCatalog.find((item) => item.id === state.activeCategory) || serviceCatalog[0];
   const visibleServices = category.services.filter((service) =>
@@ -321,21 +296,14 @@ function renderMobileServices(normalized) {
           <span><strong>${escapeHtml(category.name)}</strong><small>${visibleServices.length} ${visibleServices.length === 1 ? "service" : "services"}${selectedCount ? ` · ${selectedCount} selected` : ""}</small></span>
           <i aria-hidden="true"></i>
         </button>
-        <div class="mobile-service-list-shell" id="mobile-category-${category.id}" data-mobile-service-shell ${expanded ? "" : "hidden"}>
-          <div class="mobile-category-services" data-mobile-service-scroll>
-            ${visibleServices.map(serviceOptionMarkup).join("")}
-          </div>
-          <p class="service-scroll-guide" data-service-scroll-guide hidden>
-            <span aria-hidden="true">↑</span>
-            Swipe up in this box to see more services
-          </p>
+        <div class="mobile-category-services" id="mobile-category-${category.id}" ${expanded ? "" : "hidden"}>
+          ${visibleServices.map(serviceOptionMarkup).join("")}
         </div>
       </section>
     `;
   }).join("");
 
   elements.emptyServices.hidden = matchCount > 0;
-  scheduleServiceScrollGuideUpdate();
 }
 
 function renderServices(query = "") {
@@ -510,8 +478,6 @@ function setStep(step) {
     renderCalendar();
     if (state.selectedDate) loadAvailability(state.selectedDate);
   }
-
-  if (step === 1) scheduleServiceScrollGuideUpdate();
 
   updateMobileDock();
   document.querySelector(".booking-progress")?.scrollIntoView({ behavior: "smooth", block: "start" });
