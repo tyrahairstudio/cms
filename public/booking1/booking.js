@@ -82,11 +82,17 @@ serviceCatalog.forEach((category) => {
   category.services.forEach((service) => serviceMap.set(service.id, { ...service, category: category.name }));
 });
 
+const localPreviewHosts = new Set(["localhost", "127.0.0.1", "::1"]);
+const bookingApiUrl = localPreviewHosts.has(window.location.hostname)
+  ? "https://tyrahairstudio.com/api/booking"
+  : "/api/booking";
 const storageKey = "tyra-booking1-state";
 const startedAt = Date.now();
 const today = startOfDay(new Date());
 const lastBookableDate = addDays(today, 90);
 const savedState = readSavedState();
+let pendingRequestId = "";
+let pendingRequestFingerprint = "";
 
 const state = {
   step: 1,
@@ -483,8 +489,8 @@ async function loadAvailability(iso) {
       date: iso,
       duration: String(schedulingDuration())
     });
-    const response = await fetch(`/api/booking?${params}`, { headers: { accept: "application/json" } });
-    const data = await response.json();
+    const response = await fetch(`${bookingApiUrl}?${params}`, { headers: { accept: "application/json" } });
+    const data = await readApiJson(response);
     if (!response.ok || !data.ok) throw new Error(data.message || "Availability is temporarily unavailable.");
     if (requestNumber !== state.availabilityRequest) return;
     state.busyIntervals = Array.isArray(data.busyIntervals) ? data.busyIntervals : [];
@@ -522,6 +528,42 @@ function createRequestId() {
   return `tyra-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
+async function readApiJson(response) {
+  const contentType = response.headers.get("content-type") || "";
+  const body = await response.text();
+  if (!contentType.toLowerCase().includes("application/json")) {
+    throw new Error("The booking service returned an unexpected response. Please refresh and try again.");
+  }
+
+  try {
+    return JSON.parse(body);
+  } catch {
+    throw new Error("The booking service returned an unexpected response. Please refresh and try again.");
+  }
+}
+
+function requestIdFor(payload) {
+  const fingerprint = JSON.stringify({
+    customer: payload.customer,
+    appointment: payload.appointment,
+    services: payload.services,
+    notes: payload.notes,
+    company: payload.company
+  });
+
+  if (!pendingRequestId || pendingRequestFingerprint !== fingerprint) {
+    pendingRequestId = createRequestId();
+    pendingRequestFingerprint = fingerprint;
+  }
+  return pendingRequestId;
+}
+
+function friendlySubmitError(error) {
+  const message = error instanceof Error ? error.message : "";
+  if (message && !/(unexpected token|failed to fetch|networkerror|not valid json)/i.test(message)) return message;
+  return "We could not send the request. Please check your connection and try again, or call the salon.";
+}
+
 async function submitBooking(event) {
   event.preventDefault();
   elements.formStatus.textContent = "";
@@ -538,11 +580,9 @@ async function submitBooking(event) {
   }
 
   const formData = new FormData(elements.form);
-  const requestId = createRequestId();
   const services = selectedServices();
   const duration = schedulingDuration();
   const payload = {
-    requestId,
     createdAt: new Date().toISOString(),
     clientStartedAt: new Date(startedAt).toISOString(),
     customer: {
@@ -570,6 +610,7 @@ async function submitBooking(event) {
     source: "tyrahairstudio.com/booking1",
     locale: navigator.language || "en-US"
   };
+  payload.requestId = requestIdFor(payload);
 
   const submitButton = elements.form.querySelector('[type="submit"]');
   submitButton.disabled = true;
@@ -577,12 +618,12 @@ async function submitBooking(event) {
   elements.submitLabel.textContent = "Sending securely…";
 
   try {
-    const response = await fetch("/api/booking", {
+    const response = await fetch(bookingApiUrl, {
       method: "POST",
       headers: { "content-type": "application/json", accept: "application/json" },
       body: JSON.stringify(payload)
     });
-    const data = await response.json();
+    const data = await readApiJson(response);
 
     if (!response.ok || !data.ok) {
       if (data.code === "SLOT_UNAVAILABLE") {
@@ -596,9 +637,11 @@ async function submitBooking(event) {
       throw new Error(data.message || "We could not send the request. Please try again or call the salon.");
     }
 
-    showConfirmation(data.bookingId || requestId, payload);
+    pendingRequestId = "";
+    pendingRequestFingerprint = "";
+    showConfirmation(data.bookingId || payload.requestId, payload);
   } catch (error) {
-    elements.formStatus.textContent = error.message || "We could not send the request. Please try again or call the salon.";
+    elements.formStatus.textContent = friendlySubmitError(error);
   } finally {
     submitButton.disabled = false;
     submitButton.classList.remove("is-loading");
