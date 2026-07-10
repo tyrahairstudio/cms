@@ -2413,3 +2413,55 @@ a {
     font-size: 12px;
   }
 }
+
+/* Mobile task focus and spacious, reference-style service choices. */
+@media (max-width: 680px) {
+  .booking1-page[data-booking-step="2"] .booking-hero,
+  .booking1-page[data-booking-step="3"] .booking-hero,
+  .booking1-page[data-booking-step="complete"] .booking-hero {
+    display: none;
+  }
+
+  .booking1-page[data-booking-step="2"] .booking-progress,
+  .booking1-page[data-booking-step="3"] .booking-progress,
+  .booking1-page[data-booking-step="complete"] .booking-progress {
+    margin-top: 12px;
+  }
+
+  .booking1-page .mobile-category-services {
+    gap: 10px;
+    padding: 11px;
+  }
+
+  .booking1-page .service-option {
+    border-color: #ddd8d3;
+    border-radius: 12px;
+    grid-template-columns: 32px minmax(0, 1fr);
+    min-height: 84px;
+    padding: 15px 52px 15px 13px;
+  }
+
+  .booking1-page .service-number {
+    font-size: 13px;
+    height: 32px;
+    width: 32px;
+  }
+
+  .booking1-page .service-option strong {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .booking1-page .service-option small {
+    line-height: 1.35;
+  }
+
+  .booking1-page .service-option .service-check {
+    border-color: #d4cec8;
+    border-width: 1.5px;
+    height: 30px;
+    right: 14px;
+    width: 30px;
+  }
+}

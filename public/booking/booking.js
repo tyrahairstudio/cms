@@ -111,6 +111,8 @@ const state = {
   availabilityRequest: 0
 };
 
+document.body.dataset.bookingStep = String(state.step);
+
 const elements = {
   categoryRibbon: document.querySelector("[data-category-ribbon]"),
   serviceGroups: document.querySelector("[data-service-groups]"),
@@ -487,6 +489,7 @@ function setStep(step) {
   if (step === 2 && !state.selectedIds.size) return;
   if (step === 3 && !(state.selectedDate && state.selectedTime)) return;
   state.step = step;
+  document.body.dataset.bookingStep = String(step);
   closeSummarySheet();
 
   document.querySelectorAll("[data-panel]").forEach((panel) => {
@@ -831,6 +834,7 @@ async function submitBooking(event) {
 
 function showConfirmation(bookingId, payload) {
   closeSummarySheet();
+  document.body.dataset.bookingStep = "complete";
   document.querySelectorAll("[data-panel]").forEach((panel) => { panel.hidden = true; });
   elements.confirmation.hidden = false;
   elements.confirmationTicket.innerHTML = `
