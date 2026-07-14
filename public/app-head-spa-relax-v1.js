@@ -425,6 +425,8 @@ function renderSite(site) {
 
   document.querySelectorAll("[data-booking]").forEach((link) => {
     link.href = site.bookingUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
   });
 
   document.querySelectorAll("[data-phone-link]").forEach((link) => {
