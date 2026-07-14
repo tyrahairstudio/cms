@@ -777,7 +777,7 @@ async function submitBooking(event) {
     })),
     notes: String(formData.get("notes") || "").trim(),
     company: String(formData.get("company") || ""),
-    source: "tyrahairstudio.com/booking",
+    source: "tyrahairstudio.com/booking1",
     locale: navigator.language || "en-US"
   };
   payload.requestId = requestIdFor(payload);

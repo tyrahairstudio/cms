@@ -49,7 +49,7 @@ Store the webhook secret as encrypted. Redeploy the latest commit after adding i
 
 ## Test
 
-After deployment, open `/booking/`, select a short service and a time, then send a real test request. Verify:
+After deployment, open `/booking1/`, select a short service and a time, then send a real test request. Verify:
 
 1. a row appears in the `booking` sheet;
 2. the owner notification arrives at `tyrahairstudio.com@gmail.com`;

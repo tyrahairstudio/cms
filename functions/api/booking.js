@@ -88,7 +88,7 @@ function validatePayload(input) {
       services: sanitizedServices,
       notes: cleanText(input.notes, 600),
       company: cleanText(input.company, 120),
-      source: "tyrahairstudio.com/booking",
+      source: "tyrahairstudio.com/booking1",
       locale: cleanText(input.locale, 20)
     }
   };
