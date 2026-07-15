@@ -412,7 +412,6 @@ function initRosefall() {
 }
 
 function renderSite(site) {
-  document.title = `${site.brand} | Cypress, TX`;
   const address = site.addressLines.join(", ");
   const directionsUrl = "https://maps.app.goo.gl/rhgYgCchRQ7YYKUZ7";
 
@@ -565,21 +564,17 @@ function renderPosts(posts) {
 
   grid.innerHTML = posts
     .map(
-      (post, index) => `
-        <button class="post-card" type="button" data-post-index="${index}">
+      (post) => `
+        <a class="post-card" href="/journal/${encodeURIComponent(post.slug)}/">
           <span>${escapeHtml(post.category)}</span>
           <h3>${escapeHtml(post.title)}</h3>
           <p>${escapeHtml(post.excerpt)}</p>
           <time datetime="${post.date}">${formatDate(post.date)}</time>
           <span class="read-more">Read article</span>
-        </button>
+        </a>
       `
     )
     .join("");
-
-  grid.querySelectorAll("[data-post-index]").forEach((button) => {
-    button.addEventListener("click", () => openPost(posts[Number(button.dataset.postIndex)]));
-  });
 }
 
 function openPost(post) {

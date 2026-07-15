@@ -1,2 +1,4 @@
 /booking https://book.gocheckin.net/v3/nail-salon/tyra-hair-studio-20654/choose-service 302
 /booking/ https://book.gocheckin.net/v3/nail-salon/tyra-hair-studio-20654/choose-service 302
+/services /service/ 301
+/services/ /service/ 301

@@ -9,9 +9,15 @@
 
 /content/*
   Cache-Control: public, max-age=60
+  X-Robots-Tag: noindex
 
 /tyraadmin/*
   Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow, noarchive
 
 /tyraadmin/config.yml
   Cache-Control: no-store
+
+/api/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow, noarchive

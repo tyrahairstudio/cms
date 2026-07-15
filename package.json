@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "wrangler pages dev public --port 8788",
     "serve": "py -m http.server 8788 --directory public",
+    "seo:build": "node scripts/generate-seo-pages.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "deploy": "wrangler pages deploy public --project-name tyrahairstudio --branch main",
     "deploy:npx": "npx wrangler pages deploy public --project-name tyrahairstudio --branch main"

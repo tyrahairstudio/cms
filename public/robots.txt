@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /tyraadmin/
+Disallow: /api/
+
+Sitemap: https://tyrahairstudio.com/sitemap.xml
