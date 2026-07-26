@@ -311,7 +311,7 @@ function buildCustomerEmail_(bookingId, payload, dateLabel, timeLabel, servicesT
     '<p><strong>Time:</strong> ' + html_(timeLabel) + '</p>' +
     '<p><strong>Services:</strong><br>' + html_(servicesText) + '</p>' +
     '</div>' +
-    '<p style="font-size:12px;color:#766b68">This is a request receipt, not the final appointment confirmation. Questions? Call (346) 666-7580.</p>' +
+    '<p style="font-size:12px;color:#766b68">This is a request receipt, not the final appointment confirmation. Questions? Call (832) 653-9595.</p>' +
     '</div>';
 }
 

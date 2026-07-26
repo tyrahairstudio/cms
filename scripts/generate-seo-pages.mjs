@@ -11,6 +11,9 @@ const today = new Date().toISOString().slice(0, 10);
 
 const site = JSON.parse(await readFile(path.join(publicDir, "content", "site.json"), "utf8"));
 const blog = JSON.parse(await readFile(path.join(publicDir, "content", "posts.json"), "utf8"));
+const phoneDisplay = site.phone;
+const phoneDigits = site.phone.replace(/\D/g, "");
+const phoneE164 = phoneDigits.length === 10 ? `+1${phoneDigits}` : `+${phoneDigits}`;
 
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (character) => ({
   "&": "&amp;",
@@ -57,7 +60,7 @@ const salonSchema = {
   url: `${origin}/`,
   image: `${origin}/assets/social-preview.jpg?v=20260704`,
   logo: `${origin}/assets/tyra_hair_studio_logo.png`,
-  telephone: "+1-346-666-7580",
+  telephone: phoneE164,
   email: site.email,
   priceRange: "$$",
   currenciesAccepted: "USD",
@@ -153,7 +156,7 @@ const existingPages = [
     file: path.join("contact", "index.html"),
     path: "/contact/",
     title: "Contact Tyra Hair Studio | Hair Salon in Cypress, TX",
-    description: "Visit Tyra Hair Studio at 9212 Fry Rd #160, Cypress, TX 77433. View hours, call (346) 666-7580, get directions, or book online.",
+    description: `Visit Tyra Hair Studio at 9212 Fry Rd #160, Cypress, TX 77433. View hours, call ${phoneDisplay}, get directions, or book online.`,
     type: "ContactPage",
     trail: [{ name: "Contact", path: "/contact/" }]
   }
@@ -220,6 +223,9 @@ for (const page of existingPages) {
   const filePath = path.join(publicDir, page.file);
   let html = await readFile(filePath, "utf8");
   html = updateExistingHead(html, page);
+  html = html
+    .replace(/href="tel:[^"]+"/g, `href="tel:${phoneDigits}"`)
+    .replace(/(<span data-phone-text>)[^<]*(<\/span>)/g, `$1${escapeHtml(phoneDisplay)}$2`);
   html = html.replace(
     /<!-- SEO:SERVICES_START -->[\s\S]*?<!-- SEO:SERVICES_END -->/,
     `<!-- SEO:SERVICES_START -->${renderStaticServices()}\n          <!-- SEO:SERVICES_END -->`
@@ -475,7 +481,7 @@ function footer() {
   const hours = site.hours.map(({ day, time }) => `<div><dt>${escapeHtml(day)}</dt><dd>${escapeHtml(time)}</dd></div>`).join("");
   return `
     <div class="floating-actions" aria-label="Quick actions">
-      <a class="float-pill" href="tel:3466667580" aria-label="Call Tyra Hair Studio"><span class="float-label">Call now</span><span>(346) 666-7580</span></a>
+      <a class="float-pill" href="tel:${phoneDigits}" aria-label="Call Tyra Hair Studio"><span class="float-label">Call now</span><span>${escapeHtml(phoneDisplay)}</span></a>
       <a class="float-pill" data-booking href="${bookingUrl}" target="_blank" rel="noopener noreferrer" aria-label="Book an appointment"><span class="float-label">Reserve</span><span>Booking</span></a>
       <a class="float-top" href="#main" aria-label="Back to top">&uarr;</a>
     </div>
@@ -483,7 +489,7 @@ function footer() {
       <div class="visit-inner">
         <div class="visit-info-grid">
           <div class="social-panel"><h2 id="visit-title">Tyra Hair Studio</h2><p>Healthy hair meets effortless elegance in Cypress, Texas.</p><div class="social-links" aria-label="Social links"><a class="social-link facebook" href="${escapeHtml(site.facebook)}" aria-label="Tyra Hair Studio on Facebook">f</a><a class="social-link email" href="mailto:${escapeHtml(site.email)}" aria-label="Email Tyra Hair Studio">@</a></div></div>
-          <div class="footer-contact-panel"><h2>Contact us</h2><div class="contact-method"><span aria-hidden="true">&#8962;</span><div><strong>Address:</strong><p>9212 Fry Rd #160, Cypress, TX 77433</p></div></div><div class="contact-method"><span aria-hidden="true">&#9742;</span><div><strong>Phone:</strong><a href="tel:3466667580">(346) 666-7580</a></div></div><div class="contact-method"><span aria-hidden="true">&#9993;</span><div><strong>Email:</strong><a href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a></div></div></div>
+          <div class="footer-contact-panel"><h2>Contact us</h2><div class="contact-method"><span aria-hidden="true">&#8962;</span><div><strong>Address:</strong><p>9212 Fry Rd #160, Cypress, TX 77433</p></div></div><div class="contact-method"><span aria-hidden="true">&#9742;</span><div><strong>Phone:</strong><a href="tel:${phoneDigits}">${escapeHtml(phoneDisplay)}</a></div></div><div class="contact-method"><span aria-hidden="true">&#9993;</span><div><strong>Email:</strong><a href="mailto:${escapeHtml(site.email)}">${escapeHtml(site.email)}</a></div></div></div>
           <div class="footer-hours-panel"><h2>Open Hours</h2><dl>${hours}</dl></div>
         </div>
         <div class="location-block"><h2>Location</h2><p><a class="button primary" href="${directionsUrl}" target="_blank" rel="noopener noreferrer">Get directions to the studio</a></p></div>
