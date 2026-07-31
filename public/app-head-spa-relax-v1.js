@@ -98,6 +98,22 @@ const serviceImagesByName = {
 
 const fallbackServiceImage = serviceImagesByName["Hair Color"];
 
+const serviceDetailLinksByName = {
+  "Hair Cuts": [
+    { href: "/haircuts-cypress-tx/", label: "Explore haircuts in Cypress" }
+  ],
+  "Hair Color": [
+    { href: "/hair-color-cypress-tx/", label: "Explore hair color in Cypress" },
+    { href: "/balayage-cypress-tx/", label: "See balayage & highlights" }
+  ],
+  "Treatments": [
+    { href: "/keratin-treatment-cypress-tx/", label: "Explore keratin & hair treatments" }
+  ],
+  "Head Spa": [
+    { href: "/head-spa-cypress-tx/", label: "Explore head spa in Cypress" }
+  ]
+};
+
 const heroLooks = [
   {
     label: "Brunette studio waves",
@@ -452,12 +468,17 @@ function renderSite(site) {
       .map(
         (service) => {
           const image = serviceImagesByName[service.name] || fallbackServiceImage;
+          const detailLinks = serviceDetailLinksByName[service.name] || [];
+          const detailLinksHtml = detailLinks.length
+            ? `<div class="service-detail-links">${detailLinks.map((link) => `<a class="service-detail-link" href="${link.href}">${escapeHtml(link.label)}</a>`).join("")}</div>`
+            : "";
           return `
           <article class="service-card">
             <div class="service-card-visual" style="--service-image: url('${image.src}'); --service-position: ${image.position}"></div>
             <div class="service-card-content">
               <h3>${escapeHtml(service.name)}</h3>
               ${renderServiceDetails(service)}
+              ${detailLinksHtml}
             </div>
           </article>
         `;

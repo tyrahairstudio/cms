@@ -34,6 +34,22 @@ const serviceImages = {
   "Free Consultation": "/images/services/free-consultation.webp"
 };
 
+const serviceDetailLinks = {
+  "Hair Cuts": [
+    { href: "/haircuts-cypress-tx/", label: "Explore haircuts in Cypress" }
+  ],
+  "Hair Color": [
+    { href: "/hair-color-cypress-tx/", label: "Explore hair color in Cypress" },
+    { href: "/balayage-cypress-tx/", label: "See balayage & highlights" }
+  ],
+  "Treatments": [
+    { href: "/keratin-treatment-cypress-tx/", label: "Explore keratin & hair treatments" }
+  ],
+  "Head Spa": [
+    { href: "/head-spa-cypress-tx/", label: "Explore head spa in Cypress" }
+  ]
+};
+
 const openingHoursSpecification = site.hours.map(({ day, time }) => {
   const [opensText, closesText] = time.split(" - ");
   const to24Hour = (value) => {
@@ -207,16 +223,22 @@ function updateExistingHead(html, page) {
 }
 
 function renderStaticServices() {
-  return site.services.map((service) => `
+  return site.services.map((service) => {
+    const detailLinks = serviceDetailLinks[service.name] || [];
+    const detailLinksHtml = detailLinks.length
+      ? `\n              <div class="service-detail-links">${detailLinks.map((link) => `<a class="service-detail-link" href="${link.href}">${escapeHtml(link.label)}</a>`).join("")}</div>`
+      : "";
+    return `
           <article class="service-card">
             <div class="service-card-visual" role="img" aria-label="${escapeHtml(service.name)} at Tyra Hair Studio" style="--service-image: url('${serviceImages[service.name] || serviceImages["Hair Color"]}'); --service-position: 50% 48%"></div>
             <div class="service-card-content">
               <h3>${escapeHtml(service.name)}</h3>
               <ul class="service-list">
                 ${service.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n                ")}
-              </ul>
+              </ul>${detailLinksHtml}
             </div>
-          </article>`).join("");
+          </article>`;
+  }).join("");
 }
 
 for (const page of existingPages) {
@@ -592,15 +614,18 @@ const formatDate = (value) => new Intl.DateTimeFormat("en-US", { year: "numeric"
 const journalSeo = {
   "keep-blonde-hair-bright": {
     title: "Keep Blonde Hair Bright | Tyra Hair Studio",
-    description: "Learn a simple care routine for keeping blonde hair bright, hydrated, and polished between salon appointments without overusing purple shampoo."
+    description: "Learn a simple care routine for keeping blonde hair bright, hydrated, and polished between salon appointments without overusing purple shampoo.",
+    relatedService: { href: "/balayage-cypress-tx/", label: "Explore balayage & highlights in Cypress" }
   },
   "color-correction-consultation": {
     title: "Color Correction Consultation | Tyra Hair Studio",
-    description: "Learn what happens during a hair color correction consultation, from color history and strand testing to realistic timing and a safer service plan."
+    description: "Learn what happens during a hair color correction consultation, from color history and strand testing to realistic timing and a safer service plan.",
+    relatedService: { href: "/hair-color-cypress-tx/", label: "Explore hair color in Cypress" }
   },
   "gloss-toner-glaze": {
     title: "Gloss vs. Toner vs. Glaze | Tyra Hair Studio",
-    description: "Understand the difference between hair gloss, toner, and glaze so you can discuss the right tone and shine refresh for your current color and goal."
+    description: "Understand the difference between hair gloss, toner, and glaze so you can discuss the right tone and shine refresh for your current color and goal.",
+    relatedService: { href: "/hair-color-cypress-tx/", label: "Explore hair color in Cypress" }
   }
 };
 
@@ -641,7 +666,7 @@ function journalPageHtml(post) {
 ${header("")}
     <main id="main">
       <section class="page-hero" id="top" aria-labelledby="page-title"><p class="eyebrow">Hair Journal · ${escapeHtml(post.category)}</p><h1 id="page-title">${escapeHtml(post.title)}</h1><p>${escapeHtml(post.excerpt)}</p></section>
-      <article class="section journal-article"><div class="journal-copy"><p class="journal-meta"><time datetime="${post.date}">${formatDate(post.date)}</time> · Tyra Hair Studio</p>${post.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("\n          ")}<p><a class="button primary" href="/service/">Explore salon services</a></p></div></article>
+      <article class="section journal-article"><div class="journal-copy"><p class="journal-meta"><time datetime="${post.date}">${formatDate(post.date)}</time> · Tyra Hair Studio</p>${post.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("\n          ")}<p><a class="button primary" href="${seo.relatedService?.href || "/service/"}">${escapeHtml(seo.relatedService?.label || "Explore salon services")}</a></p></div></article>
       ${bookingCta()}
     </main>
 ${footer()}

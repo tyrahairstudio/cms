@@ -671,6 +671,31 @@ h2 {
   color: var(--mahogany);
 }
 
+.service-detail-links {
+  align-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.service-detail-link {
+  border-bottom: 1px solid rgba(126, 62, 44, 0.35);
+  color: var(--mahogany);
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.service-detail-link:hover,
+.service-detail-link:focus-visible {
+  border-bottom-color: currentColor;
+  color: var(--ink);
+}
+
 .service-card strong {
   align-self: end;
   color: var(--mahogany);
