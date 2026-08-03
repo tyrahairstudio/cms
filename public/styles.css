@@ -715,7 +715,7 @@ h2 {
   align-items: stretch;
   display: grid;
   gap: 7px;
-  grid-template-columns: minmax(0, 1fr) minmax(44px, auto) minmax(61px, auto);
+  grid-template-columns: minmax(0, 1fr) 56px 72px;
 }
 
 .service-price-header {

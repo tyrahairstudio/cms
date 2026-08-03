@@ -527,7 +527,7 @@ function commonHead({ title, description, canonical, schema, robots = "index, fo
     <meta name="twitter:image" content="${origin}/assets/social-preview.jpg?v=20260704">
     <meta name="theme-color" content="#17120f">
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
-    <link rel="stylesheet" href="/styles.css?v=cash-card-pricing-v2">
+    <link rel="stylesheet" href="/styles.css?v=cash-card-columns-v3">
     <script type="application/ld+json">${JSON.stringify(schema)}</script>`;
 }
 
