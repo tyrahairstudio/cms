@@ -777,6 +777,7 @@ h2 {
 .service-price-header > span:nth-child(2) {
   align-items: flex-end;
   flex-direction: column;
+  font-size: 11px;
   justify-content: center;
   line-height: 1.05;
 }
