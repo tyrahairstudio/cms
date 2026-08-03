@@ -527,7 +527,7 @@ function commonHead({ title, description, canonical, schema, robots = "index, fo
     <meta name="twitter:image" content="${origin}/assets/social-preview.jpg?v=20260704">
     <meta name="theme-color" content="#17120f">
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
-    <link rel="stylesheet" href="/styles.css?v=seo-local-v1">
+    <link rel="stylesheet" href="/styles.css?v=cash-card-pricing-v2">
     <script type="application/ld+json">${JSON.stringify(schema)}</script>`;
 }
 
@@ -574,7 +574,7 @@ function footer() {
         <div class="footer-credit"><p><span>Copyright &copy; ${new Date().getFullYear()} <strong>Tyra Hair Studio</strong>. All rights reserved.</span><span>9212 Fry Rd #160, Cypress, TX 77433</span></p></div>
       </div>
     </footer>
-    <script src="/app-head-spa-relax-v1.js?v=booking-direct-v1" type="module"></script>`;
+    <script src="/app-head-spa-relax-v1.js?v=cash-card-pricing-v2" type="module"></script>`;
 }
 
 function bookingCta() {
