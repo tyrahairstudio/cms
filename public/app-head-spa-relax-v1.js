@@ -208,7 +208,7 @@ const renderServiceDetails = (service, adjustmentPercent = 2.5) => {
         <div class="service-price-table" role="table" aria-label="${escapeHtml(service.name)} cash and card prices">
           <div class="service-price-header" role="row">
             <span role="columnheader">Service</span>
-            <span role="columnheader">Cash</span>
+            <span class="cash-column cash-header" role="columnheader"><span>Cash</span><small>Best price</small></span>
             <span class="card-column" role="columnheader">Card</span>
           </div>
           ${rows.map((row) => {
@@ -224,7 +224,7 @@ const renderServiceDetails = (service, adjustmentPercent = 2.5) => {
             return `
               <div class="service-price-row" role="row">
                 <span class="service-item-name" role="cell">${escapeHtml(row.label)}</span>
-                <span class="service-price-value" role="cell">${formatPrice(row.cashCents, row.startingAt)}</span>
+                <span class="service-price-value cash-column" role="cell">${formatPrice(row.cashCents, row.startingAt)}</span>
                 <span class="service-price-value card-column" role="cell">${formatPrice(cardCents, row.startingAt)}</span>
               </div>`;
           }).join("")}

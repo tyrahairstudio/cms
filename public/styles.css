@@ -715,7 +715,7 @@ h2 {
   align-items: stretch;
   display: grid;
   gap: 7px;
-  grid-template-columns: minmax(0, 1fr) 56px 72px;
+  grid-template-columns: minmax(0, 1fr) 64px 72px;
 }
 
 .service-price-header {
@@ -758,13 +758,36 @@ h2 {
   white-space: nowrap;
 }
 
-.service-price-header .card-column,
-.service-price-row .card-column {
-  background: rgba(217, 191, 143, 0.19);
-  box-shadow: inset 1px 0 rgba(184, 105, 63, 0.12), inset -1px 0 rgba(184, 105, 63, 0.12);
-  color: var(--mahogany);
+.service-price-header .cash-column,
+.service-price-row .cash-column {
+  background: rgba(217, 191, 143, 0.24);
+  box-shadow: inset 1px 0 rgba(141, 101, 50, 0.13), inset -1px 0 rgba(141, 101, 50, 0.13);
+  color: #5b3a21;
   padding-left: 7px;
   padding-right: 7px;
+}
+
+.service-price-header .card-column,
+.service-price-row .card-column {
+  color: rgba(59, 43, 35, 0.7);
+  padding-left: 7px;
+  padding-right: 0;
+}
+
+.service-price-header .cash-header {
+  align-items: flex-end;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1;
+}
+
+.cash-header small {
+  color: #8a5d2d;
+  font-size: 6px;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  margin-top: 3px;
+  white-space: nowrap;
 }
 
 .service-price-row-note {
@@ -2913,7 +2936,7 @@ h2 {
   .service-price-header,
   .service-price-row {
     gap: 8px;
-    grid-template-columns: minmax(0, 1fr) 56px 72px;
+    grid-template-columns: minmax(0, 1fr) 64px 72px;
   }
 
   .service-item-name,

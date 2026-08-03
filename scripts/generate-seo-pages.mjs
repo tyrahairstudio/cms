@@ -60,12 +60,12 @@ function renderServicePricing(service) {
   }
 
   return `<div class="service-price-table" role="table" aria-label="${escapeHtml(service.name)} cash and card prices">
-                <div class="service-price-header" role="row"><span role="columnheader">Service</span><span role="columnheader">Cash</span><span class="card-column" role="columnheader">Card</span></div>
+                <div class="service-price-header" role="row"><span role="columnheader">Service</span><span class="cash-column cash-header" role="columnheader"><span>Cash</span><small>Best price</small></span><span class="card-column" role="columnheader">Card</span></div>
                 ${rows.map((row) => {
                   if (!Number.isFinite(row.cashCents)) {
                     return `<div class="service-price-row service-price-row-note" role="row">${row.label ? `<span class="service-item-name" role="cell">${escapeHtml(row.label)}</span>` : ""}<span class="service-consultation" role="cell">${escapeHtml(row.note)}</span></div>`;
                   }
-                  return `<div class="service-price-row" role="row"><span class="service-item-name" role="cell">${escapeHtml(row.label)}</span><span class="service-price-value" role="cell">${formatPrice(row.cashCents, row.startingAt)}</span><span class="service-price-value card-column" role="cell">${formatPrice(calculateCardCents(row.cashCents), row.startingAt)}</span></div>`;
+                  return `<div class="service-price-row" role="row"><span class="service-item-name" role="cell">${escapeHtml(row.label)}</span><span class="service-price-value cash-column" role="cell">${formatPrice(row.cashCents, row.startingAt)}</span><span class="service-price-value card-column" role="cell">${formatPrice(calculateCardCents(row.cashCents), row.startingAt)}</span></div>`;
                 }).join("\n                ")}
               </div>`;
 }
@@ -527,7 +527,7 @@ function commonHead({ title, description, canonical, schema, robots = "index, fo
     <meta name="twitter:image" content="${origin}/assets/social-preview.jpg?v=20260704">
     <meta name="theme-color" content="#17120f">
     <link rel="icon" type="image/png" href="/assets/tyra-logo.png">
-    <link rel="stylesheet" href="/styles.css?v=cash-card-columns-v4">
+    <link rel="stylesheet" href="/styles.css?v=cash-best-price-v5">
     <script type="application/ld+json">${JSON.stringify(schema)}</script>`;
 }
 
@@ -574,7 +574,7 @@ function footer() {
         <div class="footer-credit"><p><span>Copyright &copy; ${new Date().getFullYear()} <strong>Tyra Hair Studio</strong>. All rights reserved.</span><span>9212 Fry Rd #160, Cypress, TX 77433</span></p></div>
       </div>
     </footer>
-    <script src="/app-head-spa-relax-v1.js?v=cash-card-pricing-v2" type="module"></script>`;
+    <script src="/app-head-spa-relax-v1.js?v=cash-best-price-v5" type="module"></script>`;
 }
 
 function bookingCta() {
@@ -647,7 +647,7 @@ ${header("services")}
             <h2 id="service-detail-title">${escapeHtml(page.h2)}</h2>
             ${page.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("\n            ")}
             <h3>Services and cash starting prices</h3>
-            <p class="service-price-copy-note">Prices mentioned in the page copy are cash prices. Card prices include a ${cardAdjustmentPercent}% adjustment and are shown in full below.</p>
+            <p class="service-price-copy-note">Cash is our best-price option. Card prices include a ${cardAdjustmentPercent}% adjustment and are shown in full below.</p>
             <ul>${page.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
             <div class="seo-price-box"><strong>${escapeHtml(page.priceLabel)}</strong>${renderServicePricing(offerService)}</div>
             <p><a class="button primary" href="${bookingUrl}" target="_blank" rel="noopener noreferrer">Book an appointment</a></p>
