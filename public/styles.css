@@ -715,14 +715,14 @@ h2 {
   align-items: stretch;
   display: grid;
   gap: 7px;
-  grid-template-columns: minmax(0, 1fr) 64px 72px;
+  grid-template-columns: minmax(0, 1fr) 72px 72px;
 }
 
 .service-price-header {
   color: rgba(23, 18, 15, 0.5);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.11em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -778,17 +778,25 @@ h2 {
   align-items: flex-end;
   flex-direction: column;
   justify-content: center;
-  line-height: 1;
+  line-height: 1.05;
+}
+
+.cash-header > span {
+  font-size: 11px;
 }
 
 .cash-header small,
 .service-price-header > span:nth-child(2):not(.cash-header)::after {
   color: #8a5d2d;
   content: "Best price";
-  font-size: 6px;
+  background: rgba(255, 250, 243, 0.72);
+  border: 1px solid rgba(111, 51, 39, 0.2);
+  border-radius: 999px;
+  font-size: 9px;
   font-weight: 850;
-  letter-spacing: 0.04em;
-  margin-top: 3px;
+  letter-spacing: 0.01em;
+  margin-top: 4px;
+  padding: 2px 4px;
   white-space: nowrap;
 }
 
@@ -2942,7 +2950,7 @@ h2 {
   .service-price-header,
   .service-price-row {
     gap: 8px;
-    grid-template-columns: minmax(0, 1fr) 64px 72px;
+    grid-template-columns: minmax(0, 1fr) 72px 72px;
   }
 
   .service-item-name,
