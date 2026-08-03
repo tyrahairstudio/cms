@@ -720,7 +720,7 @@ h2 {
 
 .service-price-header {
   color: rgba(23, 18, 15, 0.5);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -777,13 +777,13 @@ h2 {
 .service-price-header > span:nth-child(2) {
   align-items: flex-end;
   flex-direction: column;
-  font-size: 13px;
+  font-size: 14px;
   justify-content: center;
   line-height: 1.05;
 }
 
 .cash-header > span {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .cash-header small,
@@ -793,11 +793,11 @@ h2 {
   background: rgba(255, 250, 243, 0.72);
   border: 1px solid rgba(111, 51, 39, 0.2);
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 850;
   letter-spacing: 0.01em;
   margin-top: 4px;
-  padding: 2px 4px;
+  padding: 2px 3px;
   white-space: nowrap;
 }
 
@@ -2957,7 +2957,7 @@ h2 {
   .service-price-header,
   .service-price-row {
     gap: 8px;
-    grid-template-columns: minmax(0, 1fr) 82px 82px;
+    grid-template-columns: minmax(0, 1fr) 86px 86px;
   }
 
   .service-item-name,
