@@ -162,13 +162,78 @@ const escapeHtml = (value = "") =>
     "'": "&#39;"
   })[char]);
 
+const parseServiceItem = (item) => {
+  const priceMatch = String(item).match(/^(.+?):\s*\$(\d+(?:\.\d+)?)\s*(and up)?$/i);
+  if (priceMatch) {
+    return {
+      label: priceMatch[1].trim(),
+      cashCents: Math.round(Number(priceMatch[2]) * 100),
+      startingAt: Boolean(priceMatch[3])
+    };
+  }
+
+  const noteMatch = String(item).match(/^(.+?):\s*(.+)$/);
+  if (noteMatch) {
+    return { label: noteMatch[1].trim(), note: noteMatch[2].trim() };
+  }
+
+  return { note: String(item) };
+};
+
+const formatPrice = (cents, startingAt = false) => {
+  const amount = (cents / 100).toFixed(2).replace(/\.00$/, "");
+  return `$${amount}${startingAt ? "+" : ""}`;
+};
+
+const calculateCardCents = (cashCents, adjustmentPercent) => {
+  const adjustmentBasisPoints = Math.round(adjustmentPercent * 100);
+  return Math.round((cashCents * (10000 + adjustmentBasisPoints)) / 10000);
+};
+
+const getCardAdjustmentPercent = (value) => {
+  const adjustmentPercent = Number(value);
+  return Number.isFinite(adjustmentPercent) ? adjustmentPercent : 2.5;
+};
+
 const formatDate = (value) =>
   new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" }).format(new Date(`${value}T12:00:00`));
 
-const renderServiceDetails = (service) => {
+const renderServiceDetails = (service, adjustmentPercent = 2.5) => {
   if (Array.isArray(service.items) && service.items.length) {
+    const rows = service.items.map(parseServiceItem);
+    const hasPrices = rows.some((row) => Number.isFinite(row.cashCents));
+
+    if (hasPrices) {
+      return `
+        <div class="service-price-table" role="table" aria-label="${escapeHtml(service.name)} cash and card prices">
+          <div class="service-price-header" role="row">
+            <span role="columnheader">Service</span>
+            <span role="columnheader">Cash</span>
+            <span class="card-column" role="columnheader">Card</span>
+          </div>
+          ${rows.map((row) => {
+            if (!Number.isFinite(row.cashCents)) {
+              return `
+                <div class="service-price-row service-price-row-note" role="row">
+                  ${row.label ? `<span class="service-item-name" role="cell">${escapeHtml(row.label)}</span>` : ""}
+                  <span class="service-consultation" role="cell">${escapeHtml(row.note)}</span>
+                </div>`;
+            }
+
+            const cardCents = calculateCardCents(row.cashCents, adjustmentPercent);
+            return `
+              <div class="service-price-row" role="row">
+                <span class="service-item-name" role="cell">${escapeHtml(row.label)}</span>
+                <span class="service-price-value" role="cell">${formatPrice(row.cashCents, row.startingAt)}</span>
+                <span class="service-price-value card-column" role="cell">${formatPrice(cardCents, row.startingAt)}</span>
+              </div>`;
+          }).join("")}
+        </div>
+      `;
+    }
+
     return `
-      <ul class="service-list">
+      <ul class="service-note-list">
         ${service.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
     `;
@@ -477,7 +542,7 @@ function renderSite(site) {
             <div class="service-card-visual" style="--service-image: url('${image.src}'); --service-position: ${image.position}"></div>
             <div class="service-card-content">
               <h3>${escapeHtml(service.name)}</h3>
-              ${renderServiceDetails(service)}
+              ${renderServiceDetails(service, getCardAdjustmentPercent(site.cardAdjustmentPercent))}
               ${detailLinksHtml}
             </div>
           </article>

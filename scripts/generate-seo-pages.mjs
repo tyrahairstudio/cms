@@ -23,6 +23,53 @@ const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (character)
   "'": "&#39;"
 })[character]);
 
+const parsedCardAdjustmentPercent = Number(site.cardAdjustmentPercent);
+const cardAdjustmentPercent = Number.isFinite(parsedCardAdjustmentPercent) ? parsedCardAdjustmentPercent : 2.5;
+
+const parseServiceItem = (item) => {
+  const priceMatch = String(item).match(/^(.+?):\s*\$(\d+(?:\.\d+)?)\s*(and up)?$/i);
+  if (priceMatch) {
+    return {
+      label: priceMatch[1].trim(),
+      cashCents: Math.round(Number(priceMatch[2]) * 100),
+      startingAt: Boolean(priceMatch[3])
+    };
+  }
+
+  const noteMatch = String(item).match(/^(.+?):\s*(.+)$/);
+  if (noteMatch) return { label: noteMatch[1].trim(), note: noteMatch[2].trim() };
+  return { note: String(item) };
+};
+
+const formatPrice = (cents, startingAt = false) => {
+  const amount = (cents / 100).toFixed(2).replace(/\.00$/, "");
+  return `$${amount}${startingAt ? "+" : ""}`;
+};
+
+const calculateCardCents = (cashCents) => {
+  const adjustmentBasisPoints = Math.round(cardAdjustmentPercent * 100);
+  return Math.round((cashCents * (10000 + adjustmentBasisPoints)) / 10000);
+};
+
+function renderServicePricing(service) {
+  const rows = service.items.map(parseServiceItem);
+  const hasPrices = rows.some((row) => Number.isFinite(row.cashCents));
+
+  if (!hasPrices) {
+    return `<ul class="service-note-list">${service.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+  }
+
+  return `<div class="service-price-table" role="table" aria-label="${escapeHtml(service.name)} cash and card prices">
+                <div class="service-price-header" role="row"><span role="columnheader">Service</span><span role="columnheader">Cash</span><span class="card-column" role="columnheader">Card</span></div>
+                ${rows.map((row) => {
+                  if (!Number.isFinite(row.cashCents)) {
+                    return `<div class="service-price-row service-price-row-note" role="row">${row.label ? `<span class="service-item-name" role="cell">${escapeHtml(row.label)}</span>` : ""}<span class="service-consultation" role="cell">${escapeHtml(row.note)}</span></div>`;
+                  }
+                  return `<div class="service-price-row" role="row"><span class="service-item-name" role="cell">${escapeHtml(row.label)}</span><span class="service-price-value" role="cell">${formatPrice(row.cashCents, row.startingAt)}</span><span class="service-price-value card-column" role="cell">${formatPrice(calculateCardCents(row.cashCents), row.startingAt)}</span></div>`;
+                }).join("\n                ")}
+              </div>`;
+}
+
 const serviceImages = {
   "Hair Cuts": "/images/services/hair-cuts.webp?v=professional-v2",
   "Hair Color": "/images/services/hair-color-professional.webp",
@@ -233,9 +280,7 @@ function renderStaticServices() {
             <div class="service-card-visual" role="img" aria-label="${escapeHtml(service.name)} at Tyra Hair Studio" style="--service-image: url('${serviceImages[service.name] || serviceImages["Hair Color"]}'); --service-position: 50% 48%"></div>
             <div class="service-card-content">
               <h3>${escapeHtml(service.name)}</h3>
-              <ul class="service-list">
-                ${service.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n                ")}
-              </ul>${detailLinksHtml}
+              ${renderServicePricing(service)}${detailLinksHtml}
             </div>
           </article>`;
   }).join("");
@@ -284,9 +329,14 @@ const landingPages = [
     priceLabel: "Hair color starting prices",
     price: "$65+ to $220+ · correction by consultation",
     offers: [
+      { name: "Men's color", price: "65" },
+      { name: "Men's highlights", price: "85" },
       { name: "All-over hair color", price: "130" },
       { name: "Gray coverage", price: "75" },
+      { name: "Partial highlights", price: "120" },
       { name: "Full highlights", price: "180" },
+      { name: "Balayage or ombré", price: "220" },
+      { name: "Bleach and tone", price: "200" },
       { name: "Toner", price: "65" }
     ],
     faqs: [
@@ -325,7 +375,9 @@ const landingPages = [
     offers: [
       { name: "Partial highlights", price: "120" },
       { name: "Full highlights", price: "180" },
-      { name: "Balayage or ombré", price: "220" }
+      { name: "Balayage or ombré", price: "220" },
+      { name: "Bleach and tone", price: "200" },
+      { name: "Toner refresh", price: "65" }
     ],
     faqs: [
       ["Is balayage lower maintenance than highlights?", "It can be. Balayage is often placed for a softer grow-out, but maintenance still depends on the contrast, tone, gray coverage needs, and how bright you want to stay."],
@@ -363,7 +415,10 @@ const landingPages = [
     offers: [
       { name: "Women’s haircut", price: "35" },
       { name: "Wash, cut and style", price: "45" },
-      { name: "Men’s haircut", price: "20" }
+      { name: "Men’s haircut", price: "20" },
+      { name: "Boy’s haircut", price: "18" },
+      { name: "Girl’s haircut", price: "30" },
+      { name: "Bang or beard trim", price: "10" }
     ],
     faqs: [
       ["Should I book a cut only or wash, cut, and style?", "Choose wash, cut, and style when you want the full finished result and styling guidance. A cut-only appointment may suit a straightforward maintenance visit."],
@@ -433,6 +488,7 @@ const landingPages = [
     priceLabel: "Treatment starting prices",
     price: "$35+ gloss/Olaplex · $180+ keratin · $220+ Brazilian Blowout",
     offers: [
+      { name: "Shiny glossing treatment", price: "35" },
       { name: "Olaplex treatment", price: "35" },
       { name: "Keratin treatment", price: "180" },
       { name: "Brazilian Blowout treatment", price: "220" }
@@ -572,6 +628,10 @@ function serviceSchema(page) {
 
 function servicePageHtml(page) {
   const canonical = `${origin}/${page.slug}/`;
+  const offerService = {
+    name: page.serviceName,
+    items: page.offers.map((offer) => `${offer.name}: $${offer.price} and up`)
+  };
   return `<!doctype html>
 <html lang="en-US">
   <head>${commonHead({ title: page.title, description: page.description, canonical, schema: serviceSchema(page) })}
@@ -586,9 +646,10 @@ ${header("services")}
             <p class="section-kicker">Tyra Hair Studio</p>
             <h2 id="service-detail-title">${escapeHtml(page.h2)}</h2>
             ${page.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("\n            ")}
-            <h3>Services and starting prices</h3>
+            <h3>Services and cash starting prices</h3>
+            <p class="service-price-copy-note">Prices mentioned in the page copy are cash prices. Card prices include a ${cardAdjustmentPercent}% adjustment and are shown in full below.</p>
             <ul>${page.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-            <div class="seo-price-box"><strong>${escapeHtml(page.priceLabel)}</strong><span>${escapeHtml(page.price)}</span></div>
+            <div class="seo-price-box"><strong>${escapeHtml(page.priceLabel)}</strong>${renderServicePricing(offerService)}</div>
             <p><a class="button primary" href="${bookingUrl}" target="_blank" rel="noopener noreferrer">Book an appointment</a></p>
           </article>
           <figure class="seo-service-image"><img src="${page.image}" alt="${escapeHtml(page.imageAlt)}" width="${page.imageWidth}" height="${page.imageHeight}" loading="eager" decoding="async"></figure>

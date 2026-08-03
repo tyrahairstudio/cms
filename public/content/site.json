@@ -49,11 +49,13 @@
   "headline": "Where healthy hair meets effortless elegance.",
   "bookingUrl": "https://book.gocheckin.net/v3/nail-salon/tyra-hair-studio-20654/choose-service",
   "email": "tyrahairstudiocypress@gmail.com",
+  "cardAdjustmentPercent": 2.5,
   "services": [
     {
       "name": "Hair Cuts",
       "items": [
-        "Women: cut only $35 and up; wash, cut, style $45 and up",
+        "Women's cut only: $35 and up",
+        "Women's wash, cut, style: $45 and up",
         "Men: $20 and up",
         "Boy: $18 and up",
         "Girl: $30 and up",
