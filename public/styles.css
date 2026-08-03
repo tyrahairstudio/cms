@@ -622,7 +622,7 @@ h2 {
 
 .pricing-notice-label {
   color: var(--mahogany);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -630,7 +630,7 @@ h2 {
 
 .pricing-notice p {
   color: rgba(23, 18, 15, 0.7);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.55;
   margin: 0;
 }
@@ -715,12 +715,12 @@ h2 {
   align-items: stretch;
   display: grid;
   gap: 7px;
-  grid-template-columns: minmax(0, 1fr) 72px 72px;
+  grid-template-columns: minmax(0, 1fr) 86px 86px;
 }
 
 .service-price-header {
   color: rgba(23, 18, 15, 0.5);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -731,7 +731,7 @@ h2 {
   align-items: center;
   display: flex;
   min-width: 0;
-  padding: 8px 0;
+  padding: 10px 0;
 }
 
 .service-price-header > span:not(:first-child),
@@ -746,13 +746,13 @@ h2 {
 
 .service-item-name {
   color: rgba(23, 18, 15, 0.72);
-  font-size: 12px;
-  line-height: 1.35;
+  font-size: 16px;
+  line-height: 1.42;
 }
 
 .service-price-value {
   color: var(--coffee);
-  font-size: 12px;
+  font-size: 15px;
   font-variant-numeric: tabular-nums;
   font-weight: 750;
   white-space: nowrap;
@@ -777,13 +777,13 @@ h2 {
 .service-price-header > span:nth-child(2) {
   align-items: flex-end;
   flex-direction: column;
-  font-size: 11px;
+  font-size: 13px;
   justify-content: center;
   line-height: 1.05;
 }
 
 .cash-header > span {
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .cash-header small,
@@ -793,12 +793,18 @@ h2 {
   background: rgba(255, 250, 243, 0.72);
   border: 1px solid rgba(111, 51, 39, 0.2);
   border-radius: 999px;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 850;
   letter-spacing: 0.01em;
   margin-top: 4px;
   padding: 2px 4px;
   white-space: nowrap;
+}
+
+@media (max-width: 1380px) {
+  .service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .cash-header small {
@@ -2945,18 +2951,18 @@ h2 {
   }
 
   .pricing-notice p {
-    font-size: 12px;
+    font-size: 15px;
   }
 
   .service-price-header,
   .service-price-row {
     gap: 8px;
-    grid-template-columns: minmax(0, 1fr) 72px 72px;
+    grid-template-columns: minmax(0, 1fr) 82px 82px;
   }
 
   .service-item-name,
   .service-price-value {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .service-price-row-note {
