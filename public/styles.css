@@ -758,8 +758,8 @@ h2 {
   white-space: nowrap;
 }
 
-.service-price-header .cash-column,
-.service-price-row .cash-column {
+.service-price-header > span:nth-child(2),
+.service-price-row > span:nth-child(2) {
   background: rgba(217, 191, 143, 0.24);
   box-shadow: inset 1px 0 rgba(141, 101, 50, 0.13), inset -1px 0 rgba(141, 101, 50, 0.13);
   color: #5b3a21;
@@ -774,20 +774,26 @@ h2 {
   padding-right: 0;
 }
 
-.service-price-header .cash-header {
+.service-price-header > span:nth-child(2) {
   align-items: flex-end;
   flex-direction: column;
   justify-content: center;
   line-height: 1;
 }
 
-.cash-header small {
+.cash-header small,
+.service-price-header > span:nth-child(2):not(.cash-header)::after {
   color: #8a5d2d;
+  content: "Best price";
   font-size: 6px;
   font-weight: 850;
   letter-spacing: 0.04em;
   margin-top: 3px;
   white-space: nowrap;
+}
+
+.cash-header small {
+  content: none;
 }
 
 .service-price-row-note {
