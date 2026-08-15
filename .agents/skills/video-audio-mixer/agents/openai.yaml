@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ghép audio vào video"
+  short_description: "Ghép nhạc, voice và cân âm lượng video"
+  default_prompt: "Dùng $video-audio-mixer để thêm audio vào video và xuất bản MP4 tương thích web."

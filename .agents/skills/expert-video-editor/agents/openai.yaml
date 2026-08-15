@@ -1,0 +1,4 @@
+interface:
+  display_name: "Chuyên gia dựng video"
+  short_description: "Dựng video chuyên nghiệp từ đầu đến cuối"
+  default_prompt: "Dùng $expert-video-editor để dựng video này chuyên nghiệp, có nhịp điệu, màu sắc và âm thanh hoàn chỉnh."

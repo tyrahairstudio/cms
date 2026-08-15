@@ -1,0 +1,4 @@
+interface:
+  display_name: "Chỉnh ảnh & video đẹp"
+  short_description: "Cắt, chỉnh màu và thêm hiệu ứng media"
+  default_prompt: "Dùng $media-edit-effects để chỉnh ảnh hoặc video này thật đẹp và giữ lại file gốc."
