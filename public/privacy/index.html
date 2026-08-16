@@ -12,70 +12,122 @@
     <link rel="stylesheet" href="/styles.css?v=accessible-pricing-v10">
     <link rel="stylesheet" href="/rosefall.css?v=booking-attractor-polish" data-rosefall-style>
     <style>
-      .privacy-page { max-width: 900px; margin: 0 auto; padding: 64px 24px 96px; color: #2b211c; }
-      .privacy-page h1 { margin-bottom: 12px; }
-      .privacy-page h2 { margin-top: 36px; }
+      .privacy-page {
+        color: #2b211c;
+        margin: 0 auto;
+        max-width: 960px;
+        padding: 178px 24px 112px;
+      }
+      .privacy-page .eyebrow { color: #9a5635; margin: 0 0 10px; }
+      .privacy-page h1 {
+        font-family: var(--display-font);
+        font-size: clamp(44px, 5vw, 62px);
+        font-weight: 600;
+        line-height: 1;
+        margin: 0 0 12px;
+      }
+      .privacy-updated { color: rgba(43, 33, 28, .68); margin: 0 0 26px; }
+      .privacy-page h2 {
+        font-size: clamp(30px, 3.4vw, 44px);
+        line-height: 1.08;
+        margin: 44px 0 14px;
+      }
+      .privacy-page p,
+      .privacy-page li { font-size: 16px; line-height: 1.7; }
+      .privacy-page ul { margin: 12px 0 0; padding-left: 22px; }
       .privacy-page li { margin: 8px 0; }
-      .privacy-summary { padding: 20px; background: #f6eee5; border-left: 4px solid #b9823d; }
+      .privacy-page a { text-underline-offset: 3px; }
+      .privacy-summary {
+        background: #f6eee5;
+        border-left: 4px solid #b9823d;
+        margin: 0 0 40px;
+        padding: 20px 22px;
+      }
+      .privacy-summary p { margin: 0; }
       .privacy-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+      .privacy-actions .button.ghost { border-color: rgba(43, 33, 28, .28); color: #2b211c; }
+      .privacy-page-footer { padding: 34px 24px; }
+      @media (max-width: 680px) {
+        .privacy-page { padding: 72px 18px 116px; }
+        .privacy-page h1 { font-size: 42px; }
+        .privacy-page h2 { font-size: 31px; margin-top: 36px; }
+        .privacy-page p,
+        .privacy-page li { font-size: 15px; line-height: 1.65; }
+        .privacy-summary { padding: 17px 18px; }
+        .privacy-actions { display: grid; grid-template-columns: 1fr; }
+        body .tyra-consent { bottom: calc(8px + env(safe-area-inset-bottom)); }
+      }
     </style>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header" data-header>
-      <div class="top-ribbon"><span>9212 Fry Rd #160, Cypress, TX 77433</span></div>
+      <div class="top-ribbon" aria-label="Studio quick information"><span data-top-address>9212 Fry Rd #160, Cypress, TX 77433</span></div>
       <div class="main-nav-row">
         <a class="brand-mark" href="/" aria-label="Tyra Hair Studio home">
-          <img class="brand-logo" src="/assets/tyra-logo-192.webp" width="192" height="199" alt="">
+          <img class="brand-logo" src="/assets/tyra-logo-192.webp" srcset="/assets/tyra-logo-96.webp 96w, /assets/tyra-logo-192.webp 192w" sizes="86px" width="192" height="199" alt="">
         </a>
-        <nav class="nav-links" id="main-navigation" aria-label="Main navigation">
+        <nav class="nav-links" id="main-navigation" data-nav-links aria-label="Main navigation">
           <a href="/">Home</a>
+          <a href="/about/">About us</a>
           <a href="/service/">Services</a>
+          <a data-booking href="https://book.gocheckin.net/v3/nail-salon/tyra-hair-studio-20654/choose-service" target="_blank" rel="noopener noreferrer">Booking</a>
           <a href="/gallery/">Gallery</a>
           <a href="/contact/">Contact us</a>
         </nav>
+        <a class="mobile-booking" data-booking href="https://book.gocheckin.net/v3/nail-salon/tyra-hair-studio-20654/choose-service" target="_blank" rel="noopener noreferrer">Booking</a>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-controls="main-navigation" aria-expanded="false" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </header>
 
     <main class="privacy-page" id="main">
       <p class="eyebrow">Tyra Hair Studio</p>
       <h1>Privacy Notice</h1>
-      <p>Last updated: August 16, 2026</p>
+      <p class="privacy-updated">Last updated: August 17, 2026</p>
 
-      <p class="privacy-summary"><strong>Your choice comes first.</strong> Meta Pixel and the Google advertising tag load only after you allow optional analytics and advertising cookies. Declining does not affect your ability to browse services, view our location or Facebook page preview, call the studio, or open our booking provider.</p>
+      <div class="privacy-summary">
+        <p><strong>Your choice comes first.</strong> The Meta Pixel and Google Ads measurement tag load only after you allow optional analytics and advertising cookies. Our Google Map and Facebook page preview are visible website features and load independently. Declining optional cookies does not prevent you from browsing services, calling the studio, viewing the map, or opening our booking provider.</p>
+      </div>
 
       <h2>Information we process</h2>
       <ul>
-        <li>Basic website activity such as the page viewed and whether an appointment, phone, or email link was clicked.</li>
-        <li>Technical information commonly provided by a browser, such as device/browser type, approximate location derived by the advertising platform, IP address, and advertising identifiers when optional cookies are allowed.</li>
-        <li>Information you choose to send directly by email or phone. Booking information is collected on the separate GoCheckIn booking service under its own privacy practices.</li>
+        <li>Website activity, such as pages viewed and appointment, phone, or email links clicked, when optional measurement is allowed.</li>
+        <li>Technical information commonly provided to online services, such as IP address, browser and device type, approximate location, referral information, and advertising identifiers.</li>
+        <li>Information you choose to send directly by email or phone. Booking information is collected by the separate GoCheckIn booking service under its own privacy practices.</li>
       </ul>
 
       <h2>How we use information</h2>
-      <p>We use website activity to understand which pages and advertisements help people discover Tyra Hair Studio, measure appointment-link and contact-link clicks, prevent duplicate or misleading reporting, and improve our website and advertising.</p>
+      <p>We use information to operate and improve the website, respond when you contact the studio, protect the site from misuse, and—when optional measurement is allowed—understand which pages and advertisements lead people to appointment and contact links.</p>
 
-      <h2>Advertising and third parties</h2>
-      <p>When you allow optional cookies, website activity may be shared with Meta and Google for measurement, attribution, audience creation, and targeted advertising. We do not intentionally send your name, email address, phone number, booking details, hair history, or message contents through our website tracking events.</p>
-      <p>The embedded Google Map and Facebook page preview load by default as visible website features. Loading or interacting with these embeds may share technical browser or network information with Google or Meta under their respective privacy policies. This is separate from Tyra Hair Studio's optional advertising measurement tags.</p>
+      <h2>Advertising, booking, and embedded services</h2>
+      <p>When you allow optional cookies, website activity may be shared with Meta and Google for advertising measurement, attribution, audience creation, and targeted advertising. Tyra Hair Studio does not intentionally include your name, email address, phone number, booking details, hair history, or message contents in website tracking events.</p>
+      <p>The embedded Google Map and Facebook page preview load by default as visible website features. Loading or interacting with them may share browser, device, or network information with Google or Meta. If you open the booking link, you leave this website and GoCheckIn processes your booking under its own privacy practices.</p>
       <ul>
         <li><a href="https://www.facebook.com/privacy/policy/" rel="noopener noreferrer">Meta Privacy Policy</a></li>
         <li><a href="https://policies.google.com/privacy" rel="noopener noreferrer">Google Privacy Policy</a></li>
       </ul>
 
       <h2>Your choices and requests</h2>
-      <p>You can allow or decline optional cookies at any time. You may also ask what information Tyra Hair Studio holds about you, request correction or deletion, or opt out of targeted advertising processing by contacting us. We will review and respond to verifiable requests as required by applicable law.</p>
+      <p>You can allow or decline optional cookies at any time. Where applicable, you may also ask whether Tyra Hair Studio processes your personal information, request access, correction, deletion, or a portable copy, and opt out of targeted advertising processing. We will verify and respond to requests as required by applicable law. If we deny a request, you may reply to our decision and ask us to review it.</p>
       <div class="privacy-actions">
         <button class="button primary" type="button" onclick="window.tyraTracking?.showPrivacyChoices()">Manage privacy choices</button>
         <a class="button ghost" href="mailto:tyrahairstudiocypress@gmail.com">Email a privacy request</a>
       </div>
 
+      <h2>Retention and security</h2>
+      <p>We retain information only for as long as reasonably needed for the purposes described above, to maintain business records, or to meet legal obligations. We use reasonable safeguards, but no website or online transmission can be guaranteed completely secure.</p>
+
       <h2>Contact</h2>
       <p>Tyra Hair Studio<br>9212 Fry Rd #160, Cypress, TX 77433<br><a href="mailto:tyrahairstudiocypress@gmail.com">tyrahairstudiocypress@gmail.com</a><br><a href="tel:8326539595">(832) 653-9595</a></p>
     </main>
 
-    <footer class="global-footer">
+    <footer class="global-footer privacy-page-footer">
       <div class="footer-credit"><span>© <span data-current-year></span> Tyra Hair Studio</span></div>
     </footer>
-    <script src="/app-head-spa-relax-v1.js?v=cash-best-price-v6" type="module"></script>
+    <script src="/app-head-spa-relax-v1.js?v=cash-best-price-v7" type="module"></script>
   </body>
 </html>
