@@ -90,18 +90,6 @@ function loadOptionalTags() {
   optionalTagsLoaded = true;
   loadGoogleTag();
   loadMetaPixel();
-  document.querySelectorAll("iframe[data-optional-src]").forEach((frame) => {
-    frame.removeAttribute("srcdoc");
-    frame.src = frame.dataset.optionalSrc;
-  });
-}
-
-function prepareOptionalEmbeds() {
-  document.querySelectorAll("iframe[data-optional-src]").forEach((frame) => {
-    if (frame.src || frame.srcdoc) return;
-    const label = frame.title?.includes("Maps") ? "Map" : "Social feed";
-    frame.srcdoc = `<style>body{display:grid;place-items:center;height:100vh;margin:0;background:#f3ece4;color:#493b32;font:15px/1.4 Arial,sans-serif;text-align:center}p{max-width:260px;padding:16px}</style><p>${label} loads after optional cookies are allowed.</p>`;
-  });
 }
 
 function safeHost(url) {
@@ -183,28 +171,35 @@ function injectConsentStyles() {
     .tyra-consent {
       position: fixed;
       z-index: 10000;
-      right: 18px;
-      bottom: 18px;
-      width: min(440px, calc(100vw - 36px));
-      padding: 20px;
+      left: 50%;
+      bottom: 12px;
+      width: min(860px, calc(100vw - 32px));
+      padding: 10px 12px;
       color: #f8f2ea;
-      background: rgba(23, 18, 15, .98);
-      border: 1px solid rgba(211, 168, 95, .65);
-      border-radius: 16px;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, .28);
-      font: 15px/1.5 Arial, sans-serif;
+      background: rgba(23, 18, 15, .94);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(211, 168, 95, .52);
+      border-radius: 12px;
+      box-shadow: 0 12px 34px rgba(0, 0, 0, .22);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      transform: translateX(-50%);
+      font: 12.5px/1.4 Arial, sans-serif;
     }
-    .tyra-consent h2 { margin: 0 0 8px; color: #fff; font: 600 20px/1.25 Georgia, serif; }
+    .tyra-consent h2 { margin: 0 0 2px; color: #fff; font: 600 15px/1.2 Georgia, serif; }
     .tyra-consent p { margin: 0; color: #eee4da; }
     .tyra-consent a { color: #efc778; }
-    .tyra-consent-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .tyra-consent-actions { display: flex; flex-wrap: nowrap; gap: 8px; margin: 0; }
     .tyra-consent button {
-      min-height: 42px;
-      padding: 9px 15px;
+      min-height: 36px;
+      padding: 8px 12px;
       border: 1px solid #d3a85f;
       border-radius: 999px;
-      font: 700 14px/1 Arial, sans-serif;
+      font: 700 12.5px/1 Arial, sans-serif;
       cursor: pointer;
+      white-space: nowrap;
     }
     .tyra-consent-accept { color: #17120f; background: #efc778; }
     .tyra-consent-decline { color: #f8f2ea; background: transparent; }
@@ -218,9 +213,21 @@ function injectConsentStyles() {
       cursor: pointer;
       font: inherit;
     }
-    @media (max-width: 600px) {
-      .tyra-consent { right: 10px; bottom: 10px; width: calc(100vw - 20px); padding: 17px; }
-      .tyra-consent-actions { display: grid; grid-template-columns: 1fr; }
+    @media (max-width: 700px) {
+      .tyra-consent {
+        left: 8px;
+        bottom: calc(76px + env(safe-area-inset-bottom));
+        width: calc(100vw - 16px);
+        padding: 7px 8px;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 6px;
+        transform: none;
+        font-size: 10.5px;
+        line-height: 1.3;
+      }
+      .tyra-consent h2 { display: none; }
+      .tyra-consent-actions { display: flex; gap: 5px; }
+      .tyra-consent button { min-height: 34px; min-width: 0; padding: 7px 9px; font-size: 11px; }
     }
   `;
   document.head.append(style);
@@ -241,11 +248,13 @@ function showConsentPanel({ managing = false } = {}) {
   consentPanel.setAttribute("aria-labelledby", "tyra-consent-title");
   consentPanel.setAttribute("aria-describedby", "tyra-consent-description");
   consentPanel.innerHTML = `
-    <h2 id="tyra-consent-title">Your privacy choices</h2>
-    <p id="tyra-consent-description">We use optional analytics and advertising cookies from Meta and Google to measure visits and appointment-link clicks. We do not send your name, email, phone number, or booking details. <a href="/privacy/">Privacy notice</a>.</p>
+    <div>
+      <h2 id="tyra-consent-title">Privacy choices</h2>
+      <p id="tyra-consent-description">Optional analytics and ad cookies help measure visits and booking-link clicks. No contact or booking details are sent. <a href="/privacy/">Details</a></p>
+    </div>
     <div class="tyra-consent-actions">
-      <button class="tyra-consent-accept" type="button" data-consent-accept>Allow optional cookies</button>
-      <button class="tyra-consent-decline" type="button" data-consent-decline>Decline optional cookies</button>
+      <button class="tyra-consent-accept" type="button" data-consent-accept>Allow</button>
+      <button class="tyra-consent-decline" type="button" data-consent-decline>Decline</button>
     </div>
   `;
 
@@ -281,7 +290,6 @@ function addPrivacyControls() {
 function initializeTracking() {
   document.addEventListener("click", handleTrackedClick, { capture: true });
   injectConsentStyles();
-  prepareOptionalEmbeds();
   addPrivacyControls();
 
   if (readConsent() === CONSENT_ACCEPTED) {
