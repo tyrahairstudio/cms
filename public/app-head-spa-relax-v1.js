@@ -1,3 +1,5 @@
+import "/tracking.js?v=ads-tracking-v1";
+
 const siteUrl = "/content/site.json";
 const postsUrl = "/content/posts.json";
 const galleryUrl = "/content/gallery.json?v=gallery-home-v7";
