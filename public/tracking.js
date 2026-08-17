@@ -222,7 +222,7 @@ function injectConsentStyles() {
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 6px;
         transform: none;
-        font-size: 10.5px;
+        font-size: 11.5px;
         line-height: 1.3;
       }
       .tyra-consent h2 { display: none; }
@@ -249,11 +249,11 @@ function showConsentPanel({ managing = false } = {}) {
   consentPanel.setAttribute("aria-describedby", "tyra-consent-description");
   consentPanel.innerHTML = `
     <div>
-      <h2 id="tyra-consent-title">Privacy choices</h2>
-      <p id="tyra-consent-description">Optional analytics and ad cookies help measure visits and booking-link clicks. No contact or booking details are sent. <a href="/privacy/">Details</a></p>
+      <h2 id="tyra-consent-title">Cookies &amp; privacy</h2>
+      <p id="tyra-consent-description">Tyra Hair Studio uses optional cookies to measure visits to tyrahairstudio.com and improve our website and ads. We’ll remember your choice. <a href="/privacy/">Learn more</a></p>
     </div>
     <div class="tyra-consent-actions">
-      <button class="tyra-consent-accept" type="button" data-consent-accept>Allow</button>
+      <button class="tyra-consent-accept" type="button" data-consent-accept>Accept</button>
       <button class="tyra-consent-decline" type="button" data-consent-decline>Decline</button>
     </div>
   `;

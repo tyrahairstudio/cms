@@ -1,4 +1,4 @@
-import "/tracking.js?v=ads-tracking-v2";
+import "/tracking.js?v=ads-tracking-v3";
 
 const siteUrl = "/content/site.json";
 const postsUrl = "/content/posts.json";
