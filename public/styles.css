@@ -2228,6 +2228,10 @@ h2 {
     border-left: 0;
     padding-left: 0;
   }
+
+  .footer-social-column.facebook-column {
+    border-left: 0;
+  }
 }
 
 .location-block {
