@@ -259,6 +259,40 @@ const textAll = (selector, value) => {
   });
 };
 
+let socialEmbedResizeFrame = 0;
+
+const syncSocialEmbedWidths = () => {
+  document.querySelectorAll(".facebook-card iframe, .instagram-card iframe").forEach((iframe) => {
+    const card = iframe.closest(".facebook-card, .instagram-card");
+    const width = Math.round(card?.clientWidth || 0);
+    if (width < 180) return;
+
+    const widthValue = String(width);
+    iframe.width = widthValue;
+    iframe.style.width = "100%";
+
+    if (iframe.src.includes("facebook.com/plugins/page.php")) {
+      const url = new URL(iframe.src);
+      if (url.searchParams.get("width") !== widthValue) {
+        url.searchParams.set("width", widthValue);
+        iframe.src = url.toString();
+      }
+    }
+
+    iframe.dataset.embedWidth = widthValue;
+  });
+};
+
+const scheduleSocialEmbedResize = () => {
+  if (socialEmbedResizeFrame) cancelAnimationFrame(socialEmbedResizeFrame);
+  socialEmbedResizeFrame = requestAnimationFrame(() => {
+    socialEmbedResizeFrame = 0;
+    syncSocialEmbedWidths();
+  });
+};
+
+window.addEventListener("resize", scheduleSocialEmbedResize, { passive: true });
+
 const linkAddressAll = (selector, address, directionsUrl) => {
   if (!address || !directionsUrl) return;
   document.querySelectorAll(selector).forEach((node) => {
@@ -953,6 +987,7 @@ document.addEventListener("keydown", (event) => {
 
 initMobileMenu();
 renderHeroSlideshow();
+scheduleSocialEmbedResize();
 
 Promise.all([
   loadJson(siteUrl),
@@ -961,6 +996,7 @@ Promise.all([
 ])
   .then(([site, blog, gallery]) => {
     renderSite(site);
+    scheduleSocialEmbedResize();
     renderHomeGalleryLooks(gallery);
     renderPosts(blog.posts);
     renderGalleryPage(gallery);
