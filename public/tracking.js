@@ -215,31 +215,33 @@ function injectConsentStyles() {
     .tyra-footer-privacy {
       display: inline-flex;
       flex: 0 0 auto;
-      align-items: center;
-      gap: 10px;
+      align-items: baseline;
+      gap: 12px;
+      padding-inline-start: 14px;
+      border-inline-start: 1px solid rgba(111, 51, 39, .24);
       margin-inline-start: 14px;
       white-space: nowrap;
     }
-    .tyra-footer-privacy::before {
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: currentColor;
-      content: "";
-      opacity: .45;
-    }
+    .tyra-footer-privacy a,
     .tyra-footer-privacy .tyra-privacy-controls {
       color: rgba(111, 51, 39, .78);
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1.35;
+      text-decoration: underline;
       text-underline-offset: 3px;
+      text-transform: none;
     }
     @media (max-width: 860px) {
       .tyra-footer-privacy {
         display: flex;
+        padding-inline-start: 0;
+        border-inline-start: 0;
         margin-block-start: 8px;
         margin-inline-start: 0;
         width: 100%;
       }
-      .tyra-footer-privacy::before { display: none; }
     }
     @media (max-width: 700px) {
       .tyra-consent {

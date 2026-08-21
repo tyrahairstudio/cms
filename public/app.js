@@ -432,7 +432,6 @@ function initMobileMenu() {
 
 function initRosefall() {
   const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  if (reduceMotionQuery.matches) return;
   const attractor = document.querySelector("[data-rose-attractor]");
   if (!attractor) return;
 
@@ -443,6 +442,9 @@ function initRosefall() {
     styleLink.setAttribute("data-rosefall-style", "");
     document.head.appendChild(styleLink);
   }
+
+  // The booking button must stay styled even when the visitor disables motion.
+  if (reduceMotionQuery.matches) return;
 
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
   const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
