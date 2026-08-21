@@ -2232,6 +2232,10 @@ h2 {
   .footer-social-column.facebook-column {
     border-left: 0;
   }
+
+  .footer-social-column + .footer-social-column {
+    border-left: 0;
+  }
 }
 
 .location-block {
