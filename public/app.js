@@ -529,6 +529,10 @@ function renderSite(site) {
     link.href = site.facebook || "https://www.facebook.com/profile.php?id=61590465365520";
   });
 
+  document.querySelectorAll("[data-instagram]").forEach((link) => {
+    link.href = site.instagram || "https://www.instagram.com/tyrahairstudio/";
+  });
+
   const serviceGrid = document.querySelector("[data-services]");
   if (serviceGrid) {
     serviceGrid.innerHTML = site.services

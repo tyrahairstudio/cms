@@ -2021,6 +2021,34 @@ h2 {
   font-size: 18px;
 }
 
+.social-link.instagram {
+  background:
+    radial-gradient(circle at 68% 18%, #ffd86a 0 12%, transparent 13%),
+    linear-gradient(145deg, #7653c9 0%, #d62976 48%, #f77737 100%);
+  font-size: 0;
+  position: relative;
+}
+
+.social-link.instagram::before {
+  border: 2px solid #fff;
+  border-radius: 5px;
+  content: "";
+  height: 15px;
+  width: 15px;
+}
+
+.social-link.instagram::after {
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 5px -5px 0 -1px #fff;
+  content: "";
+  height: 4px;
+  left: 11px;
+  position: absolute;
+  top: 11px;
+  width: 4px;
+}
+
 .facebook-card {
   background: #ffffff;
   border-radius: 0;
@@ -2034,6 +2062,39 @@ h2 {
   border: 0;
   display: block;
   max-width: 100%;
+}
+
+.instagram-card {
+  background: #ffffff;
+  border-radius: 0;
+  margin-top: 10px;
+  max-width: 340px;
+  min-height: 260px;
+  overflow: hidden;
+  position: relative;
+}
+
+.instagram-card iframe {
+  border: 0;
+  display: block;
+  height: 430px;
+  max-width: 100%;
+  width: 100%;
+}
+
+.instagram-card-fallback {
+  background: rgba(255, 250, 243, .94);
+  bottom: 0;
+  color: var(--coffee);
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  left: 0;
+  padding: 8px 10px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  text-decoration: none;
 }
 
 .contact-method {
@@ -2481,6 +2542,10 @@ h2 {
   }
 
   .facebook-card {
+    max-width: 420px;
+  }
+
+  .instagram-card {
     max-width: 420px;
   }
 
