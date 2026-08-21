@@ -204,7 +204,6 @@ function injectConsentStyles() {
     .tyra-consent-accept { color: #17120f; background: #efc778; }
     .tyra-consent-decline { color: #f8f2ea; background: transparent; }
     .tyra-privacy-controls {
-      margin-left: .75rem;
       padding: 0;
       color: inherit;
       background: none;
@@ -212,6 +211,35 @@ function injectConsentStyles() {
       text-decoration: underline;
       cursor: pointer;
       font: inherit;
+    }
+    .tyra-footer-privacy {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 10px;
+      margin-inline-start: 14px;
+      white-space: nowrap;
+    }
+    .tyra-footer-privacy::before {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: currentColor;
+      content: "";
+      opacity: .45;
+    }
+    .tyra-footer-privacy .tyra-privacy-controls {
+      color: rgba(111, 51, 39, .78);
+      text-underline-offset: 3px;
+    }
+    @media (max-width: 860px) {
+      .tyra-footer-privacy {
+        display: flex;
+        margin-block-start: 8px;
+        margin-inline-start: 0;
+        width: 100%;
+      }
+      .tyra-footer-privacy::before { display: none; }
     }
     @media (max-width: 700px) {
       .tyra-consent {
@@ -278,12 +306,14 @@ function showConsentPanel({ managing = false } = {}) {
 }
 
 function addPrivacyControls() {
-  const target = document.querySelector(".footer-credit") || document.querySelector("footer") || document.body;
+  const target = document.querySelector(".footer-credit p") || document.querySelector(".footer-credit") || document.querySelector("footer") || document.body;
   if (document.querySelector("[data-manage-privacy]")) return;
 
   const wrapper = document.createElement("span");
+  wrapper.className = "tyra-footer-privacy";
   wrapper.innerHTML = `<a href="/privacy/">Privacy</a><button class="tyra-privacy-controls" type="button" data-manage-privacy>Privacy choices</button>`;
-  target.append(wrapper);
+  const copyright = target.matches(".footer-credit p") ? target.querySelector(":scope > span:first-child") : null;
+  (copyright || target).append(wrapper);
   wrapper.querySelector("[data-manage-privacy]").addEventListener("click", () => showConsentPanel({ managing: true }));
 }
 
