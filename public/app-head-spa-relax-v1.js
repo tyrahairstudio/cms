@@ -583,7 +583,13 @@ function renderSite(site) {
   }
 
   document.querySelectorAll("[data-hours]").forEach((hours) => {
-    hours.innerHTML = site.hours
+    const weekdayHours = site.hours.slice(0, 5);
+    const weekdaysShareHours = weekdayHours.length === 5 && weekdayHours.every((item) => item.time === weekdayHours[0].time);
+    const displayHours = weekdaysShareHours
+      ? [{ day: "Monday – Friday:", time: weekdayHours[0].time }, ...site.hours.slice(5)]
+      : site.hours;
+
+    hours.innerHTML = displayHours
       .map(
         (item) => `
           <div>
